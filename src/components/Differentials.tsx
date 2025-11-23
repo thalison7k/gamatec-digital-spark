@@ -46,7 +46,7 @@ export const Differentials = () => {
           {/* Section Header */}
           <div className="text-center space-y-4">
             <h2 className="text-4xl md:text-5xl font-orbitron font-black">
-              Por que escolher a <span className="gradient-text">GamaTec</span>?
+              Por que escolher a <span className="gradient-text">GamaTec.IA</span>?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Somos especialistas em transformar pequenos negócios em grandes presenças digitais.
