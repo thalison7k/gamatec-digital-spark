@@ -20,9 +20,9 @@ export const Hero = () => {
       <div className="container relative z-10 px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
           {/* Logo/Brand */}
-          <div className="inline-flex items-center gap-4 mb-4">
-            <img src={logo} alt="GamaTec.IA Logo" className="w-24 h-24 md:w-32 md:h-32 object-contain glow-border rounded-lg" />
-            <span className="text-4xl md:text-5xl font-orbitron font-bold glow-text">GamaTec.IA</span>
+          <div className="logo-container inline-flex items-center gap-4 mb-4">
+            <img src={logo} alt="GamaTec.IA Logo" className="logo-image w-24 h-24 md:w-32 md:h-32 object-contain rounded-lg" />
+            <span className="logo-text text-4xl md:text-5xl font-orbitron font-bold glow-text">GamaTec.IA</span>
           </div>
 
           {/* Main Heading */}
