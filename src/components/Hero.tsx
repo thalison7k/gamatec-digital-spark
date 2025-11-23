@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Code2, Zap, Shield } from "lucide-react";
+import { Zap, Shield, Sparkles } from "lucide-react";
+import logo from "@/assets/gamatec-logo.png";
 
 export const Hero = () => {
   const scrollToPricing = () => {
@@ -19,11 +20,9 @@ export const Hero = () => {
       <div className="container relative z-10 px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
           {/* Logo/Brand */}
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center glow-border">
-              <Code2 className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="text-3xl font-orbitron font-bold glow-text">GamaTec</span>
+          <div className="inline-flex items-center gap-3 mb-4">
+            <img src={logo} alt="GamaTec.IA Logo" className="w-16 h-16 object-contain glow-border rounded-lg" />
+            <span className="text-3xl font-orbitron font-bold glow-text">GamaTec.IA</span>
           </div>
 
           {/* Main Heading */}
@@ -49,7 +48,7 @@ export const Hero = () => {
               <span className="font-medium">Qualidade Garantida</span>
             </div>
             <div className="flex items-center gap-2 text-primary">
-              <Code2 className="w-5 h-5" />
+              <Sparkles className="w-5 h-5" />
               <span className="font-medium">Tecnologia Moderna</span>
             </div>
           </div>

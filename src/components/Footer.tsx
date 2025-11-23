@@ -1,4 +1,4 @@
-import { Code2 } from "lucide-react";
+import logo from "@/assets/gamatec-logo.png";
 
 export const Footer = () => {
   return (
@@ -8,11 +8,9 @@ export const Footer = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Brand */}
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                  <Code2 className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <span className="text-2xl font-orbitron font-bold glow-text">GamaTec</span>
+              <div className="flex items-center gap-3">
+                <img src={logo} alt="GamaTec.IA Logo" className="w-12 h-12 object-contain rounded-lg" />
+                <span className="text-2xl font-orbitron font-bold glow-text">GamaTec.IA</span>
               </div>
               <p className="text-muted-foreground text-sm">
                 Sites profissionais, rápidos e acessíveis para pequenos negócios.
@@ -77,7 +75,7 @@ export const Footer = () => {
           {/* Bottom */}
           <div className="mt-12 pt-8 border-t border-border text-center">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} GamaTec. Todos os direitos reservados.
+              © {new Date().getFullYear()} GamaTec.IA. Todos os direitos reservados.
             </p>
           </div>
         </div>
