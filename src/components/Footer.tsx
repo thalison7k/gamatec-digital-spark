@@ -1,5 +1,5 @@
 import logo from "@/assets/gamatec-logo.png";
-import { Instagram, Youtube } from "lucide-react";
+import { Youtube } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -60,15 +60,6 @@ export const Footer = () => {
                   >
                     gamatec350@gmail.com
                   </a>
-                </li>
-                <li>
-                  <button 
-                    onClick={() => window.open('https://www.instagram.com/gamatec', '_blank')}
-                    className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
-                  >
-                    <Instagram className="w-4 h-4" />
-                    @gamatec
-                  </button>
                 </li>
                 <li>
                   <button 
