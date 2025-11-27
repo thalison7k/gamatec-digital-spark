@@ -1,4 +1,5 @@
 import logo from "@/assets/gamatec-logo.png";
+import { Instagram, Youtube } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -53,20 +54,30 @@ export const Footer = () => {
               <h3 className="font-orbitron font-bold text-foreground">Contato</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <button 
-                    onClick={() => window.open('https://wa.me/5511999999999', '_blank')}
+                  <a 
+                    href="mailto:gamatec350@gmail.com"
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    WhatsApp
+                    gamatec350@gmail.com
+                  </a>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => window.open('https://www.instagram.com/gamatec', '_blank')}
+                    className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    @gamatec
                   </button>
                 </li>
                 <li>
-                  <a 
-                    href="mailto:contato@gamatec.com.br"
-                    className="text-muted-foreground hover:text-primary transition-colors"
+                  <button 
+                    onClick={() => window.open('https://www.youtube.com/@GamaTec-b6k', '_blank')}
+                    className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
                   >
-                    contato@gamatec.com.br
-                  </a>
+                    <Youtube className="w-4 h-4" />
+                    YouTube
+                  </button>
                 </li>
               </ul>
             </div>
