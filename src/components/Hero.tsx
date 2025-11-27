@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Zap, Shield, Sparkles, Instagram, Youtube } from "lucide-react";
+import { Zap, Shield, Sparkles, Youtube } from "lucide-react";
 import logo from "@/assets/gamatec-logo.png";
 
 export const Hero = () => {
@@ -73,14 +73,7 @@ export const Hero = () => {
           </div>
 
           {/* Social Links */}
-          <div className="flex justify-center gap-6 pt-4">
-            <button
-              onClick={() => window.open('https://www.instagram.com/gamatec', '_blank')}
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-6 h-6" />
-            </button>
+          <div className="flex justify-center pt-4">
             <button
               onClick={() => window.open('https://www.youtube.com/@GamaTec-b6k', '_blank')}
               className="text-muted-foreground hover:text-primary transition-colors"
