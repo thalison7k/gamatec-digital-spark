@@ -9,7 +9,7 @@ const portfolioProjects = [
     image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&h=600&fit=crop",
     tags: ["Landing Page", "Responsivo", "Whatsapp"],
     link: "https://gamapaisagismo.lovable.app/",
-    year: "2024"
+    year: "2025"
   },
   {
     title: "TechStore Pro",
@@ -17,7 +17,7 @@ const portfolioProjects = [
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
     tags: ["E-commerce", "React", "API"],
     link: "#",
-    year: "2024"
+    year: "2025"
   },
   {
     title: "Clínica Vida Saudável",
@@ -25,7 +25,7 @@ const portfolioProjects = [
     image: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=800&h=600&fit=crop",
     tags: ["Site Institucional", "Agendamento", "Blog"],
     link: "#",
-    year: "2024"
+    year: "2025"
   },
   {
     title: "RestaurantHub",
@@ -33,7 +33,7 @@ const portfolioProjects = [
     image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
     tags: ["Cardápio Digital", "Reservas", "PWA"],
     link: "#",
-    year: "2023"
+    year: "2025"
   }
 ];
 
