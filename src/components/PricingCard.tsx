@@ -72,7 +72,7 @@ export const PricingCard = ({
               : 'bg-secondary hover:bg-secondary/80 text-foreground'
           }`}
           size="lg"
-          onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Tenho interesse no plano ' + title, '_blank')}
+          onClick={() => window.open('https://wa.me/5511961442363?text=Olá! Tenho interesse no plano ' + title, '_blank')}
         >
           Escolher Plano
         </Button>
