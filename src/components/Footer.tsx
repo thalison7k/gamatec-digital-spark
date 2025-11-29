@@ -1,5 +1,5 @@
 import logo from "@/assets/gamatec-logo.png";
-import { Youtube, Instagram } from "lucide-react";
+import { Youtube, Instagram, MessageCircle } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -60,6 +60,15 @@ export const Footer = () => {
                   >
                     gamatec350@gmail.com
                   </a>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => window.open('https://wa.me/5511961442363', '_blank')}
+                    className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    WhatsApp
+                  </button>
                 </li>
                 <li>
                   <button 

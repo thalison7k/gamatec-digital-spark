@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Zap, Shield, Sparkles, Youtube, Instagram } from "lucide-react";
+import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle } from "lucide-react";
 import logo from "@/assets/gamatec-logo.png";
 
 export const Hero = () => {
@@ -65,9 +65,10 @@ export const Hero = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="text-lg font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-              onClick={() => window.open('mailto:gamatec350@gmail.com', '_blank')}
+              className="text-lg font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 flex items-center gap-2"
+              onClick={() => window.open('https://wa.me/5511961442363', '_blank')}
             >
+              <MessageCircle className="w-5 h-5" />
               Entrar em Contato
             </Button>
           </div>
