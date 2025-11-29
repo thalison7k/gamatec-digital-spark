@@ -101,7 +101,7 @@ export const MaintenancePlans = () => {
                         : 'bg-secondary hover:bg-secondary/80 text-foreground'
                     }`}
                     size="lg"
-                    onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Tenho interesse no ' + plan.title, '_blank')}
+                    onClick={() => window.open('https://wa.me/5511961442363?text=Olá! Tenho interesse no ' + plan.title, '_blank')}
                   >
                     Contratar
                   </Button>

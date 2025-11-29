@@ -72,7 +72,7 @@ export const DevelopmentPackages = () => {
             <p className="text-muted-foreground">
               Precisa de algo personalizado?{" "}
               <button 
-                onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Gostaria de um orçamento personalizado', '_blank')}
+                onClick={() => window.open('https://wa.me/5511961442363?text=Olá! Gostaria de um orçamento personalizado', '_blank')}
                 className="text-primary hover:underline font-semibold"
               >
                 Fale conosco
