@@ -79,7 +79,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-end p-4 md:p-8 relative overflow-hidden">
       {/* Background GIF */}
       <div 
         className="absolute inset-0 z-0"
@@ -90,77 +90,77 @@ const Auth = () => {
           backgroundRepeat: 'no-repeat',
         }}
       />
-      {/* Overlay for better readability */}
-      <div className="absolute inset-0 bg-background/70 backdrop-blur-sm z-0" />
+      {/* Subtle gradient overlay - less opaque to show GIF */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/80 z-0" />
       
-      <div className="relative w-full max-w-md z-10">
-        <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl p-8 shadow-2xl">
+      <div className="relative w-full max-w-xs z-10">
+        <div className="bg-card/90 backdrop-blur-xl border border-border/50 rounded-xl p-6 shadow-2xl">
           {/* Logo */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-4">
             <img 
               src={gamatecLogo} 
               alt="GamaTec.IA" 
-              className="h-16 w-auto"
+              className="h-12 w-auto"
             />
           </div>
 
           {/* Title */}
-          <h1 className="text-2xl font-bold text-center mb-2 font-orbitron text-foreground">
-            {isLogin ? "Bem-vindo de volta" : "Crie sua conta"}
+          <h1 className="text-lg font-bold text-center mb-1 font-orbitron text-foreground">
+            {isLogin ? "Bem-vindo" : "Crie sua conta"}
           </h1>
-          <p className="text-muted-foreground text-center mb-8">
+          <p className="text-muted-foreground text-center mb-4 text-sm">
             {isLogin 
-              ? "Entre para acessar o conteúdo exclusivo" 
-              : "Cadastre-se para ter acesso completo"}
+              ? "Entre para acessar o conteúdo" 
+              : "Cadastre-se para ter acesso"}
           </p>
 
           {/* Form */}
-          <form onSubmit={handleAuth} className="space-y-6">
+          <form onSubmit={handleAuth} className="space-y-4">
             {!isLogin && (
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-foreground">Nome completo</Label>
+              <div className="space-y-1">
+                <Label htmlFor="name" className="text-foreground text-sm">Nome</Label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="name"
                     type="text"
                     placeholder="Seu nome"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="pl-10 bg-background/50 border-border/50 focus:border-primary"
+                    className="pl-9 h-9 text-sm bg-background/50 border-border/50 focus:border-primary"
                     required={!isLogin}
                   />
                 </div>
               </div>
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground">Email</Label>
+            <div className="space-y-1">
+              <Label htmlFor="email" className="text-foreground text-sm">Email</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
                   placeholder="seu@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 bg-background/50 border-border/50 focus:border-primary"
+                  className="pl-9 h-9 text-sm bg-background/50 border-border/50 focus:border-primary"
                   required
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-foreground">Senha</Label>
+            <div className="space-y-1">
+              <Label htmlFor="password" className="text-foreground text-sm">Senha</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 pr-10 bg-background/50 border-border/50 focus:border-primary"
+                  className="pl-9 pr-9 h-9 text-sm bg-background/50 border-border/50 focus:border-primary"
                   required
                   minLength={6}
                 />
@@ -169,18 +169,18 @@ const Auth = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
 
             <Button
               type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-10"
               disabled={loading}
             >
               {loading 
-                ? "Carregando..." 
+                ? "..." 
                 : isLogin 
                   ? "Entrar" 
                   : "Criar conta"}
@@ -188,27 +188,27 @@ const Auth = () => {
           </form>
 
           {/* Toggle */}
-          <div className="mt-6 text-center">
-            <p className="text-muted-foreground">
-              {isLogin ? "Não tem uma conta?" : "Já tem uma conta?"}
+          <div className="mt-4 text-center">
+            <p className="text-muted-foreground text-xs">
+              {isLogin ? "Não tem conta?" : "Já tem conta?"}
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="ml-2 text-primary hover:underline font-semibold"
+                className="ml-1 text-primary hover:underline font-semibold"
               >
-                {isLogin ? "Cadastre-se" : "Faça login"}
+                {isLogin ? "Cadastre-se" : "Login"}
               </button>
             </p>
           </div>
         </div>
 
         {/* Back to home */}
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <button
             onClick={() => navigate("/")}
-            className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+            className="text-muted-foreground hover:text-foreground transition-colors text-xs"
           >
-            ← Voltar para a página inicial
+            ← Voltar
           </button>
         </div>
       </div>
