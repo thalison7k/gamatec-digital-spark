@@ -1,14 +1,42 @@
 import { Button } from "@/components/ui/button";
-import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle } from "lucide-react";
+import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle, LogOut } from "lucide-react";
 import logo from "@/assets/gamatec-logo.png";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 export const Hero = () => {
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+
   const scrollToPricing = () => {
     document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleLogout = async () => {
+    await signOut();
+    toast({
+      title: "Logout realizado",
+      description: "Até logo!",
+    });
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Logout Button */}
+      {user && (
+        <div className="absolute top-4 right-4 z-20">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleLogout}
+            className="border-border/50 text-muted-foreground hover:text-foreground hover:border-primary"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Sair
+          </Button>
+        </div>
+      )}
+
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary to-background">
         <div className="absolute inset-0 opacity-20">
