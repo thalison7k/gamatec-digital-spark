@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import gamatecLogo from "@/assets/gamatec-logo.png";
 import loginBackground from "@/assets/login-background.gif";
+import formBackground from "@/assets/form-background.gif";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -93,112 +94,125 @@ const Auth = () => {
       {/* Subtle gradient overlay - less opaque to show GIF */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/80 z-0" />
       
-      <div className="relative w-full max-w-xs z-10">
-        <div className="bg-card/90 backdrop-blur-xl border border-border/50 rounded-xl p-6 shadow-2xl">
-          {/* Logo */}
-          <div className="flex justify-center mb-4">
-            <img 
-              src={gamatecLogo} 
-              alt="GamaTec.IA" 
-              className="h-12 w-auto"
-            />
-          </div>
+      <div className="relative w-full max-w-sm z-10">
+        <div 
+          className="relative rounded-xl p-6 shadow-2xl border border-border/30 overflow-hidden"
+          style={{
+            backgroundImage: `url(${formBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          {/* Form overlay for readability */}
+          <div className="absolute inset-0 bg-card/85 backdrop-blur-sm" />
+          
+          {/* Content - needs relative z-index to appear above overlay */}
+          <div className="relative z-10">
+            {/* Logo */}
+            <div className="flex justify-center mb-4">
+              <img 
+                src={gamatecLogo} 
+                alt="GamaTec.IA" 
+                className="h-14 w-auto"
+              />
+            </div>
 
-          {/* Title */}
-          <h1 className="text-lg font-bold text-center mb-1 font-orbitron text-foreground">
-            {isLogin ? "Bem-vindo" : "Crie sua conta"}
-          </h1>
-          <p className="text-muted-foreground text-center mb-4 text-sm">
-            {isLogin 
-              ? "Entre para acessar o conteúdo" 
-              : "Cadastre-se para ter acesso"}
-          </p>
+            {/* Title */}
+            <h1 className="text-lg font-bold text-center mb-1 font-orbitron text-foreground">
+              {isLogin ? "Bem-vindo" : "Crie sua conta"}
+            </h1>
+            <p className="text-muted-foreground text-center mb-4 text-sm">
+              {isLogin 
+                ? "Entre para acessar o conteúdo" 
+                : "Cadastre-se para ter acesso"}
+            </p>
 
-          {/* Form */}
-          <form onSubmit={handleAuth} className="space-y-4">
-            {!isLogin && (
+            {/* Form */}
+            <form onSubmit={handleAuth} className="space-y-4">
+              {!isLogin && (
+                <div className="space-y-1">
+                  <Label htmlFor="name" className="text-foreground text-sm">Nome</Label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="name"
+                      type="text"
+                      placeholder="Seu nome"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="pl-9 h-9 text-sm bg-background/50 border-border/50 focus:border-primary"
+                      required={!isLogin}
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-1">
-                <Label htmlFor="name" className="text-foreground text-sm">Nome</Label>
+                <Label htmlFor="email" className="text-foreground text-sm">Email</Label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    id="name"
-                    type="text"
-                    placeholder="Seu nome"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    id="email"
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="pl-9 h-9 text-sm bg-background/50 border-border/50 focus:border-primary"
-                    required={!isLogin}
+                    required
                   />
                 </div>
               </div>
-            )}
 
-            <div className="space-y-1">
-              <Label htmlFor="email" className="text-foreground text-sm">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-9 h-9 text-sm bg-background/50 border-border/50 focus:border-primary"
-                  required
-                />
+              <div className="space-y-1">
+                <Label htmlFor="password" className="text-foreground text-sm">Senha</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-9 pr-9 h-9 text-sm bg-background/50 border-border/50 focus:border-primary"
+                    required
+                    minLength={6}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-1">
-              <Label htmlFor="password" className="text-foreground text-sm">Senha</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-9 pr-9 h-9 text-sm bg-background/50 border-border/50 focus:border-primary"
-                  required
-                  minLength={6}
-                />
+              <Button
+                type="submit"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-10"
+                disabled={loading}
+              >
+                {loading 
+                  ? "..." 
+                  : isLogin 
+                    ? "Entrar" 
+                    : "Criar conta"}
+              </Button>
+            </form>
+
+            {/* Toggle */}
+            <div className="mt-4 text-center">
+              <p className="text-muted-foreground text-xs">
+                {isLogin ? "Não tem conta?" : "Já tem conta?"}
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="ml-1 text-primary hover:underline font-semibold"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {isLogin ? "Cadastre-se" : "Login"}
                 </button>
-              </div>
+              </p>
             </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-10"
-              disabled={loading}
-            >
-              {loading 
-                ? "..." 
-                : isLogin 
-                  ? "Entrar" 
-                  : "Criar conta"}
-            </Button>
-          </form>
-
-          {/* Toggle */}
-          <div className="mt-4 text-center">
-            <p className="text-muted-foreground text-xs">
-              {isLogin ? "Não tem conta?" : "Já tem conta?"}
-              <button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                className="ml-1 text-primary hover:underline font-semibold"
-              >
-                {isLogin ? "Cadastre-se" : "Login"}
-              </button>
-            </p>
           </div>
         </div>
 
