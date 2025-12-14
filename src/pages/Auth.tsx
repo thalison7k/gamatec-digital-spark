@@ -80,7 +80,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-end p-4 md:p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
       {/* Background GIF */}
       <div 
         className="absolute inset-0 z-0"
@@ -89,10 +89,11 @@ const Auth = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          imageRendering: 'auto',
         }}
       />
-      {/* Subtle gradient overlay - less opaque to show GIF */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/80 z-0" />
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-background/30 z-0" />
       
       <div className="relative w-full max-w-sm z-10">
         <div 
