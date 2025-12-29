@@ -1,5 +1,6 @@
 import logo from "@/assets/gamatec-logo.png";
 import { Youtube, Instagram, MessageCircle } from "lucide-react";
+import GamaTecBadge from "./GamaTecBadge";
 
 export const Footer = () => {
   return (
@@ -97,6 +98,9 @@ export const Footer = () => {
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} GamaTec.IA. Todos os direitos reservados.
             </p>
+            <div className="mt-4">
+              <GamaTecBadge variant="footer" />
+            </div>
           </div>
         </div>
       </div>
