@@ -1,6 +1,10 @@
 import { PricingCard } from "./PricingCard";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export const DevelopmentPackages = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollReveal();
+  const { ref: gridRef, isVisible: gridVisible } = useScrollReveal();
+
   const packages = [
     {
       title: "Pacote Start",
@@ -50,8 +54,7 @@ export const DevelopmentPackages = () => {
     <section id="pricing" className="py-20 relative">
       <div className="container px-4">
         <div className="max-w-6xl mx-auto space-y-12">
-          {/* Section Header */}
-          <div className="text-center space-y-4 animate-slide-up">
+          <div ref={headerRef} className={`text-center space-y-4 scroll-reveal ${headerVisible ? 'visible' : ''}`}>
             <h2 className="text-4xl md:text-5xl font-orbitron font-black">
               <span className="gradient-text">Pacotes de Desenvolvimento</span>
             </h2>
@@ -60,14 +63,12 @@ export const DevelopmentPackages = () => {
             </p>
           </div>
 
-          {/* Cards Grid */}
-          <div className="grid md:grid-cols-3 gap-8 animate-fade-in">
+          <div ref={gridRef} className={`grid md:grid-cols-3 gap-8 stagger-children ${gridVisible ? 'visible' : ''}`}>
             {packages.map((pkg, index) => (
-              <PricingCard key={index} {...pkg} delay={index * 100} />
+              <PricingCard key={index} {...pkg} delay={index * 150} />
             ))}
           </div>
 
-          {/* Bottom CTA */}
           <div className="text-center pt-8">
             <p className="text-muted-foreground">
               Precisa de algo personalizado?{" "}
