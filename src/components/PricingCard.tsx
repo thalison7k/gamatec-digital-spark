@@ -13,50 +13,36 @@ interface PricingCardProps {
 }
 
 export const PricingCard = ({ 
-  title, 
-  description, 
-  price, 
-  features, 
-  highlighted = false,
-  delay = 0 
+  title, description, price, features, highlighted = false, delay = 0 
 }: PricingCardProps) => {
   const { play } = useSounds();
 
   return (
     <Card 
-      className={`relative p-8 hover-lift ${
+      className={`relative p-8 card-3d shimmer ${
         highlighted 
           ? 'border-primary glow-border bg-gradient-to-br from-card via-secondary to-card' 
-          : 'border-border bg-card'
-      }`}
+          : 'border-border bg-card hover:border-primary/50'
+      } transition-all duration-500`}
       style={{ animationDelay: `${delay}ms` }}
       onMouseEnter={() => play("hover")}
     >
       {highlighted && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold animate-scale-bounce">
           Mais Popular
         </div>
       )}
 
       <div className="space-y-6">
-        {/* Header */}
         <div className="space-y-2">
-          <h3 className="text-2xl font-orbitron font-bold text-foreground">
-            {title}
-          </h3>
-          <p className="text-muted-foreground text-sm">
-            {description}
-          </p>
+          <h3 className="text-2xl font-orbitron font-bold text-foreground">{title}</h3>
+          <p className="text-muted-foreground text-sm">{description}</p>
         </div>
 
-        {/* Price */}
         <div className="space-y-1">
-          <div className="text-4xl font-orbitron font-black text-primary">
-            {price}
-          </div>
+          <div className="text-4xl font-orbitron font-black text-primary">{price}</div>
         </div>
 
-        {/* Features */}
         <ul className="space-y-3">
           {features.map((feature, index) => (
             <li key={index} className="flex items-start gap-3">
@@ -68,12 +54,11 @@ export const PricingCard = ({
           ))}
         </ul>
 
-        {/* CTA Button */}
         <Button 
-          className={`w-full ${
+          className={`w-full transition-all duration-300 ${
             highlighted 
-              ? 'bg-primary hover:bg-primary/90 text-primary-foreground glow-border' 
-              : 'bg-secondary hover:bg-secondary/80 text-foreground'
+              ? 'bg-primary hover:bg-primary/90 text-primary-foreground glow-border hover:shadow-[0_0_30px_hsl(var(--primary)/0.5)]' 
+              : 'bg-secondary hover:bg-secondary/80 text-foreground hover:shadow-[0_0_20px_hsl(var(--primary)/0.2)]'
           }`}
           size="lg"
           onClick={() => { play("success"); window.open('https://wa.me/5511961442363?text=Olá! Tenho interesse no plano ' + title, '_blank'); }}

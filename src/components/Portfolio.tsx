@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const portfolioProjects = [
   {
@@ -38,10 +39,13 @@ const portfolioProjects = [
 ];
 
 export const Portfolio = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollReveal();
+  const { ref: gridRef, isVisible: gridVisible } = useScrollReveal();
+
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-background via-background/95 to-muted/20">
+    <section className="py-20 px-4 bg-gradient-to-b from-background via-background/95 to-muted/20 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
-        <div className="text-center mb-16 space-y-4">
+        <div ref={headerRef} className={`text-center mb-16 space-y-4 scroll-reveal ${headerVisible ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl font-bold gradient-text">
             Nosso Portfólio
           </h2>
@@ -50,19 +54,20 @@ export const Portfolio = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div ref={gridRef} className={`grid grid-cols-1 md:grid-cols-2 gap-8 stagger-children ${gridVisible ? 'visible' : ''}`}>
           {portfolioProjects.map((project, index) => (
             <Card 
               key={index}
-              className="group overflow-hidden hover-lift bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300"
+              className="group overflow-hidden card-3d bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-500"
             >
               <div className="relative overflow-hidden h-64">
                 <img 
                   src={project.image} 
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                 <div className="absolute top-4 right-4">
                   <span className="bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
                     {project.year}
@@ -71,7 +76,7 @@ export const Portfolio = () => {
               </div>
               
               <CardHeader>
-                <CardTitle className="text-2xl group-hover:text-primary transition-colors">
+                <CardTitle className="text-2xl group-hover:text-primary transition-colors duration-300">
                   {project.title}
                 </CardTitle>
                 <CardDescription className="text-base">
@@ -84,7 +89,7 @@ export const Portfolio = () => {
                   {project.tags.map((tag, tagIndex) => (
                     <span 
                       key={tagIndex}
-                      className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium"
+                      className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 hover:bg-primary/20 hover:scale-105"
                     >
                       {tag}
                     </span>
@@ -94,11 +99,11 @@ export const Portfolio = () => {
                 {project.link !== "#" && (
                   <Button 
                     variant="outline" 
-                    className="w-full group/btn"
+                    className="w-full group/btn hover:border-primary hover:shadow-[0_0_20px_hsl(var(--primary)/0.2)] transition-all duration-300"
                     onClick={() => window.open(project.link, '_blank')}
                   >
                     <span>Ver Projeto</span>
-                    <ExternalLink className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                    <ExternalLink className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform duration-300" />
                   </Button>
                 )}
               </CardContent>
