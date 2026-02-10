@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import { useSounds } from "@/components/SoundProvider";
 
 interface PricingCardProps {
   title: string;
@@ -19,6 +20,8 @@ export const PricingCard = ({
   highlighted = false,
   delay = 0 
 }: PricingCardProps) => {
+  const { play } = useSounds();
+
   return (
     <Card 
       className={`relative p-8 hover-lift ${
@@ -27,6 +30,7 @@ export const PricingCard = ({
           : 'border-border bg-card'
       }`}
       style={{ animationDelay: `${delay}ms` }}
+      onMouseEnter={() => play("hover")}
     >
       {highlighted && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold">
@@ -72,7 +76,7 @@ export const PricingCard = ({
               : 'bg-secondary hover:bg-secondary/80 text-foreground'
           }`}
           size="lg"
-          onClick={() => window.open('https://wa.me/5511961442363?text=Olá! Tenho interesse no plano ' + title, '_blank')}
+          onClick={() => { play("success"); window.open('https://wa.me/5511961442363?text=Olá! Tenho interesse no plano ' + title, '_blank'); }}
         >
           Escolher Plano
         </Button>
