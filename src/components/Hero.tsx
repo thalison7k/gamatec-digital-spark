@@ -3,12 +3,15 @@ import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle, LogOut } from
 import logo from "@/assets/gamatec-logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { useSounds } from "@/components/SoundProvider";
 
 export const Hero = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
+  const { play } = useSounds();
 
   const scrollToPricing = () => {
+    play("whoosh");
     document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -87,6 +90,7 @@ export const Hero = () => {
               size="lg" 
               className="text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground glow-border hover-lift"
               onClick={scrollToPricing}
+              onMouseEnter={() => play("hover")}
             >
               Ver Planos
             </Button>
@@ -94,7 +98,8 @@ export const Hero = () => {
               size="lg" 
               variant="outline" 
               className="text-lg font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 flex items-center gap-2"
-              onClick={() => window.open('https://wa.me/5511961442363', '_blank')}
+              onClick={() => { play("click"); window.open('https://wa.me/5511961442363', '_blank'); }}
+              onMouseEnter={() => play("hover")}
             >
               <MessageCircle className="w-5 h-5" />
               Entrar em Contato
