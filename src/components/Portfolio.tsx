@@ -13,6 +13,14 @@ const portfolioProjects = [
     year: "2025"
   },
   {
+    title: "Gama Barbearia",
+    description: "Site profissional para barbearia com agendamento, galeria de cortes e integração com WhatsApp para reservas.",
+    image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&h=600&fit=crop",
+    tags: ["Landing Page", "Agendamento", "Whatsapp"],
+    link: "https://gamabarbearia.lovable.app/",
+    year: "2025"
+  },
+  {
     title: "TechStore Pro",
     description: "E-commerce completo para loja de eletrônicos com carrinho de compras, painel administrativo e integração de pagamento.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
