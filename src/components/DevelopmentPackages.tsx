@@ -63,7 +63,7 @@ export const DevelopmentPackages = () => {
             </p>
           </div>
 
-          <div ref={gridRef} className={`grid md:grid-cols-3 gap-8 stagger-children ${gridVisible ? 'visible' : ''}`}>
+          <div ref={gridRef} className={`grid md:grid-cols-3 gap-8 pt-4 stagger-children ${gridVisible ? 'visible' : ''}`}>
             {packages.map((pkg, index) => (
               <PricingCard key={index} {...pkg} delay={index * 150} />
             ))}
