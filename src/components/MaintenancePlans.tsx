@@ -27,7 +27,7 @@ export const MaintenancePlans = () => {
   ];
 
   return (
-    <section className="py-20 bg-secondary/30 relative overflow-hidden">
+    <section className="py-20 bg-secondary/30 relative">
       {/* Background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px]" />
 
@@ -45,7 +45,7 @@ export const MaintenancePlans = () => {
             </p>
           </div>
 
-          <div ref={gridRef} className={`grid md:grid-cols-3 gap-8 stagger-children ${gridVisible ? 'visible' : ''}`}>
+          <div ref={gridRef} className={`grid md:grid-cols-3 gap-8 pt-4 stagger-children ${gridVisible ? 'visible' : ''}`}>
             {plans.map((plan, index) => (
               <Card 
                 key={index}

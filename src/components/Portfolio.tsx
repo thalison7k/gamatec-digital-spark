@@ -18,7 +18,7 @@ const portfolioProjects = [
     image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&h=600&fit=crop",
     tags: ["Landing Page", "Agendamento", "Whatsapp"],
     link: "https://gamabarbearia.lovable.app/",
-    year: "2025"
+    year: "2026"
   },
   {
     title: "TechStore Pro",
