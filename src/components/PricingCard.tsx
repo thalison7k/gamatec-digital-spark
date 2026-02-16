@@ -19,7 +19,7 @@ export const PricingCard = ({
 
   return (
     <Card 
-      className={`relative p-8 card-3d shimmer ${
+      className={`relative overflow-visible p-8 card-3d shimmer ${
         highlighted 
           ? 'border-primary glow-border bg-gradient-to-br from-card via-secondary to-card' 
           : 'border-border bg-card hover:border-primary/50'

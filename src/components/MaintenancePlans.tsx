@@ -49,7 +49,7 @@ export const MaintenancePlans = () => {
             {plans.map((plan, index) => (
               <Card 
                 key={index}
-                className={`p-8 card-3d shimmer ${
+                className={`relative overflow-visible p-8 card-3d shimmer ${
                   plan.highlighted 
                     ? 'border-primary glow-border bg-gradient-to-br from-card via-secondary to-card' 
                     : 'border-border bg-card hover:border-primary/50'
