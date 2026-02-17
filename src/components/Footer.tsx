@@ -1,9 +1,11 @@
 import logo from "@/assets/gamatec-logo.png";
-import { Youtube, Instagram, MessageCircle } from "lucide-react";
+import { Youtube, Instagram, MessageCircle, BookOpen } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useNavigate } from "react-router-dom";
 
 export const Footer = () => {
   const { ref, isVisible } = useScrollReveal();
+  const navigate = useNavigate();
 
   return (
     <footer className="py-12 border-t border-border bg-secondary/30 relative overflow-hidden">
@@ -38,6 +40,15 @@ export const Footer = () => {
                     </button>
                   </li>
                 ))}
+                <li>
+                  <button 
+                    onClick={() => navigate("/como-funciona")}
+                    className="text-muted-foreground hover:text-primary transition-all duration-300 hover:translate-x-1 inline-flex items-center gap-2"
+                  >
+                    <BookOpen className="w-3 h-3" />
+                    Como Funciona
+                  </button>
+                </li>
               </ul>
             </div>
 
