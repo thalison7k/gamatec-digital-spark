@@ -8,6 +8,7 @@ import { SoundProvider } from "@/components/SoundProvider";
 import { SoundToggle } from "@/components/SoundToggle";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ComoFunciona from "./pages/ComoFunciona";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,11 @@ const App = () => (
               <Route path="/" element={
                 <ProtectedRoute>
                   <Index />
+                </ProtectedRoute>
+              } />
+              <Route path="/como-funciona" element={
+                <ProtectedRoute>
+                  <ComoFunciona />
                 </ProtectedRoute>
               } />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
