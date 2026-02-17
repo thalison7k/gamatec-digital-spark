@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle, LogOut } from "lucide-react";
+import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle, LogOut, BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import logo from "@/assets/gamatec-logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -9,6 +10,7 @@ export const Hero = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
   const { play } = useSounds();
+  const navigate = useNavigate();
 
   const scrollToPricing = () => {
     play("whoosh");
@@ -121,6 +123,17 @@ export const Hero = () => {
             <button onClick={() => window.open('https://www.youtube.com/@GamaTec-b6k', '_blank')}
               className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125 icon-bounce" aria-label="YouTube">
               <Youtube className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Como Funciona Link */}
+          <div className="pt-6 opacity-0 animate-hero-entrance" style={{ animationDelay: "1.3s" }}>
+            <button
+              onClick={() => { play("whoosh"); navigate("/como-funciona"); }}
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-all duration-300 hover:translate-x-1 font-orbitron"
+            >
+              <BookOpen className="w-4 h-4" />
+              Como a GamaTec.IA Funciona
             </button>
           </div>
         </div>
