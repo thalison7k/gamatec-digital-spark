@@ -1,8 +1,16 @@
 # GamaTec.IA — Plataforma Web Experimental Acadêmica
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-blue)
-![Licença](https://img.shields.io/badge/licen%C3%A7a-educacional-green)
-![Stack](https://img.shields.io/badge/stack-React%20%2B%20TypeScript%20%2B%20Vite-purple)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-blue?style=for-the-badge)
+![Licença](https://img.shields.io/badge/licen%C3%A7a-educacional-green?style=for-the-badge)
+![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Node](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Lovable Cloud](https://img.shields.io/badge/Backend-Lovable_Cloud-FF6B6B?style=for-the-badge)
+![Deploy](https://img.shields.io/badge/deploy-online-brightgreen?style=for-the-badge&logo=vercel&logoColor=white)
+![Último Commit](https://img.shields.io/github/last-commit/gamatec/gamatec-ia?style=for-the-badge&label=%C3%BAltimo%20commit)
+![Tamanho do Repo](https://img.shields.io/github/repo-size/gamatec/gamatec-ia?style=for-the-badge&label=tamanho)
 
 ## 📋 Descrição
 

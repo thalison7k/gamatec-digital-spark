@@ -28,8 +28,8 @@ export const MaintenancePlans = () => {
 
   return (
     <section className="py-20 bg-secondary/30 relative">
-      {/* Background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px]" />
+      {/* Background glow - hidden on mobile for performance */}
+      <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px]" />
 
       <div className="container px-4 relative z-10">
         <div className="max-w-6xl mx-auto space-y-12">

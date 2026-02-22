@@ -106,12 +106,14 @@
   }
 
   /* ===== HOVER EFFECTS ===== */
-  .hover-lift {
-    @apply transition-all duration-500;
-  }
-  .hover-lift:hover {
-    @apply -translate-y-3;
-    box-shadow: 0 20px 60px hsl(var(--primary) / 0.3), 0 0 30px hsl(var(--primary) / 0.15);
+  @media (hover: hover) {
+    .hover-lift {
+      @apply transition-all duration-500;
+    }
+    .hover-lift:hover {
+      @apply -translate-y-3;
+      box-shadow: 0 20px 60px hsl(var(--primary) / 0.3), 0 0 30px hsl(var(--primary) / 0.15);
+    }
   }
 
   /* ===== LOGO ===== */
@@ -215,12 +217,14 @@
     transform-style: preserve-3d;
     perspective: 1000px;
   }
-  .card-3d:hover {
-    transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
-    box-shadow:
-      0 25px 50px hsl(var(--primary) / 0.15),
-      0 0 30px hsl(var(--primary) / 0.1),
-      inset 0 1px 0 hsl(var(--primary) / 0.1);
+  @media (hover: hover) {
+    .card-3d:hover {
+      transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
+      box-shadow:
+        0 25px 50px hsl(var(--primary) / 0.15),
+        0 0 30px hsl(var(--primary) / 0.1),
+        inset 0 1px 0 hsl(var(--primary) / 0.1);
+    }
   }
 
   /* ===== PULSE RING ===== */
@@ -250,6 +254,7 @@
     border-radius: 50%;
     pointer-events: none;
     animation: particle-float linear infinite;
+    will-change: transform, opacity;
   }
 
   /* ===== ICON BOUNCE ON HOVER ===== */

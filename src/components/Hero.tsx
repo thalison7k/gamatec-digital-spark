@@ -37,25 +37,27 @@ export const Hero = () => {
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary to-background">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary rounded-full blur-[128px] animate-float-gentle" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent rounded-full blur-[128px] animate-float-gentle" style={{ animationDelay: "2s" }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-primary/10 animate-rotate-glow" />
+          <div className="absolute top-1/4 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-primary rounded-full blur-[80px] md:blur-[128px] animate-float-gentle" />
+          <div className="absolute bottom-1/4 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-accent rounded-full blur-[80px] md:blur-[128px] animate-float-gentle" style={{ animationDelay: "2s" }} />
+          <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-primary/10 animate-rotate-glow" />
         </div>
-        {/* Floating particles */}
-        {Array.from({ length: 12 }).map((_, i) => (
-          <div
-            key={i}
-            className="particle bg-primary/30"
-            style={{
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
-              left: `${Math.random() * 100}%`,
-              bottom: '-10px',
-              animationDuration: `${Math.random() * 8 + 6}s`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          />
-        ))}
+        {/* Floating particles - hidden on mobile for performance */}
+        <div className="hidden md:block">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div
+              key={i}
+              className="particle bg-primary/30"
+              style={{
+                width: `${Math.random() * 4 + 2}px`,
+                height: `${Math.random() * 4 + 2}px`,
+                left: `${Math.random() * 100}%`,
+                bottom: '-10px',
+                animationDuration: `${Math.random() * 8 + 6}s`,
+                animationDelay: `${Math.random() * 5}s`,
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="container relative z-10 px-4 py-20">
