@@ -50,10 +50,10 @@ const SectionBlock = ({ icon, number, title, children, delay = 0 }: SectionBlock
   return (
     <div ref={ref} className={`scroll-reveal ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${delay}ms` }}>
       <Card
-        className="relative p-6 md:p-8 border-border bg-card hover:border-primary/50 transition-all duration-500 card-3d shimmer"
+        className="relative overflow-visible p-6 md:p-8 border-border bg-card hover:border-primary/50 transition-all duration-500 card-3d shimmer"
         onMouseEnter={() => play("hover")}
       >
-        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-orbitron text-xs font-bold shadow-lg">
+        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-orbitron text-xs font-bold shadow-lg z-10">
           {number}
         </div>
         <div className="flex items-start gap-4">
@@ -239,8 +239,8 @@ const ComoFunciona = () => {
 
             {/* 6 — Contexto Acadêmico */}
             <div ref={contextRef} className={`scroll-reveal ${contextVisible ? 'visible' : ''}`}>
-              <Card className="relative p-8 md:p-10 border-primary/30 bg-gradient-to-br from-card via-secondary/30 to-card glow-border">
-                <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-orbitron text-xs font-bold shadow-lg">
+              <Card className="relative overflow-visible p-8 md:p-10 border-primary/30 bg-gradient-to-br from-card via-secondary/30 to-card glow-border">
+                <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-orbitron text-xs font-bold shadow-lg z-10">
                   6
                 </div>
                 <div className="flex items-start gap-4">
