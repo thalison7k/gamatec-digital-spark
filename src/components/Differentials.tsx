@@ -1,9 +1,11 @@
 import { Zap, MessageCircle, Shield, Sparkles, TrendingUp, HeadphonesIcon } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useSounds } from "@/components/SoundProvider";
 
 export const Differentials = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollReveal();
   const { ref: gridRef, isVisible: gridVisible } = useScrollReveal();
+  const { play } = useSounds();
 
   const differentials = [
     { icon: Zap, title: "Velocidade de Entrega", description: "Sites prontos em tempo recorde sem comprometer a qualidade" },
@@ -39,6 +41,8 @@ export const Differentials = () => {
                 <div 
                   key={index}
                   className="group p-6 rounded-lg border border-border bg-card/50 hover:bg-card hover:border-primary/50 card-3d shimmer icon-bounce"
+                  onMouseEnter={() => play("hover")}
+                  onClick={() => play("click")}
                 >
                   <div className="space-y-4">
                     <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
