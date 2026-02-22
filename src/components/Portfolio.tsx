@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useSounds } from "@/components/SoundProvider";
 
 const portfolioProjects = [
   {
@@ -49,6 +50,7 @@ const portfolioProjects = [
 export const Portfolio = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollReveal();
   const { ref: gridRef, isVisible: gridVisible } = useScrollReveal();
+  const { play } = useSounds();
 
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-background via-background/95 to-muted/20 relative overflow-hidden">
@@ -67,6 +69,7 @@ export const Portfolio = () => {
             <Card 
               key={index}
               className="group overflow-hidden card-3d bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-500"
+              onMouseEnter={() => play("hover")}
             >
               <div className="relative overflow-hidden h-64">
                 <img 
@@ -108,7 +111,7 @@ export const Portfolio = () => {
                   <Button 
                     variant="outline" 
                     className="w-full group/btn hover:border-primary hover:shadow-[0_0_20px_hsl(var(--primary)/0.2)] transition-all duration-300"
-                    onClick={() => window.open(project.link, '_blank')}
+                    onClick={() => { play("click"); window.open(project.link, '_blank'); }}
                   >
                     <span>Ver Projeto</span>
                     <ExternalLink className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform duration-300" />

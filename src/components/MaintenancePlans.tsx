@@ -2,10 +2,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Wrench } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useSounds } from "@/components/SoundProvider";
 
 export const MaintenancePlans = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollReveal();
   const { ref: gridRef, isVisible: gridVisible } = useScrollReveal();
+  const { play } = useSounds();
 
   const plans = [
     {
@@ -54,6 +56,7 @@ export const MaintenancePlans = () => {
                     ? 'border-primary glow-border bg-gradient-to-br from-card via-secondary to-card' 
                     : 'border-border bg-card hover:border-primary/50'
                 } transition-all duration-500`}
+                onMouseEnter={() => play("hover")}
               >
                 {plan.highlighted && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-semibold animate-scale-bounce">
@@ -82,7 +85,7 @@ export const MaintenancePlans = () => {
                         : 'bg-secondary hover:bg-secondary/80 text-foreground hover:shadow-[0_0_20px_hsl(var(--primary)/0.2)]'
                     }`}
                     size="lg"
-                    onClick={() => window.open('https://wa.me/5511961442363?text=Olá! Tenho interesse no ' + plan.title, '_blank')}
+                    onClick={() => { play("success"); window.open('https://wa.me/5511961442363?text=Olá! Tenho interesse no ' + plan.title, '_blank'); }}
                   >
                     Contratar
                   </Button>
