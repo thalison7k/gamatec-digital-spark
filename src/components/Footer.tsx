@@ -9,7 +9,7 @@ export const Footer = () => {
 
   return (
     <footer className="py-12 border-t border-border bg-secondary/30 relative overflow-hidden">
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-primary/3 rounded-full blur-[120px]" />
+      <div className="hidden md:block absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-primary/3 rounded-full blur-[120px]" />
 
       <div ref={ref} className={`container px-4 relative z-10 scroll-reveal ${isVisible ? 'visible' : ''}`}>
         <div className="max-w-6xl mx-auto">

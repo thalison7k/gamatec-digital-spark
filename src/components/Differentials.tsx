@@ -16,7 +16,7 @@ export const Differentials = () => {
 
   return (
     <section className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 hidden md:block">
         <div className="absolute top-1/3 right-0 w-96 h-96 bg-primary rounded-full blur-[128px] animate-float-gentle" />
         <div className="absolute bottom-1/3 left-0 w-64 h-64 bg-accent rounded-full blur-[100px] animate-float-gentle" style={{ animationDelay: "3s" }} />
       </div>
