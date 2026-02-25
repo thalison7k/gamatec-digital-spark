@@ -24,15 +24,6 @@ export const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Logout */}
-      {user && (
-        <div className="absolute top-4 right-4 z-20">
-          <Button variant="outline" size="sm" onClick={handleLogout}
-            className="border-border/50 text-muted-foreground hover:text-foreground hover:border-primary">
-            <LogOut className="w-4 h-4 mr-2" /> Sair
-          </Button>
-        </div>
-      )}
 
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary to-background">
