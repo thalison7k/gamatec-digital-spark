@@ -81,13 +81,13 @@ export const Navbar = () => {
                   </p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate("/site")} className="cursor-pointer gap-2">
-                  <ArrowLeft className="h-4 w-4" />
-                  Página Principal
-                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate("/dashboard")} className="cursor-pointer gap-2">
                   <LayoutDashboard className="h-4 w-4" />
                   Meu Painel
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/site")} className="cursor-pointer gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  Página Principal
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="cursor-pointer gap-2 text-destructive focus:text-destructive">
