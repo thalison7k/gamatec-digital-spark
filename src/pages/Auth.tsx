@@ -28,7 +28,7 @@ const Auth = () => {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast({ title: "Login realizado com sucesso!", description: "Bem-vindo de volta à GamaTec.IA" });
-        navigate("/dashboard");
+        navigate("/site");
       } else {
         const { error } = await supabase.auth.signUp({
           email, password,
@@ -36,7 +36,7 @@ const Auth = () => {
         });
         if (error) throw error;
         toast({ title: "Conta criada com sucesso!", description: "Você já pode acessar o conteúdo exclusivo." });
-        navigate("/dashboard");
+        navigate("/site");
       }
     } catch (error: any) {
       let errorMessage = "Ocorreu um erro. Tente novamente.";
