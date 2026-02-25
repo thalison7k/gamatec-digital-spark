@@ -40,7 +40,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const AuthRedirect = () => {
   const { user, loading } = useAuth();
   if (loading) return null;
-  if (user) return <Navigate to="/dashboard" replace />;
+  if (user) return <Navigate to="/site" replace />;
   return <Auth />;
 };
 
@@ -56,7 +56,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<AuthRedirect />} />
                 <Route path="/auth" element={<AuthRedirect />} />
-                <Route path="/site" element={<Index />} />
+                <Route path="/site" element={<ProtectedRoute><Index /></ProtectedRoute>} />
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/dashboard/project/:id" element={<ProtectedRoute><ProjectDetails /></ProtectedRoute>} />
                 <Route path="/dashboard/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
