@@ -62,6 +62,7 @@ const App = () => (
                 <Route path="/dashboard/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
                 <Route path="/dashboard/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
                 <Route path="/dashboard/clients" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+                <Route path="/como-funciona" element={<ProtectedRoute><ComoFunciona /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <SoundToggle />
