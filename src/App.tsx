@@ -54,9 +54,9 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <Routes>
+                <Route path="/" element={<AuthRedirect />} />
                 <Route path="/auth" element={<AuthRedirect />} />
-                <Route path="/" element={<Index />} />
-                <Route path="/como-funciona" element={<ComoFunciona />} />
+                <Route path="/site" element={<Index />} />
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/dashboard/project/:id" element={<ProtectedRoute><ProjectDetails /></ProtectedRoute>} />
                 <Route path="/dashboard/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
