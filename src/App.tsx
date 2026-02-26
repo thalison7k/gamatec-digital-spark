@@ -5,9 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { SoundProvider } from "@/components/SoundProvider";
-import { SoundToggle } from "@/components/SoundToggle";
 import { ThemeProvider } from "@/hooks/useTheme";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ComoFunciona from "./pages/ComoFunciona";
@@ -65,8 +64,7 @@ const App = () => (
                 <Route path="/como-funciona" element={<ProtectedRoute><ComoFunciona /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              <SoundToggle />
-              <ThemeToggle />
+              <ScrollToTop />
             </BrowserRouter>
           </TooltipProvider>
         </SoundProvider>

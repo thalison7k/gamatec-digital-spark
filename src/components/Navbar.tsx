@@ -2,12 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useSounds } from "@/components/SoundProvider";
+import { useTheme } from "@/hooks/useTheme";
 import {
   ArrowLeft,
   LayoutDashboard,
   LogIn,
   LogOut,
   User,
+  Sun,
+  Moon,
+  Volume2,
+  VolumeX,
+  Settings,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -16,6 +22,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -24,7 +33,8 @@ import gamatecLogo from "@/assets/gamatec-logo.png";
 export const Navbar = () => {
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
-  const { play } = useSounds();
+  const { play, enabled, setEnabled } = useSounds();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -73,7 +83,7 @@ export const Navbar = () => {
                   <User className="h-4 w-4 text-primary" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-52">
                 <DropdownMenuLabel className="font-normal">
                   <p className="text-xs text-muted-foreground">Logado como</p>
                   <p className="text-sm font-medium truncate">
@@ -89,6 +99,37 @@ export const Navbar = () => {
                   <ArrowLeft className="h-4 w-4" />
                   Página Principal
                 </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {/* Settings submenu */}
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger className="cursor-pointer gap-2">
+                    <Settings className="h-4 w-4" />
+                    Configurações
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem
+                      onClick={(e) => { e.preventDefault(); toggleTheme(); }}
+                      className="cursor-pointer gap-2"
+                    >
+                      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                      {theme === "dark" ? "Modo Claro" : "Modo Escuro"}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (!enabled) {
+                          setEnabled(true);
+                        } else {
+                          setEnabled(false);
+                        }
+                      }}
+                      className="cursor-pointer gap-2"
+                    >
+                      {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                      {enabled ? "Desativar Sons" : "Ativar Sons"}
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="cursor-pointer gap-2 text-destructive focus:text-destructive">
                   <LogOut className="h-4 w-4" />
