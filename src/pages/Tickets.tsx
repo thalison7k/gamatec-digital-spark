@@ -66,6 +66,7 @@ const Tickets = () => {
   const [subject, setSubject] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("medium");
+  const [serviceType, setServiceType] = useState("");
   const [projects, setProjects] = useState<{ id: string; title: string }[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState(projectFilter || "");
 
@@ -101,10 +102,12 @@ const Tickets = () => {
   const handleCreateTicket = async () => {
     if (!user || !selectedProjectId || !subject || !description) return;
 
+    const fullSubject = serviceType ? `[${serviceType}] ${subject}` : subject;
+
     const { error } = await supabase.from("tickets").insert([{
       project_id: selectedProjectId,
       created_by: user.id,
-      subject,
+      subject: fullSubject,
       description,
       priority: priority as any,
     }]);
@@ -114,11 +117,20 @@ const Tickets = () => {
       return;
     }
 
+    // Log activity
+    await supabase.from("project_activities").insert({
+      project_id: selectedProjectId,
+      user_id: user.id,
+      action: "ticket_opened",
+      description: `Solicitação aberta: ${fullSubject}`,
+    });
+
     toast({ title: "Solicitação criada!" });
     setShowForm(false);
     setSubject("");
     setDescription("");
     setPriority("medium");
+    setServiceType("");
     fetchTickets();
   };
 
@@ -247,7 +259,7 @@ const Tickets = () => {
         {showForm && (
           <Card>
             <CardHeader><CardTitle className="text-base font-orbitron">Abrir Solicitação</CardTitle></CardHeader>
-            <CardContent className="space-y-4">
+             <CardContent className="space-y-4">
               <div className="space-y-1.5">
                 <Label className="text-xs">Projeto</Label>
                 <Select value={selectedProjectId} onValueChange={setSelectedProjectId}>
@@ -256,6 +268,18 @@ const Tickets = () => {
                     {projects.map((p) => (
                       <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>
                     ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs">Tipo de serviço</Label>
+                <Select value={serviceType} onValueChange={setServiceType}>
+                  <SelectTrigger className="bg-background/50"><SelectValue placeholder="Selecione o tipo" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="site_novo">Site Novo</SelectItem>
+                    <SelectItem value="alteracao">Alteração</SelectItem>
+                    <SelectItem value="manutencao">Manutenção</SelectItem>
+                    <SelectItem value="outro">Outro</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

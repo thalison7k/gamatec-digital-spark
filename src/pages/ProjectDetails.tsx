@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useUserRole } from "@/hooks/useUserRole";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import ProjectTimeline from "@/components/dashboard/ProjectTimeline";
+import ProjectProgressSteps from "@/components/dashboard/ProjectProgressSteps";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ import {
   Calendar,
   MessageSquare,
   AlertCircle,
+  Download,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -56,7 +58,6 @@ const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isAdmin } = useUserRole();
   const { toast } = useToast();
   const [project, setProject] = useState<any>(null);
   const [materials, setMaterials] = useState<Material[]>([]);
@@ -116,6 +117,14 @@ const ProjectDetails = () => {
       });
 
       if (insertError) throw insertError;
+
+      // Log activity
+      await supabase.from("project_activities").insert({
+        project_id: id,
+        user_id: user.id,
+        action: "material_upload",
+        description: `Material enviado: ${selectedFile.name}`,
+      });
 
       toast({ title: "Material enviado!", description: "Arquivo enviado com sucesso." });
 
@@ -183,15 +192,21 @@ const ProjectDetails = () => {
           </Badge>
         </div>
 
-        {/* Progress */}
+        {/* Progress bar + Steps */}
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-muted-foreground">Progresso do projeto</span>
-              <span className="font-semibold text-primary">{statusConfig.progress}%</span>
+          <CardContent className="pt-6 space-y-6">
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-muted-foreground">Progresso do projeto</span>
+                <span className="font-semibold text-primary">{statusConfig.progress}%</span>
+              </div>
+              <Progress value={statusConfig.progress} className="h-3" />
             </div>
-            <Progress value={statusConfig.progress} className="h-3" />
-            <div className="flex gap-6 mt-4 text-xs text-muted-foreground">
+
+            {/* Step-by-step progress */}
+            <ProjectProgressSteps status={project.status} />
+
+            <div className="flex gap-6 text-xs text-muted-foreground border-t border-border pt-4">
               <div className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 Criado: {format(new Date(project.created_at), "dd/MM/yyyy", { locale: ptBR })}
@@ -215,6 +230,9 @@ const ProjectDetails = () => {
           <MessageSquare className="h-4 w-4 mr-2" />
           Abrir Solicitação
         </Button>
+
+        {/* Activity Timeline */}
+        {id && <ProjectTimeline projectId={id} />}
 
         {/* Materials Section */}
         <Card>
@@ -249,7 +267,7 @@ const ProjectDetails = () => {
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs">Upload de arquivo (logotipo, imagens)</Label>
+              <Label className="text-xs">Upload de arquivo (logotipo, imagens, textos)</Label>
               <Input type="file" onChange={(e) => setSelectedFile(e.target.files?.[0] || null)} className="bg-background/50 text-sm" />
             </div>
 
@@ -271,7 +289,20 @@ const ProjectDetails = () => {
                         {format(new Date(m.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
                         {m.file_type && ` • ${m.file_type}`}
                       </p>
+                      {m.business_description && (
+                        <p className="text-xs text-muted-foreground mt-1">📝 {m.business_description}</p>
+                      )}
                     </div>
+                    <a
+                      href={m.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0"
+                    >
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Download className="h-3.5 w-3.5" />
+                      </Button>
+                    </a>
                   </div>
                 ))}
               </div>

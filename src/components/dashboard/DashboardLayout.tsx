@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
@@ -22,7 +22,8 @@ import {
   Settings,
 } from "lucide-react";
 import gamatecLogo from "@/assets/gamatec-logo.png";
-import { useState } from "react";
+import NotificationBell from "@/components/dashboard/NotificationBell";
+
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -160,7 +161,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <button className="lg:hidden text-muted-foreground" onClick={() => setSidebarOpen(true)}>
             <Menu className="h-5 w-5" />
           </button>
-          <h1 className="font-orbitron text-sm text-foreground truncate">Painel do Cliente</h1>
+          <h1 className="font-orbitron text-sm text-foreground truncate flex-1">Painel do Cliente</h1>
+          <NotificationBell />
         </header>
         <div className="flex-1 p-4 lg:p-6 overflow-auto">{children}</div>
       </main>
