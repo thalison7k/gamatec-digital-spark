@@ -3,16 +3,23 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useUserRole } from "@/hooks/useUserRole";
+import { useSounds } from "@/components/SoundProvider";
+import { useTheme } from "@/hooks/useTheme";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
-  FolderOpen,
   MessageSquare,
   Users,
   LogOut,
   Shield,
   Menu,
   X,
+  ArrowLeft,
+  Sun,
+  Moon,
+  Volume2,
+  VolumeX,
+  Settings,
 } from "lucide-react";
 import gamatecLogo from "@/assets/gamatec-logo.png";
 import { useState } from "react";
@@ -27,6 +34,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { signOut } = useAuth();
   const { profile } = useProfile();
   const { isAdmin } = useUserRole();
+  const { play, enabled, setEnabled } = useSounds();
+  const { theme, toggleTheme } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleSignOut = async () => {
@@ -100,7 +109,44 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           ))}
         </nav>
 
-        <div className="p-3 border-t border-border">
+        {/* Settings section */}
+        <div className="p-3 border-t border-border space-y-1">
+          <p className="px-3 py-1 text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+            <Settings className="h-3 w-3" /> Configurações
+          </p>
+          <button
+            onClick={() => { play("click"); toggleTheme(); }}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {theme === "dark" ? "Modo Claro" : "Modo Escuro"}
+          </button>
+          <button
+            onClick={() => {
+              if (!enabled) {
+                setEnabled(true);
+              } else {
+                play("click");
+                setEnabled(false);
+              }
+            }}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+          >
+            {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+            {enabled ? "Desativar Sons" : "Ativar Sons"}
+          </button>
+        </div>
+
+        {/* Back + Logout */}
+        <div className="p-3 border-t border-border space-y-1">
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-3 text-muted-foreground hover:text-primary"
+            onClick={() => navigate("/site")}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Página Principal
+          </Button>
           <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive" onClick={handleSignOut}>
             <LogOut className="h-4 w-4" />
             Sair
@@ -109,12 +155,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col min-h-screen">
+      <main className="flex-1 flex flex-col min-h-screen min-w-0">
         <header className="sticky top-0 z-30 bg-card/80 backdrop-blur-md border-b border-border px-4 py-3 flex items-center gap-3 lg:px-6">
           <button className="lg:hidden text-muted-foreground" onClick={() => setSidebarOpen(true)}>
             <Menu className="h-5 w-5" />
           </button>
-          <h1 className="font-orbitron text-sm text-foreground">Painel do Cliente</h1>
+          <h1 className="font-orbitron text-sm text-foreground truncate">Painel do Cliente</h1>
         </header>
         <div className="flex-1 p-4 lg:p-6 overflow-auto">{children}</div>
       </main>
