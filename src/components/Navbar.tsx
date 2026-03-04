@@ -45,7 +45,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-4 py-3 flex items-center justify-between bg-background/60 backdrop-blur-md border-b border-border/30">
+    <nav role="navigation" aria-label="Navegação principal" className="fixed top-0 left-0 right-0 z-50 px-4 py-3 flex items-center justify-between bg-background/60 backdrop-blur-md border-b border-border/30">
       {/* Left – Logo */}
       <button
         onClick={() => { play("whoosh"); navigate("/"); }}
