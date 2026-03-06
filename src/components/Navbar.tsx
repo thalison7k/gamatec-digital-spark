@@ -124,7 +124,6 @@ export const Navbar = () => {
                     </AvatarFallback>
                   </Avatar>
                 </Button>
-                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
                 <DropdownMenuLabel className="font-normal">
