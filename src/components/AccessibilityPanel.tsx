@@ -84,6 +84,15 @@ export const AccessibilityPanel = () => {
               {highContrast ? "Alto Contraste: Ativo" : "Ativar Alto Contraste"}
             </button>
 
+            {/* Translation */}
+            <div className="space-y-2">
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Languages className="h-3.5 w-3.5" />
+                Traduzir página
+              </p>
+              <div id="google_translate_element" className="translate-widget rounded-lg overflow-hidden" />
+            </div>
+
             {/* VLibras note */}
             <p className="text-[11px] text-muted-foreground leading-relaxed">
               🤟 O widget <strong>VLibras</strong> está disponível no canto inferior direito para tradução em Libras.
