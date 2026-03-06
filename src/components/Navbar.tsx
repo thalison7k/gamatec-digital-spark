@@ -108,12 +108,22 @@ export const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="icon"
-                  className="rounded-full h-9 w-9 border-border/50 hover:border-primary hover:shadow-[0_0_12px_hsl(var(--primary)/0.3)] transition-all"
+                  className="rounded-full h-9 w-9 p-0 overflow-hidden border border-border/50 hover:border-primary hover:shadow-[0_0_12px_hsl(var(--primary)/0.3)] transition-all"
                   onMouseEnter={() => play("hover")}
                 >
-                  <User className="h-4 w-4 text-primary" />
+                  <Avatar className="h-9 w-9">
+                    <AvatarImage
+                      src={getAvatarUrl(user, profile?.full_name)}
+                      alt={profile?.full_name || "Avatar"}
+                      referrerPolicy="no-referrer"
+                    />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
+                      {getInitials(profile?.full_name, user.email)}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
