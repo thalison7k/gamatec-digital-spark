@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useSounds } from "@/components/SoundProvider";
 import { useTheme } from "@/hooks/useTheme";
+import { useMemo } from "react";
 import {
   ArrowLeft,
   LayoutDashboard,
@@ -27,8 +28,40 @@ import {
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import gamatecLogo from "@/assets/gamatec-logo.png";
+
+function getAvatarUrl(user: any, profileName?: string | null): string {
+  // 1. OAuth avatar (Google, GitHub, etc.)
+  if (user?.user_metadata?.avatar_url) return user.user_metadata.avatar_url;
+  if (user?.user_metadata?.picture) return user.user_metadata.picture;
+  // 2. Gravatar via email
+  if (user?.email) {
+    const email = user.email.trim().toLowerCase();
+    return `https://www.gravatar.com/avatar/${simpleHash(email)}?d=404&s=80`;
+  }
+  return "";
+}
+
+function simpleHash(str: string): string {
+  // Simple hash for Gravatar - we use ui-avatars as fallback anyway
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0;
+  }
+  return Math.abs(hash).toString(16);
+}
+
+function getInitials(name?: string | null, email?: string | null): string {
+  if (name) {
+    return name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
+  }
+  if (email) return email[0].toUpperCase();
+  return "U";
+}
 
 export const Navbar = () => {
   const { user, signOut } = useAuth();
@@ -75,12 +108,21 @@ export const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="icon"
-                  className="rounded-full h-9 w-9 border-border/50 hover:border-primary hover:shadow-[0_0_12px_hsl(var(--primary)/0.3)] transition-all"
+                  className="rounded-full h-9 w-9 p-0 overflow-hidden border border-border/50 hover:border-primary hover:shadow-[0_0_12px_hsl(var(--primary)/0.3)] transition-all"
                   onMouseEnter={() => play("hover")}
                 >
-                  <User className="h-4 w-4 text-primary" />
+                  <Avatar className="h-9 w-9">
+                    <AvatarImage
+                      src={getAvatarUrl(user, profile?.full_name)}
+                      alt={profile?.full_name || "Avatar"}
+                      referrerPolicy="no-referrer"
+                    />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
+                      {getInitials(profile?.full_name, user.email)}
+                    </AvatarFallback>
+                  </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
