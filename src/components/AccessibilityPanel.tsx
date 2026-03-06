@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Accessibility, Plus, Minus, RotateCcw, Contrast, Type, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Accessibility, Plus, Minus, RotateCcw, Contrast, Type, X, Languages } from "lucide-react";
 import { useAccessibility } from "@/hooks/useAccessibility";
 import { useSounds } from "@/components/SoundProvider";
 
