@@ -34,7 +34,7 @@ const faqs = [
 ];
 
 export const FAQ = () => {
-  const sectionRef = useScrollReveal();
+  const { ref: sectionRef } = useScrollReveal<HTMLElement>();
 
   return (
     <section ref={sectionRef} id="faq" className="py-20 px-4">

@@ -23,7 +23,7 @@ const testimonials = [
 ];
 
 export const Testimonials = () => {
-  const sectionRef = useScrollReveal();
+  const { ref: sectionRef } = useScrollReveal<HTMLElement>();
 
   return (
     <section ref={sectionRef} className="py-20 px-4 bg-secondary/30">
