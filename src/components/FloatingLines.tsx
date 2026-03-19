@@ -405,7 +405,7 @@ export default function FloatingLines({
         inset: 0,
         overflow: 'hidden',
         mixBlendMode: 'screen',
-        pointerEvents: interactive ? 'auto' : 'none',
+        pointerEvents: 'none',
       }}
     />
   );
