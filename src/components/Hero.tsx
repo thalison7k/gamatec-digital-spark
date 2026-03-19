@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle, LogOut, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import FloatingLines from "@/components/FloatingLines";
 import logo from "@/assets/gamatec-logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
