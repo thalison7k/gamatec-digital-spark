@@ -336,6 +336,11 @@ export default function FloatingLines({
       const rect = renderer.domElement.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
+      // Only respond if pointer is within canvas bounds
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+        targetInfluenceRef.current = 0.0;
+        return;
+      }
       const dpr = renderer.getPixelRatio();
       targetMouseRef.current.set(x * dpr, (rect.height - y) * dpr);
       targetInfluenceRef.current = 1.0;
@@ -349,13 +354,8 @@ export default function FloatingLines({
       }
     };
 
-    const handlePointerLeave = () => {
-      targetInfluenceRef.current = 0.0;
-    };
-
     if (interactive) {
-      renderer.domElement.addEventListener('pointermove', handlePointerMove);
-      renderer.domElement.addEventListener('pointerleave', handlePointerLeave);
+      window.addEventListener('pointermove', handlePointerMove);
     }
 
     let raf = 0;
