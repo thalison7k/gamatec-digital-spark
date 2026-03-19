@@ -382,8 +382,7 @@ export default function FloatingLines({
       cancelAnimationFrame(raf);
       if (ro) ro.disconnect();
       if (interactive) {
-        renderer.domElement.removeEventListener('pointermove', handlePointerMove);
-        renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);
+        window.removeEventListener('pointermove', handlePointerMove);
       }
       geometry.dispose();
       material.dispose();
