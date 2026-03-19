@@ -33,24 +33,21 @@ export const Hero = () => {
           <div className="absolute bottom-1/4 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-accent rounded-full blur-[80px] md:blur-[128px] animate-float-gentle" style={{ animationDelay: "2s" }} />
           <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-primary/10 animate-rotate-glow" />
         </div>
-        {/* Floating particles - hidden on mobile for performance */}
-        <div className="hidden md:block">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div
-              key={i}
-              className="particle bg-primary/30"
-              style={{
-                width: `${Math.random() * 4 + 2}px`,
-                height: `${Math.random() * 4 + 2}px`,
-                left: `${Math.random() * 100}%`,
-                bottom: '-10px',
-                animationDuration: `${Math.random() * 8 + 6}s`,
-                animationDelay: `${Math.random() * 5}s`,
-              }}
-            />
-          ))}
-        </div>
       </div>
+
+      {/* WebGL Floating Lines */}
+      <FloatingLines
+        linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
+        enabledWaves={["top", "middle", "bottom"]}
+        lineCount={5}
+        lineDistance={5}
+        animationSpeed={0.8}
+        bendRadius={5}
+        bendStrength={-0.5}
+        interactive={true}
+        parallax={true}
+        parallaxStrength={0.15}
+      />
 
       <div className="container relative z-10 px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
