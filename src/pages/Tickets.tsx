@@ -12,7 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { MessageSquare, Plus, Send, ArrowLeft } from "lucide-react";
+import { MessageSquare, Plus, Send, ArrowLeft, Bot } from "lucide-react";
+import AIAssistantChat from "@/components/dashboard/AIAssistantChat";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
