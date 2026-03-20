@@ -40,18 +40,22 @@ export const Hero = () => {
       </div>
 
       {/* WebGL Floating Lines */}
-      <FloatingLines
-        linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
-        enabledWaves={["top", "middle", "bottom"]}
-        lineCount={5}
-        lineDistance={5}
-        animationSpeed={0.8}
-        bendRadius={5}
-        bendStrength={-0.5}
-        interactive={true}
-        parallax={true}
-        parallaxStrength={0.15}
-      />
+      {!isMobile && (
+        <Suspense fallback={null}>
+          <FloatingLines
+            linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
+            enabledWaves={["top", "middle", "bottom"]}
+            lineCount={3}
+            lineDistance={5}
+            animationSpeed={0.8}
+            bendRadius={5}
+            bendStrength={-0.5}
+            interactive={true}
+            parallax={true}
+            parallaxStrength={0.15}
+          />
+        </Suspense>
+      )}
 
       <div className="container relative z-10 px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
