@@ -62,6 +62,7 @@ const Tickets = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(!!projectFilter);
   const [newMessage, setNewMessage] = useState("");
+  const [aiChatOpen, setAiChatOpen] = useState(false);
 
   // New ticket form
   const [subject, setSubject] = useState("");
