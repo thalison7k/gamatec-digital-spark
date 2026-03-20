@@ -10,7 +10,10 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/gamatec-hero-academic.jpeg";
-import FloatingLines from "@/components/FloatingLines";
+import { lazy, Suspense } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
+
+const FloatingLines = lazy(() => import("@/components/FloatingLines"));
 
 const GearSVG = () => (
   <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto">
