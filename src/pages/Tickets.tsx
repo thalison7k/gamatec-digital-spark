@@ -12,7 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { MessageSquare, Plus, Send, ArrowLeft } from "lucide-react";
+import { MessageSquare, Plus, Send, ArrowLeft, Bot } from "lucide-react";
+import AIAssistantChat from "@/components/dashboard/AIAssistantChat";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -61,6 +62,7 @@ const Tickets = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(!!projectFilter);
   const [newMessage, setNewMessage] = useState("");
+  const [aiChatOpen, setAiChatOpen] = useState(false);
 
   // New ticket form
   const [subject, setSubject] = useState("");
@@ -250,9 +252,14 @@ const Tickets = () => {
       <div className="space-y-6 max-w-3xl">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-orbitron font-bold">Minhas Solicitações</h2>
-          <Button onClick={() => setShowForm(!showForm)} className="gap-2" size="sm">
-            <Plus className="h-4 w-4" /> Nova Solicitação
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={() => setAiChatOpen(true)} variant="outline" className="gap-2" size="sm">
+              <Bot className="h-4 w-4" /> Assistente IA
+            </Button>
+            <Button onClick={() => setShowForm(!showForm)} className="gap-2" size="sm">
+              <Plus className="h-4 w-4" /> Nova Solicitação
+            </Button>
+          </div>
         </div>
 
         {/* New ticket form */}
@@ -346,6 +353,17 @@ const Tickets = () => {
             })}
           </div>
         )}
+
+        <AIAssistantChat
+          open={aiChatOpen}
+          onClose={() => setAiChatOpen(false)}
+          onGenerate={(generatedSubject, generatedDescription) => {
+            setSubject(generatedSubject);
+            setDescription(generatedDescription);
+            setServiceType("site_novo");
+            setShowForm(true);
+          }}
+        />
       </div>
     </DashboardLayout>
   );
