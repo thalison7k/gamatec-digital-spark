@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,14 +10,15 @@ import { ThemeProvider } from "@/hooks/useTheme";
 import { AccessibilityProvider } from "@/hooks/useAccessibility";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import { ScrollToTop } from "@/components/ScrollToTop";
-import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import ComoFunciona from "./pages/ComoFunciona";
-import Dashboard from "./pages/Dashboard";
-import ProjectDetails from "./pages/ProjectDetails";
-import Tickets from "./pages/Tickets";
-import AdminPanel from "./pages/AdminPanel";
-import NotFound from "./pages/NotFound";
+
+const Index = lazy(() => import("./pages/Index"));
+const ComoFunciona = lazy(() => import("./pages/ComoFunciona"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
+const Tickets = lazy(() => import("./pages/Tickets"));
+const AdminPanel = lazy(() => import("./pages/AdminPanel"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 

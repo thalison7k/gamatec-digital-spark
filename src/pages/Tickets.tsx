@@ -127,6 +127,16 @@ const Tickets = () => {
       description: `Solicitação aberta: ${fullSubject}`,
     });
 
+    // Send email notification (fire & forget)
+    supabase.functions.invoke("send-ticket-notification", {
+      body: {
+        subject: fullSubject,
+        description,
+        priority,
+        userName: user.user_metadata?.full_name || "",
+      },
+    }).catch(() => {});
+
     toast({ title: "Solicitação criada!" });
     setShowForm(false);
     setSubject("");
