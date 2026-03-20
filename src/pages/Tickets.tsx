@@ -252,9 +252,14 @@ const Tickets = () => {
       <div className="space-y-6 max-w-3xl">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-orbitron font-bold">Minhas Solicitações</h2>
-          <Button onClick={() => setShowForm(!showForm)} className="gap-2" size="sm">
-            <Plus className="h-4 w-4" /> Nova Solicitação
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={() => setAiChatOpen(true)} variant="outline" className="gap-2" size="sm">
+              <Bot className="h-4 w-4" /> Assistente IA
+            </Button>
+            <Button onClick={() => setShowForm(!showForm)} className="gap-2" size="sm">
+              <Plus className="h-4 w-4" /> Nova Solicitação
+            </Button>
+          </div>
         </div>
 
         {/* New ticket form */}
