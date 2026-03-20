@@ -1,9 +1,12 @@
+import { lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle, LogOut, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import FloatingLines from "@/components/FloatingLines";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import logo from "@/assets/gamatec-logo.png";
 import { useAuth } from "@/hooks/useAuth";
+
+const FloatingLines = lazy(() => import("@/components/FloatingLines"));
 import { useToast } from "@/hooks/use-toast";
 import { useSounds } from "@/components/SoundProvider";
 
