@@ -10,7 +10,10 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/gamatec-hero-academic.jpeg";
-import FloatingLines from "@/components/FloatingLines";
+import { lazy, Suspense } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
+
+const FloatingLines = lazy(() => import("@/components/FloatingLines"));
 
 const GearSVG = () => (
   <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto">
@@ -94,6 +97,7 @@ const flowSteps = [
 const ComoFunciona = () => {
   const navigate = useNavigate();
   const { play } = useSounds();
+  const isMobile = useIsMobile();
   const { ref: heroRef, isVisible: heroVisible } = useScrollReveal();
   const { ref: gearRef, isVisible: gearVisible } = useScrollReveal();
   const { ref: techRef, isVisible: techVisible } = useScrollReveal();
@@ -104,18 +108,22 @@ const ComoFunciona = () => {
   return (
     <div className="min-h-screen bg-background relative">
       {/* FloatingLines Background */}
-      <FloatingLines
-        linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
-        enabledWaves={["top", "middle", "bottom"]}
-        lineCount={5}
-        lineDistance={5}
-        animationSpeed={0.6}
-        bendRadius={5}
-        bendStrength={-0.5}
-        interactive={true}
-        parallax={true}
-        parallaxStrength={0.15}
-      />
+      {!isMobile && (
+        <Suspense fallback={null}>
+          <FloatingLines
+            linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
+            enabledWaves={["top", "middle", "bottom"]}
+            lineCount={3}
+            lineDistance={5}
+            animationSpeed={0.6}
+            bendRadius={5}
+            bendStrength={-0.5}
+            interactive={true}
+            parallax={true}
+            parallaxStrength={0.15}
+          />
+        </Suspense>
+      )}
       {/* Back Button */}
       <div className="fixed top-4 left-4 z-50">
         <Button
