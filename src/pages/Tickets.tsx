@@ -353,6 +353,17 @@ const Tickets = () => {
             })}
           </div>
         )}
+
+        <AIAssistantChat
+          open={aiChatOpen}
+          onClose={() => setAiChatOpen(false)}
+          onGenerate={(generatedSubject, generatedDescription) => {
+            setSubject(generatedSubject);
+            setDescription(generatedDescription);
+            setServiceType("site_novo");
+            setShowForm(true);
+          }}
+        />
       </div>
     </DashboardLayout>
   );
