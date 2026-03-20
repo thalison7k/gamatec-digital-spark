@@ -97,6 +97,7 @@ const flowSteps = [
 const ComoFunciona = () => {
   const navigate = useNavigate();
   const { play } = useSounds();
+  const isMobile = useIsMobile();
   const { ref: heroRef, isVisible: heroVisible } = useScrollReveal();
   const { ref: gearRef, isVisible: gearVisible } = useScrollReveal();
   const { ref: techRef, isVisible: techVisible } = useScrollReveal();
