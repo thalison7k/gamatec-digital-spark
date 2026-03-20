@@ -107,18 +107,22 @@ const ComoFunciona = () => {
   return (
     <div className="min-h-screen bg-background relative">
       {/* FloatingLines Background */}
-      <FloatingLines
-        linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
-        enabledWaves={["top", "middle", "bottom"]}
-        lineCount={5}
-        lineDistance={5}
-        animationSpeed={0.6}
-        bendRadius={5}
-        bendStrength={-0.5}
-        interactive={true}
-        parallax={true}
-        parallaxStrength={0.15}
-      />
+      {!isMobile && (
+        <Suspense fallback={null}>
+          <FloatingLines
+            linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
+            enabledWaves={["top", "middle", "bottom"]}
+            lineCount={3}
+            lineDistance={5}
+            animationSpeed={0.6}
+            bendRadius={5}
+            bendStrength={-0.5}
+            interactive={true}
+            parallax={true}
+            parallaxStrength={0.15}
+          />
+        </Suspense>
+      )}
       {/* Back Button */}
       <div className="fixed top-4 left-4 z-50">
         <Button
