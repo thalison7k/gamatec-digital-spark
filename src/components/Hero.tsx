@@ -15,6 +15,7 @@ export const Hero = () => {
   const { toast } = useToast();
   const { play } = useSounds();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const scrollToPricing = () => {
     play("whoosh");
