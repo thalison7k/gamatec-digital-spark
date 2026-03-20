@@ -131,9 +131,10 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
       setIsTyping(true);
       setTimeout(() => {
         const step = STEPS[nextStep];
+        const opts = "options" in step ? [...step.options] : undefined;
         setMessages((prev) => [
           ...prev,
-          { role: "assistant", content: step.question, options: step.options ? [...step.options] : undefined },
+          { role: "assistant", content: step.question, options: opts },
         ]);
         setCurrentStep(nextStep);
         setIsTyping(false);
