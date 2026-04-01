@@ -372,6 +372,7 @@ const Tickets = () => {
             setDescription(generatedDescription);
             setServiceType("site_novo");
             setShowForm(true);
+            toast({ title: "Solicitação gerada!", description: "Revise os campos e clique em Criar Solicitação." });
           }}
         />
       </div>

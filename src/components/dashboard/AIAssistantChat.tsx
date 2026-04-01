@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Bot, Send, X, Sparkles, Check } from "lucide-react";
+import { Bot, Send, Sparkles, Check, ExternalLink, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
@@ -32,6 +31,7 @@ const STEPS = [
   {
     key: "empresa",
     question: "Ótimo! Qual o nome da sua empresa ou projeto?",
+    hint: "Ex: GamaTec, Minha Loja, Studio Maria...",
   },
   {
     key: "objetivo",
@@ -41,6 +41,7 @@ const STEPS = [
   {
     key: "publico",
     question: "Quem é o público-alvo do seu site?",
+    hint: "Ex: Jovens 18-30 anos, empresários, mães empreendedoras...",
   },
   {
     key: "estilo",
@@ -50,18 +51,23 @@ const STEPS = [
   {
     key: "cores",
     question: "Quais cores você gostaria de utilizar no site?",
+    hint: "Ex: Azul e branco, tons escuros, cores vibrantes...",
   },
   {
     key: "secoes",
-    question: "Quais seções o site deve ter?",
+    question: "Quais seções o site deve ter? (pode selecionar ou digitar várias)",
     options: ["Início", "Sobre", "Serviços", "Portfólio", "Depoimentos", "Contato"],
+    multiSelect: true,
   },
   {
     key: "funcionalidades",
-    question: "Quais funcionalidades deseja no site?",
+    question: "Quais funcionalidades deseja no site? (pode selecionar ou digitar várias)",
     options: ["WhatsApp flutuante", "Formulário de contato", "Agendamento online", "Blog integrado"],
+    multiSelect: true,
   },
 ] as const;
+
+const WHATSAPP_NUMBER = "5511961442363";
 
 interface AIAssistantChatProps {
   open: boolean;
@@ -77,6 +83,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
   const [isTyping, setIsTyping] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
+  const [multiSelections, setMultiSelections] = useState<string[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = useCallback(() => {
@@ -87,7 +94,6 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
     }, 50);
   }, []);
 
-  // Initialize chat
   useEffect(() => {
     if (open && messages.length === 0) {
       setIsTyping(true);
@@ -100,7 +106,6 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
     }
   }, [open]);
 
-  // Reset on close
   useEffect(() => {
     if (!open) {
       setMessages([]);
@@ -110,6 +115,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
       setIsTyping(false);
       setConfirmed(false);
       setShowSummary(false);
+      setMultiSelections([]);
     }
   }, [open]);
 
@@ -117,13 +123,17 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
     scrollToBottom();
   }, [messages, isTyping, scrollToBottom]);
 
+  const isMultiSelectStep = () => {
+    const step = STEPS[currentStep];
+    return "multiSelect" in step && step.multiSelect;
+  };
+
   const advanceStep = (answer: string) => {
     const stepKey = STEPS[currentStep].key as keyof CollectedData;
     const newCollected = { ...collected, [stepKey]: answer };
     setCollected(newCollected);
-
-    // Add user message
     setMessages((prev) => [...prev, { role: "user", content: answer }]);
+    setMultiSelections([]);
 
     const nextStep = currentStep + 1;
 
@@ -141,7 +151,6 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
         scrollToBottom();
       }, 600);
     } else {
-      // Show summary
       setIsTyping(true);
       setTimeout(() => {
         setShowSummary(true);
@@ -157,42 +166,75 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
   };
 
   const buildSummaryMessage = (data: CollectedData) => {
-    return `✅ Perfeito! Aqui está o resumo da sua solicitação:\n\n📌 **Tipo:** ${data.tipo}\n🏢 **Empresa:** ${data.empresa}\n🎯 **Objetivo:** ${data.objetivo}\n👥 **Público-alvo:** ${data.publico}\n🎨 **Estilo:** ${data.estilo}\n🎨 **Cores:** ${data.cores}\n📄 **Seções:** ${data.secoes}\n⚙️ **Funcionalidades:** ${data.funcionalidades}\n\nDeseja confirmar e gerar a solicitação?`;
+    return `✅ Perfeito! Aqui está o resumo da sua solicitação:\n\n📌 **Tipo:** ${data.tipo}\n🏢 **Empresa:** ${data.empresa}\n🎯 **Objetivo:** ${data.objetivo}\n👥 **Público-alvo:** ${data.publico}\n🎨 **Estilo:** ${data.estilo}\n🎨 **Cores:** ${data.cores}\n📄 **Seções:** ${data.secoes}\n⚙️ **Funcionalidades:** ${data.funcionalidades}\n\nDeseja confirmar e enviar a solicitação?`;
+  };
+
+  const buildWhatsAppMessage = (data: CollectedData) => {
+    return `Olá, gostaria de solicitar a criação de um site.\n\nTipo: ${data.tipo}\nEmpresa: ${data.empresa}\nObjetivo: ${data.objetivo}\nPúblico: ${data.publico}\nEstilo: ${data.estilo}\nCores: ${data.cores}\nSeções: ${data.secoes}\nFuncionalidades: ${data.funcionalidades}`;
   };
 
   const handleConfirm = () => {
     setConfirmed(true);
 
     const subjectText = `Criação de site - ${collected.tipo} - ${collected.empresa}`;
-    const descriptionText = `Criação de site do tipo ${collected.tipo} para a empresa ${collected.empresa}.\nObjetivo: ${collected.objetivo}.\nPúblico-alvo: ${collected.publico}.\nEstilo: ${collected.estilo}, cores ${collected.cores}.\nSeções: ${collected.secoes}.\nFuncionalidades: ${collected.funcionalidades}.\nO site deve ser moderno, responsivo e otimizado para conversão.`;
+    const descriptionText = `Criação de site do tipo ${collected.tipo} para a empresa ${collected.empresa}.\n\nObjetivo: ${collected.objetivo}.\nPúblico-alvo: ${collected.publico}.\nEstilo visual: ${collected.estilo}, utilizando as cores ${collected.cores}.\n\nSeções: ${collected.secoes}.\nFuncionalidades: ${collected.funcionalidades}.\n\nO site deve ser:\n- Responsivo (mobile e desktop)\n- Moderno e visualmente atraente\n- Rápido e otimizado\n- Focado em conversão`;
 
     setMessages((prev) => [
       ...prev,
-      { role: "assistant", content: "🎉 Sua solicitação foi gerada com sucesso! Revise os campos preenchidos e clique em **Criar Solicitação**." },
+      { role: "assistant", content: "🎉 **Solicitação enviada com sucesso!** 🚀\n\nNossa equipe da GamaTec entrará em contato em breve.\n\nVocê também pode enviar pelo WhatsApp para agilizar o atendimento!" },
     ]);
 
+    onGenerate(subjectText, descriptionText);
+
+    // Open WhatsApp after a short delay
     setTimeout(() => {
-      onGenerate(subjectText, descriptionText);
-      onClose();
-    }, 2000);
+      const whatsappMsg = encodeURIComponent(buildWhatsAppMessage(collected));
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`, "_blank");
+    }, 2500);
   };
 
   const handleSend = () => {
-    if (!inputValue.trim() || isTyping || showSummary) return;
+    if (isTyping || showSummary) return;
+
+    if (isMultiSelectStep()) {
+      const answer = multiSelections.length > 0
+        ? multiSelections.join(", ")
+        : inputValue.trim();
+      if (!answer) return;
+      advanceStep(answer);
+      setInputValue("");
+      return;
+    }
+
+    if (!inputValue.trim()) return;
     advanceStep(inputValue.trim());
     setInputValue("");
   };
 
   const handleOptionClick = (option: string) => {
     if (isTyping || showSummary) return;
-    // For multi-select steps (secoes, funcionalidades), allow picking or typing
+
+    if (isMultiSelectStep()) {
+      setMultiSelections((prev) =>
+        prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
+      );
+      return;
+    }
+
     advanceStep(option);
+  };
+
+  const handleWhatsAppClick = () => {
+    const whatsappMsg = encodeURIComponent(buildWhatsAppMessage(collected));
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`, "_blank");
   };
 
   const renderMessage = (msg: ChatMessage, index: number) => {
     const isUser = msg.role === "user";
+    const isLastAssistant = !isUser && index === messages.length - 1;
+
     return (
-      <div key={index} className={cn("flex gap-2 mb-3", isUser ? "justify-end" : "justify-start")}>
+      <div key={index} className={cn("flex gap-2 mb-3 animate-in fade-in slide-in-from-bottom-2 duration-300", isUser ? "justify-end" : "justify-start")}>
         {!isUser && (
           <div className="shrink-0 w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center mt-1">
             <Bot className="h-4 w-4 text-primary" />
@@ -210,18 +252,35 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
             }
             return <span key={i}>{part}</span>;
           })}
+
           {/* Option buttons */}
-          {!isUser && msg.options && index === messages.length - 1 && !showSummary && (
+          {isLastAssistant && msg.options && !showSummary && (
             <div className="flex flex-wrap gap-1.5 mt-3">
-              {msg.options.map((opt) => (
+              {msg.options.map((opt) => {
+                const isSelected = multiSelections.includes(opt);
+                return (
+                  <button
+                    key={opt}
+                    onClick={() => handleOptionClick(opt)}
+                    className={cn(
+                      "px-3 py-1 text-xs rounded-full border transition-colors",
+                      isSelected
+                        ? "border-primary bg-primary/30 text-primary font-medium"
+                        : "border-primary/30 bg-primary/10 text-primary hover:bg-primary/20"
+                    )}
+                  >
+                    {isSelected && "✓ "}{opt}
+                  </button>
+                );
+              })}
+              {isMultiSelectStep() && multiSelections.length > 0 && (
                 <button
-                  key={opt}
-                  onClick={() => handleOptionClick(opt)}
-                  className="px-3 py-1 text-xs rounded-full border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                  onClick={handleSend}
+                  className="px-3 py-1 text-xs rounded-full border border-primary bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
                 >
-                  {opt}
+                  Confirmar seleção →
                 </button>
-              ))}
+              )}
             </div>
           )}
         </div>
@@ -258,14 +317,29 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
             </div>
           )}
 
-          {/* Confirm / Cancel buttons */}
+          {/* Confirm / Cancel / WhatsApp */}
           {showSummary && !confirmed && (
             <div className="flex gap-2 justify-center mt-3">
               <Button size="sm" className="gap-1.5" onClick={handleConfirm}>
-                <Check className="h-3.5 w-3.5" /> Confirmar
+                <Check className="h-3.5 w-3.5" /> Confirmar e Enviar
               </Button>
               <Button size="sm" variant="outline" onClick={onClose}>
                 Cancelar
+              </Button>
+            </div>
+          )}
+
+          {/* Success actions */}
+          {confirmed && (
+            <div className="flex flex-col items-center gap-3 mt-4 animate-in fade-in duration-500">
+              <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
+                <Rocket className="h-6 w-6 text-green-400" />
+              </div>
+              <Button size="sm" variant="outline" className="gap-2 text-green-400 border-green-500/30 hover:bg-green-500/10" onClick={handleWhatsAppClick}>
+                <ExternalLink className="h-3.5 w-3.5" /> Enviar pelo WhatsApp
+              </Button>
+              <Button size="sm" variant="ghost" className="text-xs text-muted-foreground" onClick={onClose}>
+                Fechar
               </Button>
             </div>
           )}
@@ -275,14 +349,18 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
         {!showSummary && (
           <div className="border-t border-border p-3 flex gap-2 shrink-0">
             <Input
-              placeholder="Digite sua resposta..."
+              placeholder={
+                STEPS[currentStep] && "hint" in STEPS[currentStep]
+                  ? (STEPS[currentStep] as any).hint
+                  : "Digite sua resposta..."
+              }
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
               disabled={isTyping}
               className="bg-background/50 text-sm"
             />
-            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim() || isTyping}>
+            <Button size="icon" onClick={handleSend} disabled={(!inputValue.trim() && multiSelections.length === 0) || isTyping}>
               <Send className="h-4 w-4" />
             </Button>
           </div>
