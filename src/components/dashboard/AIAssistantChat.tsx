@@ -211,10 +211,12 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
     const subjectText = `Criação de site - ${collected.tipo} - ${collected.empresa}`;
     const descriptionText = `Criação de site do tipo ${collected.tipo} para a empresa ${collected.empresa}.\n\nObjetivo: ${collected.objetivo}.\nPúblico-alvo: ${collected.publico}.\nEstilo visual: ${collected.estilo}, utilizando as cores ${collected.cores}.\n\nSeções: ${collected.secoes}.\nFuncionalidades: ${collected.funcionalidades}.\n\nO site deve ser:\n- Responsivo (mobile e desktop)\n- Moderno e visualmente atraente\n- Rápido e otimizado\n- Focado em conversão`;
 
+    const successMsg = "Solicitação enviada com sucesso! Nossa equipe da GamaTec entrará em contato em breve. Você também pode enviar pelo WhatsApp para agilizar o atendimento!";
     setMessages((prev) => [
       ...prev,
       { role: "assistant", content: "🎉 **Solicitação enviada com sucesso!** 🚀\n\nNossa equipe da GamaTec entrará em contato em breve.\n\nVocê também pode enviar pelo WhatsApp para agilizar o atendimento!" },
     ]);
+    speak(successMsg);
 
     onGenerate(subjectText, descriptionText);
 
@@ -330,13 +332,13 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
               Assistente IA
             </DialogTitle>
             <Button
-              size="icon"
-              variant="ghost"
-              className="h-7 w-7"
+              size="sm"
+              variant={ttsEnabled ? "default" : "outline"}
+              className="h-7 gap-1.5 text-xs px-2.5"
               onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) window.speechSynthesis?.cancel(); }}
-              title={ttsEnabled ? "Desativar voz" : "Ativar voz"}
             >
-              {ttsEnabled ? <Volume2 className="h-3.5 w-3.5 text-primary" /> : <VolumeX className="h-3.5 w-3.5 text-muted-foreground" />}
+              {ttsEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+              {ttsEnabled ? "Voz On" : "Voz Off"}
             </Button>
           </div>
         </DialogHeader>
