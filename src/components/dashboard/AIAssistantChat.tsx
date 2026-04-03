@@ -330,13 +330,13 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
               Assistente IA
             </DialogTitle>
             <Button
-              size="icon"
-              variant="ghost"
-              className="h-7 w-7"
+              size="sm"
+              variant={ttsEnabled ? "default" : "outline"}
+              className="h-7 gap-1.5 text-xs px-2.5"
               onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) window.speechSynthesis?.cancel(); }}
-              title={ttsEnabled ? "Desativar voz" : "Ativar voz"}
             >
-              {ttsEnabled ? <Volume2 className="h-3.5 w-3.5 text-primary" /> : <VolumeX className="h-3.5 w-3.5 text-muted-foreground" />}
+              {ttsEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+              {ttsEnabled ? "Voz On" : "Voz Off"}
             </Button>
           </div>
         </DialogHeader>
