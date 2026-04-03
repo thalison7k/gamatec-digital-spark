@@ -129,6 +129,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
         const step = STEPS[0];
         setMessages([{ role: "assistant", content: step.question, options: step.options ? [...step.options] : undefined }]);
         setIsTyping(false);
+        speak(step.question);
         scrollToBottom();
       }, 800);
     }
