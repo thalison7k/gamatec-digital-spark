@@ -73,15 +73,27 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           )}
         </div>
 
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full border-primary/30 text-primary hover:bg-primary/10"
-          onClick={() => navigate(`/dashboard/project/${project.id}`)}
-        >
-          <Eye className="h-4 w-4 mr-2" />
-          Ver detalhes do projeto
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1 border-primary/30 text-primary hover:bg-primary/10"
+            onClick={() => navigate(`/dashboard/project/${project.id}`)}
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            Ver detalhes
+          </Button>
+          {project.status === "published" && project.url && (
+            <Button
+              size="sm"
+              className="gap-1.5"
+              onClick={() => window.open(project.url!, "_blank")}
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              Acessar
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
