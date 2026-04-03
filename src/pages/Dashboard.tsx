@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useUserRole } from "@/hooks/useUserRole";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ProjectCard from "@/components/dashboard/ProjectCard";
-import { FolderOpen, Plus, MessageSquare, Rocket, FileText, Phone } from "lucide-react";
+import { FolderOpen, Plus, MessageSquare, Rocket, FileText, Phone, BrainCircuit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+
+const SmartAssistant = lazy(() => import("@/components/dashboard/SmartAssistant"));
 
 interface Project {
   id: string;
@@ -26,6 +28,7 @@ const Dashboard = () => {
   const { isAdmin } = useUserRole();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -156,6 +159,19 @@ const Dashboard = () => {
             </div>
           )}
         </div>
+        {/* Smart Assistant FAB */}
+        <Button
+          onClick={() => setAssistantOpen(true)}
+          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg shadow-primary/25 p-0 hover:scale-105 transition-transform"
+          size="icon"
+          title="Assistente Inteligente"
+        >
+          <BrainCircuit className="h-6 w-6" />
+        </Button>
+
+        <Suspense fallback={null}>
+          <SmartAssistant open={assistantOpen} onClose={() => setAssistantOpen(false)} />
+        </Suspense>
       </div>
     </DashboardLayout>
   );
