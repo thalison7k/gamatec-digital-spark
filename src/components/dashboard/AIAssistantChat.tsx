@@ -190,6 +190,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
           { role: "assistant", content: summary },
         ]);
         setIsTyping(false);
+        speak(summary);
         scrollToBottom();
       }, 800);
     }
