@@ -323,10 +323,21 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-md max-h-[85vh] flex flex-col p-0 gap-0 overflow-hidden">
         <DialogHeader className="px-4 py-3 border-b border-border shrink-0">
-          <DialogTitle className="flex items-center gap-2 text-sm font-orbitron">
-            <Sparkles className="h-4 w-4 text-primary" />
-            Assistente IA
-          </DialogTitle>
+          <div className="flex items-center justify-between">
+            <DialogTitle className="flex items-center gap-2 text-sm font-orbitron">
+              <Sparkles className="h-4 w-4 text-primary" />
+              Assistente IA
+            </DialogTitle>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-7 w-7"
+              onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) window.speechSynthesis?.cancel(); }}
+              title={ttsEnabled ? "Desativar voz" : "Ativar voz"}
+            >
+              {ttsEnabled ? <Volume2 className="h-3.5 w-3.5 text-primary" /> : <VolumeX className="h-3.5 w-3.5 text-muted-foreground" />}
+            </Button>
+          </div>
         </DialogHeader>
 
         {/* Messages */}
