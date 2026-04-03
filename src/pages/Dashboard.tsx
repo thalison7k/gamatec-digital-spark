@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useUserRole } from "@/hooks/useUserRole";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ProjectCard from "@/components/dashboard/ProjectCard";
-import { FolderOpen, Plus, MessageSquare, Rocket, FileText, Phone } from "lucide-react";
+import { FolderOpen, Plus, MessageSquare, Rocket, FileText, Phone, BrainCircuit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+
+const SmartAssistant = lazy(() => import("@/components/dashboard/SmartAssistant"));
 
 interface Project {
   id: string;
