@@ -174,6 +174,7 @@ export type Database = {
           status: Database["public"]["Enums"]["project_status"]
           title: string
           updated_at: string
+          url: string | null
         }
         Insert: {
           client_id: string
@@ -184,6 +185,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["project_status"]
           title: string
           updated_at?: string
+          url?: string | null
         }
         Update: {
           client_id?: string
@@ -194,6 +196,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["project_status"]
           title?: string
           updated_at?: string
+          url?: string | null
         }
         Relationships: []
       }
