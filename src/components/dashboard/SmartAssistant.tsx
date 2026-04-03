@@ -31,6 +31,15 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const synthRef = useRef<SpeechSynthesisUtterance | null>(null);
 
+
+  // Preload voices (some browsers load them async)
+  useEffect(() => {
+    window.speechSynthesis?.getVoices();
+    const handler = () => window.speechSynthesis?.getVoices();
+    window.speechSynthesis?.addEventListener?.("voiceschanged", handler);
+    return () => window.speechSynthesis?.removeEventListener?.("voiceschanged", handler);
+  }, []);
+
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
       scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
