@@ -177,6 +177,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
         ]);
         setCurrentStep(nextStep);
         setIsTyping(false);
+        speak(step.question);
         scrollToBottom();
       }, 600);
     } else {
