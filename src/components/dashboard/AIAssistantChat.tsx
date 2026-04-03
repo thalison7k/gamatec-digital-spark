@@ -84,7 +84,35 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
   const [confirmed, setConfirmed] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [multiSelections, setMultiSelections] = useState<string[]>([]);
+  const [ttsEnabled, setTtsEnabled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Preload voices
+  useEffect(() => {
+    window.speechSynthesis?.getVoices();
+    const handler = () => window.speechSynthesis?.getVoices();
+    window.speechSynthesis?.addEventListener?.("voiceschanged", handler);
+    return () => window.speechSynthesis?.removeEventListener?.("voiceschanged", handler);
+  }, []);
+
+  const speak = useCallback((text: string) => {
+    if (!ttsEnabled || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const clean = text.replace(/\*\*/g, "").replace(/[📌🏢🎯👥🎨📄⚙️✅🎉🚀✓]/g, "");
+    const utterance = new SpeechSynthesisUtterance(clean);
+    utterance.lang = "pt-BR";
+    const voices = window.speechSynthesis.getVoices();
+    const ptVoices = voices.filter(v => v.lang.startsWith("pt"));
+    const best = ptVoices.find(v => v.name.toLowerCase().includes("google"))
+      || ptVoices.find(v => v.name.toLowerCase().includes("natural"))
+      || ptVoices.find(v => v.name.toLowerCase().includes("microsoft"))
+      || ptVoices[0];
+    if (best) { utterance.voice = best; utterance.lang = best.lang; }
+    utterance.rate = 0.95;
+    utterance.pitch = 1.05;
+    utterance.volume = 0.9;
+    window.speechSynthesis.speak(utterance);
+  }, [ttsEnabled]);
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
