@@ -32,6 +32,7 @@ interface ProjectCardProps {
     status: string;
     estimated_delivery: string | null;
     created_at: string;
+    url?: string | null;
   };
 }
 
