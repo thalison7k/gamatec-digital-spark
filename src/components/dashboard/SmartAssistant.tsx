@@ -31,6 +31,15 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const synthRef = useRef<SpeechSynthesisUtterance | null>(null);
 
+
+  // Preload voices (some browsers load them async)
+  useEffect(() => {
+    window.speechSynthesis?.getVoices();
+    const handler = () => window.speechSynthesis?.getVoices();
+    window.speechSynthesis?.addEventListener?.("voiceschanged", handler);
+    return () => window.speechSynthesis?.removeEventListener?.("voiceschanged", handler);
+  }, []);
+
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
       scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -62,10 +71,30 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
   const speak = useCallback((text: string) => {
     if (!ttsEnabled || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = idioma;
-    utterance.rate = 1;
-    utterance.pitch = 1;
+
+    // Select best available voice for the language
+    const voices = window.speechSynthesis.getVoices();
+    const langPrefix = idioma.split("-")[0];
+
+    // Priority: Google > Microsoft > any matching voice
+    const preferred = voices.filter(v => v.lang.startsWith(langPrefix));
+    const googleVoice = preferred.find(v => v.name.toLowerCase().includes("google"));
+    const msVoice = preferred.find(v => v.name.toLowerCase().includes("microsoft"));
+    const naturalVoice = preferred.find(v => v.name.toLowerCase().includes("natural"));
+    const bestVoice = googleVoice || naturalVoice || msVoice || preferred[0];
+
+    if (bestVoice) {
+      utterance.voice = bestVoice;
+      utterance.lang = bestVoice.lang;
+    }
+
+    utterance.rate = 0.95;
+    utterance.pitch = 1.05;
+    utterance.volume = 0.9;
+
     synthRef.current = utterance;
     window.speechSynthesis.speak(utterance);
   }, [ttsEnabled, idioma]);
