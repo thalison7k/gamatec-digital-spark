@@ -137,6 +137,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
 
   useEffect(() => {
     if (!open) {
+      window.speechSynthesis?.cancel();
       setMessages([]);
       setCurrentStep(0);
       setCollected({});
