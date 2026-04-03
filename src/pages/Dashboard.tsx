@@ -159,6 +159,19 @@ const Dashboard = () => {
             </div>
           )}
         </div>
+        {/* Smart Assistant FAB */}
+        <Button
+          onClick={() => setAssistantOpen(true)}
+          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg shadow-primary/25 p-0 hover:scale-105 transition-transform"
+          size="icon"
+          title="Assistente Inteligente"
+        >
+          <BrainCircuit className="h-6 w-6" />
+        </Button>
+
+        <Suspense fallback={null}>
+          <SmartAssistant open={assistantOpen} onClose={() => setAssistantOpen(false)} />
+        </Suspense>
       </div>
     </DashboardLayout>
   );
