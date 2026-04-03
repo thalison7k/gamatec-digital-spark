@@ -28,6 +28,7 @@ const Dashboard = () => {
   const { isAdmin } = useUserRole();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
