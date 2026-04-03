@@ -100,14 +100,14 @@ Regras:
 - ${modo === "proativo" ? "Gere insights curtos (1-2 frases) sobre o estado atual." : "Responda a pergunta do usuário com: insight principal, explicação breve, sugestão prática."}`;
 
     // Call AI via Lovable gateway
-    const aiResponse = await fetch("https://ai-gateway.lovable.dev/v1/chat/completions", {
+    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${LOVABLE_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-3-flash-preview",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: message },
