@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useUserRole } from "@/hooks/useUserRole";
-import { useHoverSpeech } from "@/hooks/useHoverSpeech";
+import { useVoice } from "@/components/VoiceProvider";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ProjectCard from "@/components/dashboard/ProjectCard";
 import {
@@ -33,14 +33,12 @@ const Dashboard = () => {
   const { user } = useAuth();
   const { profile } = useProfile();
   const { isAdmin } = useUserRole();
+  const { enabled: hoverVozAtiva, setEnabled: setHoverVozAtiva, vozTipo: hoverVozTipo, setVozTipo: setHoverVozTipo } = useVoice();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [ticketCount, setTicketCount] = useState(0);
-  const [hoverVozAtiva, setHoverVozAtiva] = useState(false);
-  const [hoverVozTipo, setHoverVozTipo] = useState<"masculina" | "feminina">("masculina");
   const navigate = useNavigate();
-  const { hoverHandlers } = useHoverSpeech({ enabled: hoverVozAtiva, vozTipo: hoverVozTipo });
 
   useEffect(() => {
     if (!user) return;
@@ -112,14 +110,20 @@ const Dashboard = () => {
         {/* Animated Greeting */}
         <div className="flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-500">
           <div>
-            <h2 className="text-2xl md:text-3xl font-orbitron font-bold text-foreground" {...hoverHandlers(`${greeting()}, ${profile?.full_name || "Usuário"}`)}>
+            <h2
+              className="text-2xl md:text-3xl font-orbitron font-bold text-foreground"
+              data-voice={`${greeting()}, ${profile?.full_name || "Usuário"}`}
+            >
               {greeting()},{" "}
               <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
                 {profile?.full_name || "Usuário"}
               </span>{" "}
               👋
             </h2>
-            <p className="text-muted-foreground text-sm mt-1" {...hoverHandlers(isAdmin ? "Visão geral de todos os projetos" : "Acompanhe seus projetos e solicitações")}>
+            <p
+              className="text-muted-foreground text-sm mt-1"
+              data-voice={isAdmin ? "Visão geral de todos os projetos" : "Acompanhe seus projetos e solicitações"}
+            >
               {isAdmin ? "Visão geral de todos os projetos" : "Acompanhe seus projetos e solicitações"}
             </p>
           </div>
@@ -146,7 +150,7 @@ const Dashboard = () => {
               )}
             </div>
             {isAdmin && (
-              <Button onClick={() => navigate("/dashboard/admin")} className="gap-2 shadow-lg shadow-primary/20">
+              <Button onClick={() => navigate("/dashboard/admin")} className="gap-2 shadow-lg shadow-primary/20" data-voice="Novo Projeto">
                 <Plus className="h-4 w-4" /> Novo Projeto
               </Button>
             )}
@@ -156,14 +160,14 @@ const Dashboard = () => {
         {/* Stats Cards */}
         {projects.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
-            {stats.map((stat, i) => (
+            {stats.map((stat) => (
               <Card
                 key={stat.label}
                 className={cn(
                   "border-border/50 overflow-hidden relative group transition-all duration-300",
                   "hover:border-primary/20 hover:-translate-y-0.5"
                 )}
-                {...hoverHandlers(`${stat.label}: ${stat.value}`)}
+                data-voice={`${stat.label}: ${stat.value}`}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardContent className="p-4 flex items-center gap-3 relative">
@@ -191,7 +195,7 @@ const Dashboard = () => {
                   action.border, "hover:-translate-y-0.5 hover:shadow-lg"
                 )}
                 onClick={action.onClick}
-                {...hoverHandlers(`${action.label}. ${action.description}`)}
+                data-voice={`${action.label}. ${action.description}`}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardContent className="p-4 flex items-center gap-3 relative">
@@ -211,7 +215,10 @@ const Dashboard = () => {
         {/* Projects */}
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "300ms", animationFillMode: "both" }}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-orbitron text-sm font-semibold text-muted-foreground uppercase tracking-wider" {...hoverHandlers(isAdmin ? "Todos os Projetos" : "Meus Projetos")}>
+            <h3
+              className="font-orbitron text-sm font-semibold text-muted-foreground uppercase tracking-wider"
+              data-voice={isAdmin ? "Todos os Projetos" : "Meus Projetos"}
+            >
               {isAdmin ? "Todos os Projetos" : "Meus Projetos"}
             </h3>
             {projects.length > 0 && (
@@ -233,7 +240,7 @@ const Dashboard = () => {
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 animate-bounce">
                   <Rocket className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-orbitron text-lg text-foreground mb-2">Nenhum projeto ainda</h3>
+                <h3 className="font-orbitron text-lg text-foreground mb-2" data-voice="Nenhum projeto ainda">Nenhum projeto ainda</h3>
                 <p className="text-sm text-muted-foreground max-w-sm mb-6">
                   {isAdmin
                     ? "Crie um novo projeto para começar."
@@ -242,6 +249,7 @@ const Dashboard = () => {
                 <Button
                   className="gap-2 shadow-lg shadow-primary/25"
                   onClick={() => navigate(isAdmin ? "/dashboard/admin" : "/dashboard/tickets")}
+                  data-voice={isAdmin ? "Novo Projeto" : "Abrir Solicitação"}
                 >
                   {isAdmin ? <Plus className="h-4 w-4" /> : <MessageSquare className="h-4 w-4" />}
                   {isAdmin ? "Novo Projeto" : "Abrir Solicitação"}
@@ -271,6 +279,7 @@ const Dashboard = () => {
           )}
           size="icon"
           title="Assistente Inteligente"
+          data-voice="Assistente Inteligente"
           style={{ animationDelay: "600ms", animationFillMode: "both" }}
         >
           <BrainCircuit className="h-6 w-6 text-white" />
