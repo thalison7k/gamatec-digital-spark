@@ -355,15 +355,24 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
               <Sparkles className="h-4 w-4 text-primary" />
               Assistente IA
             </DialogTitle>
-            <Button
-              size="sm"
-              variant={ttsEnabled ? "default" : "outline"}
-              className="h-7 gap-1.5 text-xs px-2.5"
-              onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) window.speechSynthesis?.cancel(); }}
-            >
-              {ttsEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
-              {ttsEnabled ? "Voz On" : "Voz Off"}
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Select value={vozGenero} onValueChange={(v) => setVozGenero(v as VozGenero)}>
+                <SelectTrigger className="h-7 w-[110px] text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="masculino">♂ JARVIS</SelectItem>
+                  <SelectItem value="feminino">♀ FRIDAY</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                size="sm"
+                variant={ttsEnabled ? "default" : "outline"}
+                className="h-7 gap-1.5 text-xs px-2.5"
+                onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) window.speechSynthesis?.cancel(); }}
+              >
+                {ttsEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+                {ttsEnabled ? "Voz On" : "Voz Off"}
+              </Button>
+            </div>
           </div>
         </DialogHeader>
 

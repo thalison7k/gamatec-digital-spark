@@ -24,7 +24,6 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Get user from token
     const token = authHeader.replace("Bearer ", "");
     const anonClient = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_ANON_KEY")!);
     const { data: { user }, error: userError } = await anonClient.auth.getUser(token);
@@ -48,7 +47,6 @@ Deno.serve(async (req) => {
     const tickets = ticketsRes.data || [];
     const profile = profileRes.data;
 
-    // Build context
     const contextData = {
       total_projetos: projects.length,
       projetos: projects.map(p => ({
@@ -57,7 +55,11 @@ Deno.serve(async (req) => {
         status: p.status,
         criado_em: p.created_at,
         entrega_estimada: p.estimated_delivery,
+        url: p.url,
       })),
+      projetos_publicados: projects.filter(p => p.status === "published").length,
+      projetos_em_andamento: projects.filter(p => p.status === "in_development" || p.status === "in_review").length,
+      projetos_pendentes: projects.filter(p => p.status === "awaiting_info" || p.status === "awaiting_approval").length,
       total_tickets: tickets.length,
       tickets_abertos: tickets.filter(t => t.status === "open" || t.status === "in_progress").length,
       tickets: tickets.map(t => ({
@@ -69,37 +71,61 @@ Deno.serve(async (req) => {
     };
 
     const personalityMap: Record<string, string> = {
-      executivo: "Seja direto, estratégico e conciso. Foque em KPIs e ações.",
-      analista: "Seja técnico e explicativo. Detalhe causas e correlações.",
-      amigavel: "Seja leve, acessível e encorajador. Use linguagem simples.",
+      executivo: "Seja direto, estratégico e conciso. Foque em KPIs e ações. Fale como um consultor sênior.",
+      analista: "Seja técnico e explicativo. Detalhe causas e correlações. Apresente dados de forma estruturada.",
+      amigavel: "Seja leve, acessível e encorajador. Use linguagem simples e motivadora.",
     };
 
     const langInstructions = idioma === "en-US"
       ? "Respond entirely in English. Do not mix languages."
       : "Responda inteiramente em Português do Brasil. Não misture idiomas.";
 
-    const systemPrompt = `Você é o assistente inteligente da plataforma GamaTec, um sistema de gestão de projetos web.
+    const vozInstructions = voz_tipo === "feminina"
+      ? "Adote um tom confiante e claro, como a FRIDAY do universo Marvel. Voz feminina profissional."
+      : "Adote um tom calmo, profundo e preciso, como o JARVIS do universo Marvel. Voz masculina autoritária.";
+
+    const systemPrompt = `Você é o assistente inteligente da plataforma GamaTec, integrado diretamente ao painel do usuário.
 
 ${langInstructions}
 
+${vozInstructions}
+
 Estilo de comunicação: ${personalityMap[personalidade] || personalityMap.analista}
 
-Sua resposta pode ser convertida em áudio, então:
-- Use frases curtas e bem estruturadas
+IDIOMA E VOZ:
+- Responda no idioma: ${idioma}
+- As respostas devem ser naturais para leitura em voz alta
+- Use frases curtas, claras e fluidas
 - Evite emojis excessivos, símbolos ou markdown complexo
 - Use pontuação correta para pausas naturais
-- Seja direto e útil
 
-Dados do usuário "${profile?.full_name || "Cliente"}":
+MODO DE OPERAÇÃO:
+${modo === "proativo" ? `MODO PROATIVO (PRINCIPAL):
+- Analise os dados exibidos na tela
+- Gere um insight automático curto (1-3 frases)
+- Destaque o status geral dos projetos
+- Informe se há problemas ou pendências
+- Sugira ação se necessário
+
+Exemplos:
+- "Você possui um projeto concluído e já publicado. Nenhuma pendência no momento."
+- "Seu projeto está com 100% de progresso e disponível online."
+- "Há pendências que podem impactar a entrega. Recomendo verificar os itens em aberto."` 
+: `MODO CONVERSACIONAL:
+- Responda a pergunta do usuário com: insight principal, explicação breve, sugestão prática
+- Seja direto e útil
+- Priorize insights relevantes baseados nos dados reais`}
+
+DADOS DO USUÁRIO "${profile?.full_name || "Cliente"}":
 ${JSON.stringify(contextData, null, 2)}
 
-Regras:
+REGRAS CRÍTICAS:
 - Não invente dados. Use apenas o que foi fornecido.
 - Se não houver dados, diga que não há dados disponíveis e sugira ações.
-- Priorize insights relevantes.
-- ${modo === "proativo" ? "Gere insights curtos (1-2 frases) sobre o estado atual." : "Responda a pergunta do usuário com: insight principal, explicação breve, sugestão prática."}`;
+- Evite frases genéricas. Seja específico com os dados do usuário.
+- Priorize insights úteis e acionáveis.
+- Você não é apenas um chat. Você é um assistente ativo que observa a plataforma e ajuda o usuário automaticamente.`;
 
-    // Call AI via Lovable gateway
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
