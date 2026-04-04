@@ -112,22 +112,45 @@ const Dashboard = () => {
         {/* Animated Greeting */}
         <div className="flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-500">
           <div>
-            <h2 className="text-2xl md:text-3xl font-orbitron font-bold text-foreground">
+            <h2 className="text-2xl md:text-3xl font-orbitron font-bold text-foreground" {...hoverHandlers(`${greeting()}, ${profile?.full_name || "Usuário"}`)}>
               {greeting()},{" "}
               <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
                 {profile?.full_name || "Usuário"}
               </span>{" "}
               👋
             </h2>
-            <p className="text-muted-foreground text-sm mt-1">
+            <p className="text-muted-foreground text-sm mt-1" {...hoverHandlers(isAdmin ? "Visão geral de todos os projetos" : "Acompanhe seus projetos e solicitações")}>
               {isAdmin ? "Visão geral de todos os projetos" : "Acompanhe seus projetos e solicitações"}
             </p>
           </div>
-          {isAdmin && (
-            <Button onClick={() => navigate("/dashboard/admin")} className="gap-2 shadow-lg shadow-primary/20">
-              <Plus className="h-4 w-4" /> Novo Projeto
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {/* Hover Voice Toggle */}
+            <div className="flex items-center gap-1.5 bg-muted/50 rounded-lg px-2 py-1 border border-border/50">
+              <Button
+                size="sm"
+                variant={hoverVozAtiva ? "default" : "outline"}
+                className="h-7 gap-1.5 text-xs px-2"
+                onClick={() => setHoverVozAtiva(!hoverVozAtiva)}
+              >
+                {hoverVozAtiva ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+                {hoverVozAtiva ? "Leitura On" : "Leitura Off"}
+              </Button>
+              {hoverVozAtiva && (
+                <Select value={hoverVozTipo} onValueChange={(v) => setHoverVozTipo(v as "masculina" | "feminina")}>
+                  <SelectTrigger className="h-7 w-28 text-xs"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="masculina">JARVIS</SelectItem>
+                    <SelectItem value="feminina">FRIDAY</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
+            {isAdmin && (
+              <Button onClick={() => navigate("/dashboard/admin")} className="gap-2 shadow-lg shadow-primary/20">
+                <Plus className="h-4 w-4" /> Novo Projeto
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Stats Cards */}
