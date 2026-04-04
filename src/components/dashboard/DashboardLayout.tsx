@@ -147,11 +147,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             variant="ghost"
             className="w-full justify-start gap-3 text-muted-foreground hover:text-primary"
             onClick={() => navigate("/site")}
+            data-voice="Página Principal"
           >
             <ArrowLeft className="h-4 w-4" />
             Página Principal
           </Button>
-          <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive" onClick={handleSignOut}>
+          <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive" onClick={handleSignOut} data-voice="Sair">
             <LogOut className="h-4 w-4" />
             Sair
           </Button>
