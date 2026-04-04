@@ -211,7 +211,7 @@ const Dashboard = () => {
         {/* Projects */}
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "300ms", animationFillMode: "both" }}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-orbitron text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+            <h3 className="font-orbitron text-sm font-semibold text-muted-foreground uppercase tracking-wider" {...hoverHandlers(isAdmin ? "Todos os Projetos" : "Meus Projetos")}>
               {isAdmin ? "Todos os Projetos" : "Meus Projetos"}
             </h3>
             {projects.length > 0 && (
