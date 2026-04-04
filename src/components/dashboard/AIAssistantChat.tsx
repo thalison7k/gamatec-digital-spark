@@ -124,11 +124,11 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
       utterance.volume = 1.0;
     } else {
       best = ptVoices.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
-        || ptVoices.find(v => v.name.toLowerCase().includes("google"))
         || ptVoices.find(v => v.name.toLowerCase().includes("daniel"))
-        || ptVoices.find(v => v.name.toLowerCase().includes("microsoft"))
-        || ptVoices.find(v => v.name.toLowerCase().includes("natural"))
-        || ptVoices[0];
+        || ptVoices.find(v => v.name.toLowerCase().includes("google") && !v.name.toLowerCase().includes("feminino") && !v.name.toLowerCase().includes("female") && !v.name.toLowerCase().includes("francisca") && !v.name.toLowerCase().includes("maria"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("microsoft") && (v.name.toLowerCase().includes("antonio") || v.name.toLowerCase().includes("helia") === false))
+        || ptVoices.find(v => v.name.toLowerCase().includes("male") && !v.name.toLowerCase().includes("female"))
+        || ptVoices[1] || ptVoices[0];
       if (best) { utterance.voice = best; utterance.lang = best.lang; }
       utterance.rate = 0.88;
       utterance.pitch = 0.75;
