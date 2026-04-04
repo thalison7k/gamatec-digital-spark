@@ -80,6 +80,7 @@ const App = () => (
                 <ScrollToTop />
               </BrowserRouter>
             </TooltipProvider>
+            </VoiceProvider>
           </SoundProvider>
         </AccessibilityProvider>
       </ThemeProvider>
