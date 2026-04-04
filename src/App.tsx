@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { SoundProvider } from "@/components/SoundProvider";
 import { ThemeProvider } from "@/hooks/useTheme";
 import { AccessibilityProvider } from "@/hooks/useAccessibility";
+import { VoiceProvider } from "@/components/VoiceProvider";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import Auth from "./pages/Auth";
@@ -53,6 +54,7 @@ const App = () => (
       <ThemeProvider>
         <AccessibilityProvider>
           <SoundProvider>
+            <VoiceProvider>
             <TooltipProvider>
               <Toaster />
               <Sonner />
@@ -78,6 +80,7 @@ const App = () => (
                 <ScrollToTop />
               </BrowserRouter>
             </TooltipProvider>
+            </VoiceProvider>
           </SoundProvider>
         </AccessibilityProvider>
       </ThemeProvider>

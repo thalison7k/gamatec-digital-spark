@@ -261,12 +261,12 @@ const Tickets = () => {
     <DashboardLayout>
       <div className="space-y-6 max-w-3xl">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-orbitron font-bold">Minhas Solicitações</h2>
+          <h2 className="text-xl font-orbitron font-bold" data-voice="Minhas Solicitações">Minhas Solicitações</h2>
           <div className="flex gap-2">
-            <Button onClick={() => setAiChatOpen(true)} variant="outline" className="gap-2" size="sm">
+            <Button onClick={() => setAiChatOpen(true)} variant="outline" className="gap-2" size="sm" data-voice="Assistente IA">
               <Bot className="h-4 w-4" /> Assistente IA
             </Button>
-            <Button onClick={() => setShowForm(!showForm)} className="gap-2" size="sm">
+            <Button onClick={() => setShowForm(!showForm)} className="gap-2" size="sm" data-voice="Nova Solicitação">
               <Plus className="h-4 w-4" /> Nova Solicitação
             </Button>
           </div>
@@ -346,6 +346,7 @@ const Tickets = () => {
                   key={ticket.id}
                   className="cursor-pointer hover:border-primary/30 transition-all"
                   onClick={() => openTicket(ticket)}
+                  data-voice={`${ticket.subject}. Prioridade: ${pc.label}. Status: ${sc.label}`}
                 >
                   <CardContent className="p-4 flex items-center gap-4">
                     <MessageSquare className="h-5 w-5 text-primary shrink-0" />

@@ -100,6 +100,7 @@ export const Navbar = () => {
               className="text-muted-foreground hover:text-primary gap-2"
               onClick={() => { play("click"); navigate("/dashboard"); }}
               onMouseEnter={() => play("hover")}
+              data-voice="Painel"
             >
               <LayoutDashboard className="h-4 w-4" />
               <span className="hidden sm:inline text-sm">Painel</span>

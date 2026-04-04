@@ -98,6 +98,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 navigate(item.path);
                 setSidebarOpen(false);
               }}
+              data-voice={item.label}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
                 isActive(item.path)
                   ? "bg-primary/15 text-primary font-medium"
@@ -117,6 +118,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </p>
           <button
             onClick={() => { play("click"); toggleTheme(); }}
+            data-voice={theme === "dark" ? "Modo Claro" : "Modo Escuro"}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -131,6 +133,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 setEnabled(false);
               }
             }}
+            data-voice={enabled ? "Desativar Sons" : "Ativar Sons"}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
           >
             {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
@@ -144,11 +147,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             variant="ghost"
             className="w-full justify-start gap-3 text-muted-foreground hover:text-primary"
             onClick={() => navigate("/site")}
+            data-voice="Página Principal"
           >
             <ArrowLeft className="h-4 w-4" />
             Página Principal
           </Button>
-          <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive" onClick={handleSignOut}>
+          <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive" onClick={handleSignOut} data-voice="Sair">
             <LogOut className="h-4 w-4" />
             Sair
           </Button>
@@ -161,7 +165,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <button className="lg:hidden text-muted-foreground" onClick={() => setSidebarOpen(true)}>
             <Menu className="h-5 w-5" />
           </button>
-          <h1 className="font-orbitron text-sm text-foreground truncate flex-1">Painel do Cliente</h1>
+          <h1 className="font-orbitron text-sm text-foreground truncate flex-1" data-voice="Painel do Cliente">Painel do Cliente</h1>
           <NotificationBell />
         </header>
         <div className="flex-1 p-4 lg:p-6 overflow-auto">{children}</div>

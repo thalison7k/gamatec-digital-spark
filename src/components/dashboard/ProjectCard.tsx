@@ -57,6 +57,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
           "hover:-translate-y-1",
           isPublished && "border-green-500/20"
         )}
+        data-voice={`${project.title}. Status: ${statusConfig.label}. Progresso: ${statusConfig.progress}%`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -132,6 +133,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
               size="sm"
               className="flex-1 border-primary/30 text-primary hover:bg-primary/10 transition-all duration-300"
               onClick={() => navigate(`/dashboard/project/${project.id}`)}
+              data-voice="Ver detalhes"
             >
               <Eye className="h-4 w-4 mr-2" />
               Ver detalhes
@@ -141,6 +143,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
                 size="sm"
                 className="gap-1.5 bg-green-600 hover:bg-green-500 text-white shadow-lg shadow-green-500/20 transition-all duration-300 hover:shadow-green-500/40 hover:scale-105"
                 onClick={() => window.open(project.url!, "_blank")}
+                data-voice="Acessar Site"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
                 Acessar Site
