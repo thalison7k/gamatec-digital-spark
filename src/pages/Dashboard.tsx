@@ -37,7 +37,10 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [ticketCount, setTicketCount] = useState(0);
+  const [hoverVozAtiva, setHoverVozAtiva] = useState(false);
+  const [hoverVozTipo, setHoverVozTipo] = useState<"masculina" | "feminina">("masculina");
   const navigate = useNavigate();
+  const { hoverHandlers } = useHoverSpeech({ enabled: hoverVozAtiva, vozTipo: hoverVozTipo });
 
   useEffect(() => {
     if (!user) return;
