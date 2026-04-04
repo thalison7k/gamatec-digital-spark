@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Bot, Send, Volume2, VolumeX, Settings2, X, Sparkles } from "lucide-react";
+import { Bot, Send, Volume2, VolumeX, Settings2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 type Personalidade = "executivo" | "analista" | "amigavel";
 type Idioma = "pt-BR" | "en-US";
+type VozGenero = "masculino" | "feminino";
 
 interface Message {
   role: "assistant" | "user";
@@ -27,12 +28,11 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
   const [idioma, setIdioma] = useState<Idioma>("pt-BR");
   const [personalidade, setPersonalidade] = useState<Personalidade>("analista");
   const [ttsEnabled, setTtsEnabled] = useState(false);
+  const [vozGenero, setVozGenero] = useState<VozGenero>("masculino");
   const [showSettings, setShowSettings] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const synthRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-
-  // Preload voices (some browsers load them async)
   useEffect(() => {
     window.speechSynthesis?.getVoices();
     const handler = () => window.speechSynthesis?.getVoices();
@@ -46,9 +46,7 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
     }, 50);
   }, []);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, loading, scrollToBottom]);
+  useEffect(() => { scrollToBottom(); }, [messages, loading, scrollToBottom]);
 
   useEffect(() => {
     if (open && messages.length === 0) {
@@ -75,30 +73,54 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = idioma;
 
-    // JARVIS-style voice selection
     const voices = window.speechSynthesis.getVoices();
     const langPrefix = idioma.split("-")[0];
     const preferred = voices.filter(v => v.lang.startsWith(langPrefix));
-    const bestVoice = preferred.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
-      || preferred.find(v => v.name.toLowerCase().includes("google"))
-      || preferred.find(v => v.name.toLowerCase().includes("daniel"))
-      || preferred.find(v => v.name.toLowerCase().includes("microsoft"))
-      || preferred.find(v => v.name.toLowerCase().includes("natural"))
-      || preferred[0];
 
-    if (bestVoice) {
-      utterance.voice = bestVoice;
-      utterance.lang = bestVoice.lang;
+    let bestVoice: SpeechSynthesisVoice | undefined;
+
+    if (vozGenero === "feminino") {
+      // Female voice selection
+      bestVoice = preferred.find(v => v.name.toLowerCase().includes("google") && (v.name.toLowerCase().includes("feminino") || v.name.toLowerCase().includes("female")))
+        || preferred.find(v => v.name.toLowerCase().includes("microsoft") && (v.name.toLowerCase().includes("francisca") || v.name.toLowerCase().includes("maria")))
+        || preferred.find(v => v.name.toLowerCase().includes("google") && !v.name.toLowerCase().includes("brasileiro"))
+        || preferred.find(v => v.name.toLowerCase().includes("francisca"))
+        || preferred.find(v => v.name.toLowerCase().includes("maria"))
+        || preferred.find(v => v.name.toLowerCase().includes("vitoria") || v.name.toLowerCase().includes("vitória"))
+        || preferred.find(v => v.name.toLowerCase().includes("female"))
+        || preferred.find(v => v.name.toLowerCase().includes("natural"))
+        || preferred[0];
+
+      if (bestVoice) {
+        utterance.voice = bestVoice;
+        utterance.lang = bestVoice.lang;
+      }
+      // Female FRIDAY-style: confident, clear
+      utterance.rate = 0.92;
+      utterance.pitch = 1.15;
+      utterance.volume = 1.0;
+    } else {
+      // Male JARVIS-style voice selection
+      bestVoice = preferred.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
+        || preferred.find(v => v.name.toLowerCase().includes("google"))
+        || preferred.find(v => v.name.toLowerCase().includes("daniel"))
+        || preferred.find(v => v.name.toLowerCase().includes("microsoft"))
+        || preferred.find(v => v.name.toLowerCase().includes("natural"))
+        || preferred[0];
+
+      if (bestVoice) {
+        utterance.voice = bestVoice;
+        utterance.lang = bestVoice.lang;
+      }
+      // JARVIS voice: calm, deep, precise
+      utterance.rate = 0.88;
+      utterance.pitch = 0.75;
+      utterance.volume = 1.0;
     }
-
-    // JARVIS voice profile: calm, deep, precise
-    utterance.rate = 0.88;
-    utterance.pitch = 0.75;
-    utterance.volume = 1.0;
 
     synthRef.current = utterance;
     window.speechSynthesis.speak(utterance);
-  }, [ttsEnabled, idioma]);
+  }, [ttsEnabled, idioma, vozGenero]);
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
@@ -108,9 +130,8 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
     setLoading(true);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
       const res = await supabase.functions.invoke("ai-assistant", {
-        body: { message: userMsg, idioma, personalidade, modo: "pergunta" },
+        body: { message: userMsg, idioma, personalidade, voz_tipo: vozGenero === "feminino" ? "feminina" : "masculina", modo: "pergunta" },
       });
 
       const reply = res.data?.reply || (idioma === "en-US" ? "Sorry, I couldn't process your request." : "Desculpe, não consegui processar sua solicitação.");
@@ -141,13 +162,13 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
             </DialogTitle>
             <div className="flex items-center gap-1">
               <Button
-                size="icon"
-                variant="ghost"
-                className="h-7 w-7"
+                size="sm"
+                variant={ttsEnabled ? "default" : "outline"}
+                className="h-7 gap-1.5 text-xs px-2.5"
                 onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) window.speechSynthesis?.cancel(); }}
-                title={ttsEnabled ? "Desativar voz" : "Ativar voz"}
               >
-                {ttsEnabled ? <Volume2 className="h-3.5 w-3.5 text-primary" /> : <VolumeX className="h-3.5 w-3.5 text-muted-foreground" />}
+                {ttsEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+                {ttsEnabled ? "Voz On" : "Voz Off"}
               </Button>
               <Button
                 size="icon"
@@ -182,6 +203,16 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
                   {(["executivo", "analista", "amigavel"] as Personalidade[]).map(p => (
                     <SelectItem key={p} value={p}>{personalidadeLabels[p]}</SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">{idioma === "en-US" ? "Voice:" : "Voz:"}</span>
+              <Select value={vozGenero} onValueChange={(v) => setVozGenero(v as VozGenero)}>
+                <SelectTrigger className="h-7 w-28 text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="masculino">{idioma === "en-US" ? "Male (JARVIS)" : "Masculino (JARVIS)"}</SelectItem>
+                  <SelectItem value="feminino">{idioma === "en-US" ? "Female (FRIDAY)" : "Feminino (FRIDAY)"}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -3,7 +3,10 @@ import { Bot, Send, Sparkles, Check, ExternalLink, Rocket, Volume2, VolumeX } fr
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+
+type VozGenero = "masculino" | "feminino";
 
 interface CollectedData {
   tipo?: string;
@@ -85,6 +88,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
   const [showSummary, setShowSummary] = useState(false);
   const [multiSelections, setMultiSelections] = useState<string[]>([]);
   const [ttsEnabled, setTtsEnabled] = useState(false);
+  const [vozGenero, setVozGenero] = useState<VozGenero>("masculino");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Preload voices
@@ -103,20 +107,36 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
     utterance.lang = "pt-BR";
     const voices = window.speechSynthesis.getVoices();
     const ptVoices = voices.filter(v => v.lang.startsWith("pt"));
-    // JARVIS-style: prefer deep, clear male voices
-    const best = ptVoices.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
-      || ptVoices.find(v => v.name.toLowerCase().includes("google"))
-      || ptVoices.find(v => v.name.toLowerCase().includes("daniel"))
-      || ptVoices.find(v => v.name.toLowerCase().includes("microsoft"))
-      || ptVoices.find(v => v.name.toLowerCase().includes("natural"))
-      || ptVoices[0];
-    if (best) { utterance.voice = best; utterance.lang = best.lang; }
-    // JARVIS voice profile: calm, deep, precise — like an AI butler
-    utterance.rate = 0.88;   // Slower, deliberate cadence
-    utterance.pitch = 0.75;  // Deep, authoritative tone
-    utterance.volume = 1.0;  // Clear and present
+
+    let best: SpeechSynthesisVoice | undefined;
+
+    if (vozGenero === "feminino") {
+      best = ptVoices.find(v => v.name.toLowerCase().includes("francisca"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("maria"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("vitoria") || v.name.toLowerCase().includes("vitória"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("google") && !v.name.toLowerCase().includes("brasileiro"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("female"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("natural"))
+        || ptVoices[0];
+      if (best) { utterance.voice = best; utterance.lang = best.lang; }
+      utterance.rate = 0.92;
+      utterance.pitch = 1.15;
+      utterance.volume = 1.0;
+    } else {
+      best = ptVoices.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("google"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("daniel"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("microsoft"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("natural"))
+        || ptVoices[0];
+      if (best) { utterance.voice = best; utterance.lang = best.lang; }
+      utterance.rate = 0.88;
+      utterance.pitch = 0.75;
+      utterance.volume = 1.0;
+    }
+
     window.speechSynthesis.speak(utterance);
-  }, [ttsEnabled]);
+  }, [ttsEnabled, vozGenero]);
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
@@ -335,15 +355,24 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
               <Sparkles className="h-4 w-4 text-primary" />
               Assistente IA
             </DialogTitle>
-            <Button
-              size="sm"
-              variant={ttsEnabled ? "default" : "outline"}
-              className="h-7 gap-1.5 text-xs px-2.5"
-              onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) window.speechSynthesis?.cancel(); }}
-            >
-              {ttsEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
-              {ttsEnabled ? "Voz On" : "Voz Off"}
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Select value={vozGenero} onValueChange={(v) => setVozGenero(v as VozGenero)}>
+                <SelectTrigger className="h-7 w-[110px] text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="masculino">♂ JARVIS</SelectItem>
+                  <SelectItem value="feminino">♀ FRIDAY</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                size="sm"
+                variant={ttsEnabled ? "default" : "outline"}
+                className="h-7 gap-1.5 text-xs px-2.5"
+                onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) window.speechSynthesis?.cancel(); }}
+              >
+                {ttsEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+                {ttsEnabled ? "Voz On" : "Voz Off"}
+              </Button>
+            </div>
           </div>
         </DialogHeader>
 
