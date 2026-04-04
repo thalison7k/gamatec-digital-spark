@@ -53,7 +53,7 @@ export const Footer = () => {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-orbitron font-bold text-foreground">Contato</h3>
+              <h3 className="font-orbitron font-bold text-foreground" data-voice="Contato">Contato</h3>
               <ul className="space-y-2 text-sm">
                 <li>
                   <a href="mailto:gamatec350@gmail.com" className="text-muted-foreground hover:text-primary transition-all duration-300 hover:translate-x-1 inline-block">
