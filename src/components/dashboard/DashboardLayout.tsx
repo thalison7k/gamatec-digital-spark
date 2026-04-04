@@ -165,7 +165,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <button className="lg:hidden text-muted-foreground" onClick={() => setSidebarOpen(true)}>
             <Menu className="h-5 w-5" />
           </button>
-          <h1 className="font-orbitron text-sm text-foreground truncate flex-1">Painel do Cliente</h1>
+          <h1 className="font-orbitron text-sm text-foreground truncate flex-1" data-voice="Painel do Cliente">Painel do Cliente</h1>
           <NotificationBell />
         </header>
         <div className="flex-1 p-4 lg:p-6 overflow-auto">{children}</div>
