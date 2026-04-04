@@ -3,7 +3,10 @@ import { Bot, Send, Sparkles, Check, ExternalLink, Rocket, Volume2, VolumeX } fr
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+
+type VozGenero = "masculino" | "feminino";
 
 interface CollectedData {
   tipo?: string;
