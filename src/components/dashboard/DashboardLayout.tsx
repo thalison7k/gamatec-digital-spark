@@ -118,6 +118,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </p>
           <button
             onClick={() => { play("click"); toggleTheme(); }}
+            data-voice={theme === "dark" ? "Modo Claro" : "Modo Escuro"}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -132,6 +133,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 setEnabled(false);
               }
             }}
+            data-voice={enabled ? "Desativar Sons" : "Ativar Sons"}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
           >
             {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
