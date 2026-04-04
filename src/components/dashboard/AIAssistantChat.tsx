@@ -88,6 +88,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
   const [showSummary, setShowSummary] = useState(false);
   const [multiSelections, setMultiSelections] = useState<string[]>([]);
   const [ttsEnabled, setTtsEnabled] = useState(false);
+  const [vozGenero, setVozGenero] = useState<VozGenero>("masculino");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Preload voices
