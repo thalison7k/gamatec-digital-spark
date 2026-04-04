@@ -100,13 +100,13 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
       utterance.pitch = 1.15;
       utterance.volume = 1.0;
     } else {
-      // Male JARVIS-style voice selection
+      // Male JARVIS-style voice selection - explicitly avoid female voices
       bestVoice = preferred.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
-        || preferred.find(v => v.name.toLowerCase().includes("google"))
         || preferred.find(v => v.name.toLowerCase().includes("daniel"))
-        || preferred.find(v => v.name.toLowerCase().includes("microsoft"))
-        || preferred.find(v => v.name.toLowerCase().includes("natural"))
-        || preferred[0];
+        || preferred.find(v => v.name.toLowerCase().includes("google") && !v.name.toLowerCase().includes("feminino") && !v.name.toLowerCase().includes("female") && !v.name.toLowerCase().includes("francisca") && !v.name.toLowerCase().includes("maria"))
+        || preferred.find(v => v.name.toLowerCase().includes("microsoft") && !v.name.toLowerCase().includes("francisca") && !v.name.toLowerCase().includes("maria"))
+        || preferred.find(v => v.name.toLowerCase().includes("male") && !v.name.toLowerCase().includes("female"))
+        || preferred[1] || preferred[0];
 
       if (bestVoice) {
         utterance.voice = bestVoice;
