@@ -57,6 +57,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
           "hover:-translate-y-1",
           isPublished && "border-green-500/20"
         )}
+        data-voice={`${project.title}. Status: ${statusConfig.label}. Progresso: ${statusConfig.progress}%`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
