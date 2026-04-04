@@ -107,20 +107,36 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
     utterance.lang = "pt-BR";
     const voices = window.speechSynthesis.getVoices();
     const ptVoices = voices.filter(v => v.lang.startsWith("pt"));
-    // JARVIS-style: prefer deep, clear male voices
-    const best = ptVoices.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
-      || ptVoices.find(v => v.name.toLowerCase().includes("google"))
-      || ptVoices.find(v => v.name.toLowerCase().includes("daniel"))
-      || ptVoices.find(v => v.name.toLowerCase().includes("microsoft"))
-      || ptVoices.find(v => v.name.toLowerCase().includes("natural"))
-      || ptVoices[0];
-    if (best) { utterance.voice = best; utterance.lang = best.lang; }
-    // JARVIS voice profile: calm, deep, precise — like an AI butler
-    utterance.rate = 0.88;   // Slower, deliberate cadence
-    utterance.pitch = 0.75;  // Deep, authoritative tone
-    utterance.volume = 1.0;  // Clear and present
+
+    let best: SpeechSynthesisVoice | undefined;
+
+    if (vozGenero === "feminino") {
+      best = ptVoices.find(v => v.name.toLowerCase().includes("francisca"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("maria"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("vitoria") || v.name.toLowerCase().includes("vitória"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("google") && !v.name.toLowerCase().includes("brasileiro"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("female"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("natural"))
+        || ptVoices[0];
+      if (best) { utterance.voice = best; utterance.lang = best.lang; }
+      utterance.rate = 0.92;
+      utterance.pitch = 1.15;
+      utterance.volume = 1.0;
+    } else {
+      best = ptVoices.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("google"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("daniel"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("microsoft"))
+        || ptVoices.find(v => v.name.toLowerCase().includes("natural"))
+        || ptVoices[0];
+      if (best) { utterance.voice = best; utterance.lang = best.lang; }
+      utterance.rate = 0.88;
+      utterance.pitch = 0.75;
+      utterance.volume = 1.0;
+    }
+
     window.speechSynthesis.speak(utterance);
-  }, [ttsEnabled]);
+  }, [ttsEnabled, vozGenero]);
 
   const scrollToBottom = useCallback(() => {
     setTimeout(() => {
