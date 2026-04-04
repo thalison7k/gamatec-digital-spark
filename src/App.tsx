@@ -54,6 +54,7 @@ const App = () => (
       <ThemeProvider>
         <AccessibilityProvider>
           <SoundProvider>
+            <VoiceProvider>
             <TooltipProvider>
               <Toaster />
               <Sonner />
