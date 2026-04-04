@@ -226,6 +226,7 @@ const ProjectDetails = () => {
           variant="outline"
           className="border-primary/30 text-primary hover:bg-primary/10"
           onClick={() => navigate(`/dashboard/tickets?project=${id}`)}
+          data-voice="Abrir Solicitação"
         >
           <MessageSquare className="h-4 w-4 mr-2" />
           Abrir Solicitação

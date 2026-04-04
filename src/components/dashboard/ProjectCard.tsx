@@ -143,6 +143,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
                 size="sm"
                 className="gap-1.5 bg-green-600 hover:bg-green-500 text-white shadow-lg shadow-green-500/20 transition-all duration-300 hover:shadow-green-500/40 hover:scale-105"
                 onClick={() => window.open(project.url!, "_blank")}
+                data-voice="Acessar Site"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
                 Acessar Site

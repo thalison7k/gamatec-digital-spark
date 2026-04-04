@@ -346,6 +346,7 @@ const Tickets = () => {
                   key={ticket.id}
                   className="cursor-pointer hover:border-primary/30 transition-all"
                   onClick={() => openTicket(ticket)}
+                  data-voice={`${ticket.subject}. Prioridade: ${pc.label}. Status: ${sc.label}`}
                 >
                   <CardContent className="p-4 flex items-center gap-4">
                     <MessageSquare className="h-5 w-5 text-primary shrink-0" />
