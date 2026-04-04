@@ -163,6 +163,7 @@ const Dashboard = () => {
                   "border-border/50 overflow-hidden relative group transition-all duration-300",
                   "hover:border-primary/20 hover:-translate-y-0.5"
                 )}
+                {...hoverHandlers(`${stat.label}: ${stat.value}`)}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardContent className="p-4 flex items-center gap-3 relative">
