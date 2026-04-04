@@ -191,6 +191,7 @@ const Dashboard = () => {
                   action.border, "hover:-translate-y-0.5 hover:shadow-lg"
                 )}
                 onClick={action.onClick}
+                {...hoverHandlers(`${action.label}. ${action.description}`)}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardContent className="p-4 flex items-center gap-3 relative">
