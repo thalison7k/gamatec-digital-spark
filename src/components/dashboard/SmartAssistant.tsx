@@ -75,25 +75,26 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = idioma;
 
-    // Select best available voice for the language
+    // JARVIS-style voice selection
     const voices = window.speechSynthesis.getVoices();
     const langPrefix = idioma.split("-")[0];
-
-    // Priority: Google > Microsoft > any matching voice
     const preferred = voices.filter(v => v.lang.startsWith(langPrefix));
-    const googleVoice = preferred.find(v => v.name.toLowerCase().includes("google"));
-    const msVoice = preferred.find(v => v.name.toLowerCase().includes("microsoft"));
-    const naturalVoice = preferred.find(v => v.name.toLowerCase().includes("natural"));
-    const bestVoice = googleVoice || naturalVoice || msVoice || preferred[0];
+    const bestVoice = preferred.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("brasileiro"))
+      || preferred.find(v => v.name.toLowerCase().includes("google"))
+      || preferred.find(v => v.name.toLowerCase().includes("daniel"))
+      || preferred.find(v => v.name.toLowerCase().includes("microsoft"))
+      || preferred.find(v => v.name.toLowerCase().includes("natural"))
+      || preferred[0];
 
     if (bestVoice) {
       utterance.voice = bestVoice;
       utterance.lang = bestVoice.lang;
     }
 
-    utterance.rate = 0.95;
-    utterance.pitch = 1.05;
-    utterance.volume = 0.9;
+    // JARVIS voice profile: calm, deep, precise
+    utterance.rate = 0.88;
+    utterance.pitch = 0.75;
+    utterance.volume = 1.0;
 
     synthRef.current = utterance;
     window.speechSynthesis.speak(utterance);
