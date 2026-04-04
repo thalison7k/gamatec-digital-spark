@@ -133,6 +133,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
               size="sm"
               className="flex-1 border-primary/30 text-primary hover:bg-primary/10 transition-all duration-300"
               onClick={() => navigate(`/dashboard/project/${project.id}`)}
+              data-voice="Ver detalhes"
             >
               <Eye className="h-4 w-4 mr-2" />
               Ver detalhes
