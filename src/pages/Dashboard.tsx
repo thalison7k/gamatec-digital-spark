@@ -3,16 +3,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useUserRole } from "@/hooks/useUserRole";
+import { useHoverSpeech } from "@/hooks/useHoverSpeech";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ProjectCard from "@/components/dashboard/ProjectCard";
 import {
   Plus, MessageSquare, Rocket, FileText, Phone, BrainCircuit,
-  BarChart3, Clock, CheckCircle2, AlertCircle
+  BarChart3, Clock, CheckCircle2, AlertCircle, Volume2, VolumeX
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const SmartAssistant = lazy(() => import("@/components/dashboard/SmartAssistant"));
 
@@ -35,7 +37,10 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [ticketCount, setTicketCount] = useState(0);
+  const [hoverVozAtiva, setHoverVozAtiva] = useState(false);
+  const [hoverVozTipo, setHoverVozTipo] = useState<"masculina" | "feminina">("masculina");
   const navigate = useNavigate();
+  const { hoverHandlers } = useHoverSpeech({ enabled: hoverVozAtiva, vozTipo: hoverVozTipo });
 
   useEffect(() => {
     if (!user) return;
@@ -107,22 +112,45 @@ const Dashboard = () => {
         {/* Animated Greeting */}
         <div className="flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-500">
           <div>
-            <h2 className="text-2xl md:text-3xl font-orbitron font-bold text-foreground">
+            <h2 className="text-2xl md:text-3xl font-orbitron font-bold text-foreground" {...hoverHandlers(`${greeting()}, ${profile?.full_name || "Usuário"}`)}>
               {greeting()},{" "}
               <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
                 {profile?.full_name || "Usuário"}
               </span>{" "}
               👋
             </h2>
-            <p className="text-muted-foreground text-sm mt-1">
+            <p className="text-muted-foreground text-sm mt-1" {...hoverHandlers(isAdmin ? "Visão geral de todos os projetos" : "Acompanhe seus projetos e solicitações")}>
               {isAdmin ? "Visão geral de todos os projetos" : "Acompanhe seus projetos e solicitações"}
             </p>
           </div>
-          {isAdmin && (
-            <Button onClick={() => navigate("/dashboard/admin")} className="gap-2 shadow-lg shadow-primary/20">
-              <Plus className="h-4 w-4" /> Novo Projeto
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {/* Hover Voice Toggle */}
+            <div className="flex items-center gap-1.5 bg-muted/50 rounded-lg px-2 py-1 border border-border/50">
+              <Button
+                size="sm"
+                variant={hoverVozAtiva ? "default" : "outline"}
+                className="h-7 gap-1.5 text-xs px-2"
+                onClick={() => setHoverVozAtiva(!hoverVozAtiva)}
+              >
+                {hoverVozAtiva ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+                {hoverVozAtiva ? "Leitura On" : "Leitura Off"}
+              </Button>
+              {hoverVozAtiva && (
+                <Select value={hoverVozTipo} onValueChange={(v) => setHoverVozTipo(v as "masculina" | "feminina")}>
+                  <SelectTrigger className="h-7 w-28 text-xs"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="masculina">JARVIS</SelectItem>
+                    <SelectItem value="feminina">FRIDAY</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
+            {isAdmin && (
+              <Button onClick={() => navigate("/dashboard/admin")} className="gap-2 shadow-lg shadow-primary/20">
+                <Plus className="h-4 w-4" /> Novo Projeto
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -135,6 +163,7 @@ const Dashboard = () => {
                   "border-border/50 overflow-hidden relative group transition-all duration-300",
                   "hover:border-primary/20 hover:-translate-y-0.5"
                 )}
+                {...hoverHandlers(`${stat.label}: ${stat.value}`)}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardContent className="p-4 flex items-center gap-3 relative">
@@ -162,6 +191,7 @@ const Dashboard = () => {
                   action.border, "hover:-translate-y-0.5 hover:shadow-lg"
                 )}
                 onClick={action.onClick}
+                {...hoverHandlers(`${action.label}. ${action.description}`)}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardContent className="p-4 flex items-center gap-3 relative">
@@ -181,7 +211,7 @@ const Dashboard = () => {
         {/* Projects */}
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "300ms", animationFillMode: "both" }}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-orbitron text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+            <h3 className="font-orbitron text-sm font-semibold text-muted-foreground uppercase tracking-wider" {...hoverHandlers(isAdmin ? "Todos os Projetos" : "Meus Projetos")}>
               {isAdmin ? "Todos os Projetos" : "Meus Projetos"}
             </h3>
             {projects.length > 0 && (
