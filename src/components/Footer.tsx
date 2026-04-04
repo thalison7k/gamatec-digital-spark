@@ -25,7 +25,7 @@ export const Footer = () => {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-orbitron font-bold text-foreground">Serviços</h3>
+              <h3 className="font-orbitron font-bold text-foreground" data-voice="Serviços">Serviços</h3>
               <ul className="space-y-2 text-sm">
                 {["Desenvolvimento Web", "Manutenção de Sites", "Consultoria"].map((item, i) => (
                   <li key={i}>
