@@ -3,16 +3,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useUserRole } from "@/hooks/useUserRole";
+import { useHoverSpeech } from "@/hooks/useHoverSpeech";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ProjectCard from "@/components/dashboard/ProjectCard";
 import {
   Plus, MessageSquare, Rocket, FileText, Phone, BrainCircuit,
-  BarChart3, Clock, CheckCircle2, AlertCircle
+  BarChart3, Clock, CheckCircle2, AlertCircle, Volume2, VolumeX
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const SmartAssistant = lazy(() => import("@/components/dashboard/SmartAssistant"));
 
