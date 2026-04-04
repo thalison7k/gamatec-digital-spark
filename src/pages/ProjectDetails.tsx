@@ -184,7 +184,7 @@ const ProjectDetails = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="flex-1">
-            <h2 className="text-xl font-orbitron font-bold">{project.title}</h2>
+            <h2 className="text-xl font-orbitron font-bold" data-voice={project.title}>{project.title}</h2>
             <p className="text-sm text-muted-foreground">{SERVICE_LABELS[project.service_type]}</p>
           </div>
           <Badge variant="outline" className={statusConfig.color + " border"}>
