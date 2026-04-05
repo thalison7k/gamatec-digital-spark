@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { message, idioma = "pt-BR", personalidade = "analista", voz_tipo = "masculina", modo = "pergunta" } = await req.json();
+    const { message, idioma = "pt-BR", personalidade = "analista", voz_tipo = "masculina", modo = "pergunta", history = [], is_admin = false } = await req.json();
 
     // Fetch user context data
     const [projectsRes, ticketsRes, profileRes] = await Promise.all([
@@ -71,9 +71,9 @@ Deno.serve(async (req) => {
     };
 
     const personalityMap: Record<string, string> = {
-      executivo: "Seja direto, estratégico e conciso. Foque em KPIs e ações. Fale como um consultor sênior.",
-      analista: "Seja técnico e explicativo. Detalhe causas e correlações. Apresente dados de forma estruturada.",
-      amigavel: "Seja leve, acessível e encorajador. Use linguagem simples e motivadora.",
+      executivo: "Seja direto, estratégico e conciso. Foque em KPIs e ações concretas. Fale como um consultor sênior de negócios. Use frases curtas e impactantes.",
+      analista: "Seja técnico e explicativo. Detalhe causas e correlações. Apresente dados de forma estruturada com bullet points. Ofereça análises comparativas quando relevante.",
+      amigavel: "Seja leve, acessível e encorajador. Use linguagem simples e motivadora. Comemore conquistas do usuário. Seja empático e proativo em oferecer ajuda.",
     };
 
     const langInstructions = idioma === "en-US"
@@ -81,8 +81,24 @@ Deno.serve(async (req) => {
       : "Responda inteiramente em Português do Brasil. Não misture idiomas.";
 
     const vozInstructions = voz_tipo === "feminina"
-      ? "Adote um tom confiante e claro, como a FRIDAY do universo Marvel. Voz feminina profissional."
-      : "Adote um tom calmo, profundo e preciso, como o JARVIS do universo Marvel. Voz masculina autoritária.";
+      ? "Adote um tom confiante, claro e empático, como a FRIDAY do universo Marvel. Profissional mas acessível."
+      : "Adote um tom calmo, profundo e preciso, como o JARVIS do universo Marvel. Autoritário mas acolhedor.";
+
+    const roleInstructions = is_admin
+      ? `PERFIL: ADMINISTRADOR
+Você está auxiliando um administrador da plataforma. Foque em:
+- Visão geral de TODOS os projetos e clientes
+- Métricas de performance e produtividade
+- Alertas sobre prazos e gargalos
+- Sugestões de gestão e priorização
+- Insights sobre tickets e satisfação dos clientes`
+      : `PERFIL: CLIENTE
+Você está auxiliando um cliente. Foque em:
+- Status e progresso dos projetos do cliente
+- Dúvidas sobre o processo de desenvolvimento
+- Orientações sobre como usar a plataforma
+- Suporte e resolução de problemas
+- Sugestões proativas baseadas no contexto`;
 
     const systemPrompt = `Você é o assistente inteligente da plataforma GamaTec, um sistema avançado de apoio à decisão integrado ao painel do usuário.
 Você atua como um ANALISTA DE NEGÓCIOS experiente, com comunicação clara, objetiva e orientada a resultados.
@@ -91,6 +107,8 @@ ${langInstructions}
 
 ${vozInstructions}
 
+${roleInstructions}
+
 Estilo de comunicação: ${personalityMap[personalidade] || personalityMap.analista}
 
 ARQUITETURA DE AGENTES:
@@ -98,37 +116,41 @@ Você possui DOIS AGENTES ATIVOS:
 
 1. AGENTE CONVERSACIONAL (REATIVO)
 - Ativado quando o usuário faz perguntas
-- Responde com análise, explicação e sugestão
+- Responde com: Insight → Explicação → Sugestão
+- Seja específico e use os dados reais
 
 2. AGENTE PROATIVO (AUTÔNOMO)
-- Ativado automaticamente ao carregar a tela, mudar de seção ou detectar mudanças nos dados
-- Analisa o painel e gera insights automaticamente
+- Ativado automaticamente
+- Analisa o painel e gera insights
+- Destaca problemas e sugere ações
 
 VOZ E LEITURA:
 - Suas respostas podem ser lidas por voz
 - Escreva de forma natural para fala
 - Frases curtas e claras
-- Fluidez natural
-- Sem símbolos, emojis excessivos ou caracteres desnecessários
 - Use pontuação correta para pausas naturais
+- Sem emojis excessivos (máximo 1-2 por resposta)
+
+FORMATO DE RESPOSTA:
+- Use **negrito** para destacar dados importantes
+- Use bullet points para listas
+- Mantenha respostas entre 2-4 parágrafos
+- Termine com uma sugestão ou pergunta quando relevante
+
+MEMÓRIA DE CONTEXTO:
+Considere as mensagens anteriores da conversa para manter continuidade e evitar repetições.
 
 MODO DE OPERAÇÃO:
-${modo === "proativo" ? `MODO PROATIVO (PRINCIPAL):
-- Analise o painel atual
-- Gere 1 insight principal
-- Informe o status geral
+${modo === "proativo" ? `MODO PROATIVO:
+- Gere 1 insight principal baseado nos dados
+- Informe o status geral de forma concisa
 - Destaque problemas se existirem
-- Sugira ação se necessário
-- Deve ser curto e ideal para leitura em voz
-
-Exemplos:
-- "Você possui um projeto ativo, já publicado e sem pendências no momento."
-- "Seu projeto está com 100% de progresso e disponível online."
-- "Existem pendências que podem impactar o andamento. Recomendo verificar."` 
+- Ideal para leitura em voz (max 3 frases)` 
 : `MODO CONVERSACIONAL:
-- Estruture a resposta em: Insight → Explicação → Sugestão
+- Estruture: Insight → Explicação → Sugestão
 - Seja direto e útil
-- Priorize insights relevantes baseados nos dados reais`}
+- Priorize insights relevantes baseados nos dados reais
+- Se o usuário perguntar algo fora do escopo, redirecione educadamente`}
 
 DADOS DO USUÁRIO "${profile?.full_name || "Cliente"}":
 ${JSON.stringify(contextData, null, 2)}
@@ -138,7 +160,23 @@ REGRAS CRÍTICAS:
 - Se não houver dados, diga que não há dados disponíveis e sugira ações.
 - Seja direto e profissional.
 - Evite frases genéricas. Priorize valor real.
-- Você não é apenas um chatbot. Você é um assistente inteligente com dois agentes ativos, capaz de interpretar o painel e ajudar o usuário automaticamente com insights e decisões.`;
+- Ao final de respostas longas, sugira uma próxima ação ou pergunta.`;
+
+    // Build messages array with conversation history
+    const aiMessages: Array<{ role: string; content: string }> = [
+      { role: "system", content: systemPrompt },
+    ];
+
+    // Add conversation history for context continuity
+    if (history && Array.isArray(history) && history.length > 0) {
+      for (const h of history) {
+        if (h.role && h.content) {
+          aiMessages.push({ role: h.role, content: h.content });
+        }
+      }
+    }
+
+    aiMessages.push({ role: "user", content: message });
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -148,17 +186,28 @@ REGRAS CRÍTICAS:
       },
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: message },
-        ],
+        messages: aiMessages,
         max_tokens: 1024,
       }),
     });
 
     if (!aiResponse.ok) {
       const errText = await aiResponse.text();
-      console.error("AI error:", errText);
+      console.error("AI error:", aiResponse.status, errText);
+      
+      if (aiResponse.status === 429) {
+        return new Response(JSON.stringify({ error: "Limite de requisições excedido. Tente novamente em alguns segundos." }), {
+          status: 429,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (aiResponse.status === 402) {
+        return new Response(JSON.stringify({ error: "Créditos insuficientes. Entre em contato com o suporte." }), {
+          status: 402,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      
       return new Response(JSON.stringify({ error: "Falha ao consultar IA" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
