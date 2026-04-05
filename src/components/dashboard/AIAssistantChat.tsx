@@ -232,13 +232,13 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
   const saveConversation = async () => {
     if (!user || messages.length < 2) return;
     try {
-      await supabase.from("chat_conversations").insert({
+      await supabase.from("chat_conversations").insert([{
         user_id: user.id,
         assistant_type: "request",
         title: `Solicitação - ${collected.tipo || "Site"} - ${collected.empresa || ""}`.trim(),
-        messages: JSON.parse(JSON.stringify(messages)),
-        metadata: { collected, voz_tipo: vozGenero },
-      });
+        messages: JSON.parse(JSON.stringify(messages)) as any,
+        metadata: { collected, voz_tipo: vozGenero } as any,
+      }]);
       toast({ title: "Conversa salva!", description: "Dados armazenados com sucesso." });
     } catch {
       toast({ title: "Erro", description: "Não foi possível salvar.", variant: "destructive" });
