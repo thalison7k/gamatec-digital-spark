@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      chat_conversations: {
+        Row: {
+          assistant_type: string
+          created_at: string
+          id: string
+          messages: Json
+          metadata: Json | null
+          project_id: string | null
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assistant_type?: string
+          created_at?: string
+          id?: string
+          messages?: Json
+          metadata?: Json | null
+          project_id?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assistant_type?: string
+          created_at?: string
+          id?: string
+          messages?: Json
+          metadata?: Json | null
+          project_id?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_conversations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
