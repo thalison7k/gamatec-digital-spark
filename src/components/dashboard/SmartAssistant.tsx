@@ -148,7 +148,7 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
 
     try {
       const title = messages.find(m => m.role === "user")?.content.slice(0, 80) || "Conversa";
-      const payload = {
+      const payload: any = {
         user_id: user.id,
         assistant_type: "smart",
         title,
