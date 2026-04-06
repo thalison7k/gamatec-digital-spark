@@ -355,26 +355,26 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-md w-[calc(100vw-1rem)] max-h-[90vh] sm:max-h-[85vh] flex flex-col p-0 gap-0 overflow-hidden rounded-2xl border-primary/10">
         {/* Header */}
-        <DialogHeader className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-border/50 shrink-0 bg-gradient-to-r from-primary/5 to-transparent">
+        <DialogHeader className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-border/50 shrink-0 bg-gradient-to-r from-primary/5 to-transparent pr-10">
           <div className="flex items-center justify-between gap-1">
-            <DialogTitle className="flex items-center gap-2 text-sm font-orbitron">
-              <div className="relative">
+            <DialogTitle className="flex items-center gap-2 text-sm font-orbitron min-w-0">
+              <div className="relative shrink-0">
                 <Sparkles className="h-4 w-4 text-primary" />
                 {isSpeaking && (
                   <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                 )}
               </div>
-              <span className="hidden sm:inline">Assistente IA</span>
-              <span className="sm:hidden text-xs">Assistente</span>
+              <span className="hidden sm:inline truncate">Assistente IA</span>
+              <span className="sm:hidden text-xs truncate">Assistente</span>
             </DialogTitle>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 shrink-0">
               {isSpeaking && (
-                <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
+                <div className="hidden sm:flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
                   <AudioLines className="h-3 w-3 animate-pulse" />
                 </div>
               )}
               <Select value={vozGenero} onValueChange={(v) => setVozGenero(v as VozGenero)}>
-                <SelectTrigger className="h-7 w-[90px] sm:w-[110px] text-[10px] sm:text-xs rounded-lg"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="h-7 w-[80px] sm:w-[110px] text-[10px] sm:text-xs rounded-lg"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="masculino">♂ JARVIS</SelectItem>
                   <SelectItem value="feminino">♀ FRIDAY</SelectItem>
@@ -383,7 +383,7 @@ export default function AIAssistantChat({ open, onClose, onGenerate }: AIAssista
               <Button
                 size="sm"
                 variant={ttsEnabled ? "default" : "outline"}
-                className="h-7 gap-1 text-[10px] sm:text-xs px-2 rounded-lg transition-all duration-200 active:scale-95"
+                className="h-7 gap-1 text-[10px] sm:text-xs px-1.5 sm:px-2 rounded-lg transition-all duration-200 active:scale-95"
                 onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) { window.speechSynthesis?.cancel(); setIsSpeaking(false); } }}
               >
                 {ttsEnabled ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
