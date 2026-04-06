@@ -219,9 +219,9 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-lg w-[calc(100vw-1rem)] max-h-[90vh] sm:max-h-[85vh] flex flex-col p-0 gap-0 overflow-hidden rounded-2xl border-primary/10">
         {/* Header */}
-        <DialogHeader className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-border/50 shrink-0 bg-gradient-to-r from-primary/5 to-transparent pr-10">
-          <div className="flex items-center justify-between gap-2">
-            <DialogTitle className="flex items-center gap-2 text-sm font-orbitron min-w-0">
+        <DialogHeader className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-border/50 shrink-0 bg-gradient-to-r from-primary/5 to-transparent">
+          <div className="flex items-center gap-2 pr-8">
+            <DialogTitle className="flex items-center gap-2 text-sm font-orbitron min-w-0 shrink-1">
               <div className="relative shrink-0">
                 <Sparkles className="h-4 w-4 text-primary" />
                 {isSpeaking && (
@@ -229,9 +229,9 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
                 )}
               </div>
               <span className="hidden sm:inline truncate">{idioma === "en-US" ? "Smart Assistant" : "Assistente Inteligente"}</span>
-              <span className="sm:hidden truncate">{idioma === "en-US" ? "Assistant" : "Assistente"}</span>
+              <span className="sm:hidden truncate">{idioma === "en-US" ? "AI" : "IA"}</span>
             </DialogTitle>
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex items-center gap-1 shrink-0 ml-auto">
               {isSpeaking && (
                 <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
                   <AudioLines className="h-3 w-3 animate-pulse" />
@@ -241,7 +241,7 @@ export default function SmartAssistant({ open, onClose }: SmartAssistantProps) {
               <Button
                 size="sm"
                 variant={ttsEnabled ? "default" : "outline"}
-                className="h-7 gap-1 text-[10px] sm:text-xs px-1.5 sm:px-2 rounded-lg transition-all duration-200 active:scale-95"
+                className="h-7 w-7 sm:w-auto sm:gap-1 text-[10px] sm:text-xs px-0 sm:px-2 rounded-lg transition-all duration-200 active:scale-95"
                 onClick={() => { setTtsEnabled(!ttsEnabled); if (ttsEnabled) { window.speechSynthesis?.cancel(); setIsSpeaking(false); } }}
               >
                 {ttsEnabled ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
