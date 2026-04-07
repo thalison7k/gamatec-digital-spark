@@ -11,6 +11,7 @@ import { AccessibilityProvider } from "@/hooks/useAccessibility";
 import { VoiceProvider } from "@/components/VoiceProvider";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import Auth from "./pages/Auth";
 
 const Index = lazy(() => import("./pages/Index"));
@@ -77,6 +78,7 @@ const App = () => (
                   </Routes>
                 </Suspense>
                 <AccessibilityPanel />
+                <PWAInstallPrompt />
                 <ScrollToTop />
               </BrowserRouter>
             </TooltipProvider>
