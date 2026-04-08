@@ -13,6 +13,7 @@ import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import Auth from "./pages/Auth";
+import { useUserRole } from "@/hooks/useUserRole";
 
 const Index = lazy(() => import("./pages/Index"));
 const ComoFunciona = lazy(() => import("./pages/ComoFunciona"));
