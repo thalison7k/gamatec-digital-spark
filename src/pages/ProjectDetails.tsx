@@ -100,15 +100,12 @@ const ProjectDetails = () => {
 
       if (uploadError) throw uploadError;
 
-      const { data: urlData } = supabase.storage
-        .from("project-materials")
-        .getPublicUrl(filePath);
-
+      // Store the storage path (not a public URL) for signed URL generation later
       const { error: insertError } = await supabase.from("project_materials").insert({
         project_id: id,
         uploaded_by: user.id,
         file_name: selectedFile.name,
-        file_url: urlData.publicUrl,
+        file_url: filePath,
         file_type: selectedFile.type,
         business_description: businessDesc || null,
         desired_colors: colors || null,

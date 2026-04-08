@@ -90,8 +90,8 @@ const App = () => (
                     <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                     <Route path="/dashboard/project/:id" element={<ProtectedRoute><ProjectDetails /></ProtectedRoute>} />
                     <Route path="/dashboard/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
-                    <Route path="/dashboard/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
-                    <Route path="/dashboard/clients" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+                    <Route path="/dashboard/admin" element={<ProtectedRoute><AdminRoute><AdminPanel /></AdminRoute></ProtectedRoute>} />
+                    <Route path="/dashboard/clients" element={<ProtectedRoute><AdminRoute><AdminPanel /></AdminRoute></ProtectedRoute>} />
                     <Route path="/como-funciona" element={<ProtectedRoute><ComoFunciona /></ProtectedRoute>} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
