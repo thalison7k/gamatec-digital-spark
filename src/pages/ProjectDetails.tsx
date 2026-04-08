@@ -291,16 +291,23 @@ const ProjectDetails = () => {
                         <p className="text-xs text-muted-foreground mt-1">📝 {m.business_description}</p>
                       )}
                     </div>
-                    <a
-                      href={m.file_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="shrink-0"
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={async () => {
+                        const { data } = await supabase.storage
+                          .from("project-materials")
+                          .createSignedUrl(m.file_url, 3600);
+                        if (data?.signedUrl) {
+                          window.open(data.signedUrl, "_blank");
+                        } else {
+                          toast({ title: "Erro", description: "Não foi possível gerar o link de download.", variant: "destructive" });
+                        }
+                      }}
                     >
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Download className="h-3.5 w-3.5" />
-                      </Button>
-                    </a>
+                      <Download className="h-3.5 w-3.5" />
+                    </Button>
                   </div>
                 ))}
               </div>
