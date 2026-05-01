@@ -157,14 +157,14 @@ export const Servicos = () => {
                   key={i}
                   className={`group relative p-6 rounded-2xl border bg-card/60 backdrop-blur-sm card-3d shimmer transition-all duration-500 ${
                     s.highlight
-                      ? "border-primary/60 shadow-[0_0_30px_hsl(var(--primary)/0.25)]"
+                      ? "border-primary/60 shadow-[0_0_30px_hsl(var(--primary)/0.25)] pt-9"
                       : "border-border hover:border-primary/50"
                   }`}
                   onMouseEnter={() => play("hover")}
                   data-voice={s.title}
                 >
                   {s.highlight && (
-                    <span className="absolute -top-3 right-4 px-3 py-0.5 text-[10px] font-orbitron uppercase tracking-wider bg-primary text-primary-foreground rounded-full shadow-lg">
+                    <span className="absolute top-3 right-4 z-10 px-3 py-1 text-[10px] font-orbitron uppercase tracking-wider bg-primary text-primary-foreground rounded-full shadow-lg">
                       Mais procurado
                     </span>
                   )}
