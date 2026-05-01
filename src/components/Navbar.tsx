@@ -76,7 +76,34 @@ export const Navbar = () => {
   const { play, enabled, setEnabled } = useSounds();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const sectionLinks = useMemo(
+    () => [
+      { id: "servicos", label: "Serviços", icon: Wrench },
+      { id: "pricing", label: "Planos", icon: Tag },
+      { id: "portfolio", label: "Portfólio", icon: Briefcase },
+      { id: "faq", label: "FAQ", icon: HelpCircle },
+    ],
+    []
+  );
+
+  // On mount / route change with hash → scroll to that section
+  useEffect(() => {
+    if (location.hash && location.pathname === "/site") {
+      const id = location.hash.replace("#", "");
+      const t = window.setTimeout(() => scrollToSection(id), 200);
+      return () => window.clearTimeout(t);
+    }
+  }, [location.pathname, location.hash]);
+
+  const handleSectionClick = (id: string) => {
+    play("whoosh");
+    setMobileOpen(false);
+    navigateToSection(id, navigate, location.pathname);
+  };
 
   const handleLogout = async () => {
     play("click");
@@ -88,7 +115,7 @@ export const Navbar = () => {
     <nav role="navigation" aria-label="Navegação principal" className="navbar-3d-enter fixed top-0 left-0 right-0 z-50 px-4 py-3 flex items-center justify-between bg-background/60 backdrop-blur-md border-b border-border/30">
       {/* Left – Logo */}
       <button
-        onClick={() => { play("whoosh"); navigate("/"); }}
+        onClick={() => { play("whoosh"); navigate("/site"); }}
         className="flex items-center gap-2 hover:opacity-80 transition-opacity"
       >
         <img src={gamatecLogo} alt="GamaTec" className="h-8 w-auto" />
@@ -97,8 +124,57 @@ export const Navbar = () => {
         </span>
       </button>
 
+      {/* Center – Section links (desktop) */}
+      <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+        {sectionLinks.map(({ id, label }) => (
+          <button
+            key={id}
+            onClick={() => handleSectionClick(id)}
+            onMouseEnter={() => play("hover")}
+            data-voice={label}
+            className="navlink-3d relative px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
       {/* Right – User actions */}
       <div className="flex items-center gap-2">
+        {/* Mobile menu trigger */}
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden menu-trigger-3d h-9 w-9"
+              onMouseEnter={() => play("hover")}
+              onClick={() => play("click")}
+              aria-label="Abrir menu de navegação"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-72">
+            <SheetHeader>
+              <SheetTitle className="font-orbitron text-primary">Navegação</SheetTitle>
+            </SheetHeader>
+            <nav className="mt-6 flex flex-col gap-1" aria-label="Menu mobile">
+              {sectionLinks.map(({ id, label, icon: Icon }, i) => (
+                <button
+                  key={id}
+                  onClick={() => handleSectionClick(id)}
+                  className="navlink-3d flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all border border-transparent hover:border-primary/30"
+                  style={{ animationDelay: `${i * 60}ms` }}
+                >
+                  <Icon className="h-5 w-5 text-primary" />
+                  {label}
+                </button>
+              ))}
+            </nav>
+          </SheetContent>
+        </Sheet>
+
         {user ? (
           <>
             <Button
