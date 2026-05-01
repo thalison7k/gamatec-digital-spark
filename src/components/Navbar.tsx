@@ -1,9 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useSounds } from "@/components/SoundProvider";
 import { useTheme } from "@/hooks/useTheme";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { scrollToSection, navigateToSection } from "@/lib/scrollToSection";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
   ArrowLeft,
   LayoutDashboard,
@@ -15,6 +17,11 @@ import {
   Volume2,
   VolumeX,
   Settings,
+  Menu,
+  Wrench,
+  Tag,
+  Briefcase,
+  HelpCircle,
 } from "lucide-react";
 import {
   DropdownMenu,
