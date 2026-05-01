@@ -69,12 +69,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: { height: "0", opacity: "0", transform: "perspective(800px) rotateX(-12deg) translateY(-6px)" },
+          to: { height: "var(--radix-accordion-content-height)", opacity: "1", transform: "perspective(800px) rotateX(0deg) translateY(0)" },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: { height: "var(--radix-accordion-content-height)", opacity: "1", transform: "perspective(800px) rotateX(0deg) translateY(0)" },
+          to: { height: "0", opacity: "0", transform: "perspective(800px) rotateX(-12deg) translateY(-6px)" },
         },
         "fade-in": {
           "0%": { opacity: "0", transform: "translateY(20px)" },
