@@ -63,10 +63,20 @@ export const DevelopmentPackages = () => {
             </p>
           </div>
 
-          <div ref={gridRef} className={`grid md:grid-cols-3 gap-8 pt-4 stagger-children ${gridVisible ? 'visible' : ''}`}>
-            {packages.map((pkg, index) => (
-              <PricingCard key={index} {...pkg} delay={index * 150} />
-            ))}
+          <div ref={gridRef} className="grid md:grid-cols-3 gap-8 pt-4">
+            {packages.map((pkg, index) => {
+              const reveal =
+                index === 0 ? "scroll-reveal-left" : index === 2 ? "scroll-reveal-right" : "scroll-reveal-scale";
+              return (
+                <div
+                  key={index}
+                  className={`${reveal} ${gridVisible ? "visible" : ""}`}
+                  style={{ transitionDelay: `${index * 180}ms` }}
+                >
+                  <PricingCard {...pkg} delay={index * 150} />
+                </div>
+              );
+            })}
           </div>
 
           <div className="text-center pt-8">
