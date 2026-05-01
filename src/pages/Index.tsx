@@ -15,6 +15,7 @@ const Index = () => {
       <Navbar />
       <main id="main-content" role="main" aria-label="Conteúdo principal">
         <Hero />
+        <Servicos />
         <DevelopmentPackages />
         <MaintenancePlans />
         <Portfolio />
