@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { Servicos } from "@/components/Servicos";
 import { DevelopmentPackages } from "@/components/DevelopmentPackages";
 import { MaintenancePlans } from "@/components/MaintenancePlans";
 import { Portfolio } from "@/components/Portfolio";
@@ -14,6 +15,7 @@ const Index = () => {
       <Navbar />
       <main id="main-content" role="main" aria-label="Conteúdo principal">
         <Hero />
+        <Servicos />
         <DevelopmentPackages />
         <MaintenancePlans />
         <Portfolio />
