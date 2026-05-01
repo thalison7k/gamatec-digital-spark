@@ -531,6 +531,44 @@
     box-shadow: 0 0 22px hsl(var(--primary) / 0.55);
   }
 
+  /* ===== NAVLINK 3D (anchor links + mobile drawer items) ===== */
+  .navlink-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease, text-shadow 0.25s ease;
+  }
+  .navlink-3d::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 4px;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 2px;
+  }
+  @media (hover: hover) {
+    .navlink-3d:hover {
+      transform: perspective(500px) translateY(-1px) rotateX(8deg);
+      text-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+    }
+    .navlink-3d:hover::after {
+      transform: scaleX(1);
+    }
+  }
+  .navlink-3d:active {
+    transform: perspective(500px) translateY(0) scale(0.97);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .navlink-3d,
+    .navlink-3d::after {
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+
   /* ===== DROPDOWN / MENU 3D SURFACE ===== */
   .menu-3d-surface {
     transform-origin: top center;
