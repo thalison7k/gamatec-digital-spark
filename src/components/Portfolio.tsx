@@ -53,7 +53,7 @@ export const Portfolio = () => {
   const { play } = useSounds();
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-background via-background/95 to-muted/20 relative overflow-hidden">
+    <section id="portfolio" className="py-20 px-4 bg-gradient-to-b from-background via-background/95 to-muted/20 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         <div ref={headerRef} className={`text-center mb-16 space-y-4 scroll-reveal ${headerVisible ? 'visible' : ''}`}>
           <h2 className="text-4xl md:text-5xl font-bold gradient-text">
