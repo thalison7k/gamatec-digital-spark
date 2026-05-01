@@ -489,6 +489,28 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
+
+  /* ===== NAVBAR 3D ENTRANCE ===== */
+  @keyframes navbar-3d-drop {
+    0% {
+      opacity: 0;
+      transform: perspective(1200px) translateY(-100%) rotateX(-30deg);
+      filter: blur(6px);
+    }
+    100% {
+      opacity: 1;
+      transform: perspective(1200px) translateY(0) rotateX(0deg);
+      filter: blur(0);
+    }
+  }
+  .navbar-3d-enter {
+    transform-origin: top center;
+    animation: navbar-3d-drop 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    will-change: transform, opacity, filter;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .navbar-3d-enter { animation: none !important; }
+  }
 }
 
 /* Google Translate widget styling */

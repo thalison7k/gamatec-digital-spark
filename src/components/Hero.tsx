@@ -60,25 +60,25 @@ export const Hero = () => {
       <div className="container relative z-10 px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           {/* Logo */}
-          <div className="logo-container inline-flex items-center gap-4 mb-4 opacity-0 animate-hero-entrance" style={{ animationDelay: "0.1s" }}>
+          <div className="logo-container inline-flex items-center gap-4 mb-4 scroll-reveal-scale visible" style={{ transitionDelay: "0.1s" }}>
             <img src={logo} alt="GamaTec.IA Logo" className="logo-image w-24 h-24 md:w-32 md:h-32 object-contain text-accent bg-accent font-mono text-center border-accent rounded-full" />
             <span className="logo-text text-4xl md:text-5xl font-orbitron font-bold glow-text">GamaTec.IA</span>
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-5xl md:text-7xl font-orbitron font-black leading-tight opacity-0 animate-hero-entrance" style={{ animationDelay: "0.3s" }}>
+          <h1 className="text-5xl md:text-7xl font-orbitron font-black leading-tight reveal-3d-flip visible" style={{ transitionDelay: "0.3s" }}>
             <span className="gradient-text">Sites Profissionais</span>
             <br />
             <span className="text-foreground">Rápidos & Acessíveis</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto opacity-0 animate-hero-entrance" style={{ animationDelay: "0.5s" }}>
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto scroll-reveal visible" style={{ transitionDelay: "0.5s" }}>
             Desenvolvimento web de qualidade para pequenos negócios que querem crescer com presença digital marcante.
           </p>
 
           {/* Features */}
-          <div className="flex flex-wrap justify-center gap-6 pt-8 opacity-0 animate-hero-entrance" style={{ animationDelay: "0.7s" }}>
+          <div className="flex flex-wrap justify-center gap-6 pt-8 stagger-children visible">
             {[
             { icon: Zap, label: "Entrega Rápida" },
             { icon: Shield, label: "Qualidade Garantida" },
@@ -92,29 +92,31 @@ export const Hero = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 opacity-0 animate-hero-entrance" style={{ animationDelay: "0.9s" }}>
-            <Button
-              size="lg"
-              className="text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground glow-border hover-lift pulse-ring"
-              onClick={scrollToPricing}
-              onMouseEnter={() => play("hover")}>
-              
-              Ver Planos
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 flex items-center gap-2"
-              onClick={() => {play("click");window.open('https://wa.me/5511961442363', '_blank');}}
-              onMouseEnter={() => play("hover")}>
-              
-              <MessageCircle className="w-5 h-5" />
-              Entrar em Contato
-            </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+            <div className="scroll-reveal-left visible" style={{ transitionDelay: "0.9s" }}>
+              <Button
+                size="lg"
+                className="text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground glow-border hover-lift pulse-ring"
+                onClick={scrollToPricing}
+                onMouseEnter={() => play("hover")}>
+                Ver Planos
+              </Button>
+            </div>
+            <div className="scroll-reveal-right visible" style={{ transitionDelay: "1.05s" }}>
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 flex items-center gap-2"
+                onClick={() => {play("click");window.open('https://wa.me/5511961442363', '_blank');}}
+                onMouseEnter={() => play("hover")}>
+                <MessageCircle className="w-5 h-5" />
+                Entrar em Contato
+              </Button>
+            </div>
           </div>
 
           {/* Social Links */}
-          <div className="flex justify-center gap-4 pt-4 opacity-0 animate-hero-entrance" style={{ animationDelay: "1.1s" }}>
+          <div className="flex justify-center gap-4 pt-4 stagger-children visible" style={{ transitionDelay: "1.2s" }}>
             <button onClick={() => window.open('https://www.instagram.com/reel/DRlEVL5DME_/?igsh=MXdxemZjaHA3cnRwMA==', '_blank')}
             className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125 icon-bounce" aria-label="Instagram">
               <Instagram className="w-6 h-6" />
@@ -126,11 +128,10 @@ export const Hero = () => {
           </div>
 
           {/* Como Funciona Link */}
-          <div className="pt-6 opacity-0 animate-hero-entrance" style={{ animationDelay: "1.3s" }}>
+          <div className="pt-6 scroll-reveal visible" style={{ transitionDelay: "1.4s" }}>
             <button
               onClick={() => {play("whoosh");navigate("/como-funciona");}}
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-all duration-300 hover:translate-x-1 font-orbitron">
-              
               <BookOpen className="w-4 h-4" />
               Como a GamaTec.IA Funciona
             </button>
