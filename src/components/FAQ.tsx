@@ -34,34 +34,39 @@ const faqs = [
 ];
 
 export const FAQ = () => {
-  const { ref: sectionRef } = useScrollReveal<HTMLElement>();
+  const { ref: headerRef, isVisible: headerVisible } = useScrollReveal<HTMLDivElement>();
+  const { ref: listRef, isVisible: listVisible } = useScrollReveal<HTMLDivElement>();
 
   return (
-    <section ref={sectionRef} id="faq" className="py-20 px-4">
+    <section id="faq" className="py-20 px-4">
       <div className="container max-w-3xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-orbitron font-bold text-center mb-4">
-          <span className="gradient-text">Perguntas Frequentes</span>
-        </h2>
-        <p className="text-muted-foreground text-center mb-12 max-w-xl mx-auto">
-          Tire suas dúvidas antes de começar seu projeto
-        </p>
+        <div ref={headerRef} className={`scroll-reveal ${headerVisible ? "visible" : ""}`}>
+          <h2 className="text-3xl md:text-4xl font-orbitron font-bold text-center mb-4">
+            <span className="gradient-text">Perguntas Frequentes</span>
+          </h2>
+          <p className="text-muted-foreground text-center mb-12 max-w-xl mx-auto">
+            Tire suas dúvidas antes de começar seu projeto
+          </p>
+        </div>
 
-        <Accordion type="single" collapsible className="space-y-3">
-          {faqs.map((faq, i) => (
-            <AccordionItem
-              key={i}
-              value={`faq-${i}`}
-              className="bg-card border border-border/50 rounded-xl px-6 hover:border-primary/30 transition-colors"
-            >
-              <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline hover:text-primary">
-                {faq.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed">
-                {faq.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <div ref={listRef} className={`stagger-children ${listVisible ? "visible" : ""}`}>
+          <Accordion type="single" collapsible className="space-y-3">
+            {faqs.map((faq, i) => (
+              <AccordionItem
+                key={i}
+                value={`faq-${i}`}
+                className="bg-card border border-border/50 rounded-xl px-6 hover:border-primary/30 transition-colors"
+              >
+                <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline hover:text-primary">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
       </div>
     </section>
   );

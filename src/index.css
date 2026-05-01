@@ -176,42 +176,61 @@
     @apply transition-all duration-500;
   }
 
-  /* ===== SCROLL REVEAL ===== */
+  /* ===== SCROLL REVEAL (with subtle 3D depth) ===== */
   .scroll-reveal {
     opacity: 0;
-    transform: translateY(60px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: perspective(1200px) translateY(60px) translateZ(-40px) rotateX(8deg);
+    transform-origin: center bottom;
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
   }
   .scroll-reveal.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: perspective(1200px) translateY(0) translateZ(0) rotateX(0deg);
   }
   .scroll-reveal-left {
     opacity: 0;
-    transform: translateX(-80px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: perspective(1200px) translateX(-80px) rotateY(-12deg);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
   }
   .scroll-reveal-left.visible {
     opacity: 1;
-    transform: translateX(0);
+    transform: perspective(1200px) translateX(0) rotateY(0deg);
   }
   .scroll-reveal-right {
     opacity: 0;
-    transform: translateX(80px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: perspective(1200px) translateX(80px) rotateY(12deg);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
   }
   .scroll-reveal-right.visible {
     opacity: 1;
-    transform: translateX(0);
+    transform: perspective(1200px) translateX(0) rotateY(0deg);
   }
   .scroll-reveal-scale {
     opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: perspective(1200px) scale(0.8) translateZ(-60px);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
   }
   .scroll-reveal-scale.visible {
     opacity: 1;
-    transform: scale(1);
+    transform: perspective(1200px) scale(1) translateZ(0);
+  }
+  /* Dramatic 3D flip-in reveal */
+  .reveal-3d-flip {
+    opacity: 0;
+    transform: perspective(1400px) rotateX(-25deg) translateY(40px);
+    transform-origin: center top;
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+  }
+  .reveal-3d-flip.visible {
+    opacity: 1;
+    transform: perspective(1400px) rotateX(0deg) translateY(0);
   }
 
   /* ===== SHIMMER / SHINE ===== */
@@ -237,18 +256,44 @@
     animation: shimmer-sweep 3s ease-in-out infinite;
   }
 
-  /* ===== STAGGER CHILDREN ===== */
+  /* ===== STAGGER CHILDREN (3D) ===== */
+  .stagger-children {
+    perspective: 1400px;
+  }
   .stagger-children > * {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: perspective(1400px) translateY(50px) translateZ(-60px) rotateX(12deg);
+    transform-origin: center bottom;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
   }
-  .stagger-children.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
-  .stagger-children.visible > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: translateY(0); }
-  .stagger-children.visible > *:nth-child(3) { transition-delay: 0.19s; opacity: 1; transform: translateY(0); }
-  .stagger-children.visible > *:nth-child(4) { transition-delay: 0.26s; opacity: 1; transform: translateY(0); }
-  .stagger-children.visible > *:nth-child(5) { transition-delay: 0.33s; opacity: 1; transform: translateY(0); }
-  .stagger-children.visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > * {
+    opacity: 1;
+    transform: perspective(1400px) translateY(0) translateZ(0) rotateX(0deg);
+  }
+  .stagger-children.visible > *:nth-child(1) { transition-delay: 0.05s; }
+  .stagger-children.visible > *:nth-child(2) { transition-delay: 0.15s; }
+  .stagger-children.visible > *:nth-child(3) { transition-delay: 0.25s; }
+  .stagger-children.visible > *:nth-child(4) { transition-delay: 0.35s; }
+  .stagger-children.visible > *:nth-child(5) { transition-delay: 0.45s; }
+  .stagger-children.visible > *:nth-child(6) { transition-delay: 0.55s; }
+  .stagger-children.visible > *:nth-child(7) { transition-delay: 0.65s; }
+  .stagger-children.visible > *:nth-child(8) { transition-delay: 0.75s; }
+
+  /* Respect reduced motion: disable all entry transforms/animations */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-reveal,
+    .scroll-reveal-left,
+    .scroll-reveal-right,
+    .scroll-reveal-scale,
+    .reveal-3d-flip,
+    .stagger-children > * {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
 
   /* ===== MAGNETIC HOVER (legacy class kept for compatibility) ===== */
   .card-3d {
