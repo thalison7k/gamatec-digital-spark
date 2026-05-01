@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Admins can access all materials" ON storage.objects;
