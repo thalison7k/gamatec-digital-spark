@@ -250,20 +250,94 @@
   .stagger-children.visible > *:nth-child(5) { transition-delay: 0.33s; opacity: 1; transform: translateY(0); }
   .stagger-children.visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
 
-  /* ===== MAGNETIC HOVER (cards) ===== */
+  /* ===== MAGNETIC HOVER (legacy class kept for compatibility) ===== */
   .card-3d {
     transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99), box-shadow 0.4s ease;
     transform-style: preserve-3d;
-    perspective: 1000px;
+    perspective: 1200px;
   }
   @media (hover: hover) {
     .card-3d:hover {
-      transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
+      transform: translateY(-10px) rotateX(3deg) rotateY(-3deg) scale(1.01);
       box-shadow:
-        0 25px 50px hsl(var(--primary) / 0.15),
-        0 0 30px hsl(var(--primary) / 0.1),
-        inset 0 1px 0 hsl(var(--primary) / 0.1);
+        0 30px 60px hsl(var(--primary) / 0.2),
+        0 0 40px hsl(var(--primary) / 0.15),
+        inset 0 1px 0 hsl(var(--primary) / 0.15);
     }
+  }
+
+  /* ===== TRUE 3D CARD (used by <Card />) ===== */
+  .card-3d-base {
+    --card-rx: 0deg;
+    --card-ry: 0deg;
+    --card-mx: 50%;
+    --card-my: 50%;
+    --card-lift: 0;
+    position: relative;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    box-shadow: 0 4px 14px hsl(220 26% 4% / 0.25);
+    transform-style: preserve-3d;
+    perspective: 1200px;
+    transition:
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s ease;
+    will-change: transform;
+    isolation: isolate;
+  }
+  @media (hover: hover) {
+    .card-3d-base {
+      transform:
+        perspective(1200px)
+        rotateX(var(--card-rx))
+        rotateY(var(--card-ry))
+        translateZ(calc(var(--card-lift) * 14px))
+        scale(calc(1 + var(--card-lift) * 0.012));
+    }
+    .card-3d-base:hover {
+      border-color: hsl(var(--primary) / 0.5);
+      box-shadow:
+        0 30px 60px -15px hsl(var(--primary) / 0.35),
+        0 0 40px hsl(var(--primary) / 0.18),
+        0 0 0 1px hsl(var(--primary) / 0.15) inset;
+    }
+  }
+  .card-3d-content {
+    position: relative;
+    z-index: 1;
+    transform: translateZ(20px);
+    transform-style: preserve-3d;
+  }
+  .card-3d-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      circle at var(--card-mx) var(--card-my),
+      hsl(var(--primary) / 0.18),
+      transparent 45%
+    );
+    mix-blend-mode: screen;
+    z-index: 0;
+  }
+  @media (hover: hover) {
+    .card-3d-base:hover .card-3d-glare {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-3d-base,
+    .card-3d {
+      transition: none !important;
+      transform: none !important;
+    }
+    .card-3d-glare { display: none; }
   }
 
   /* ===== PULSE RING ===== */
