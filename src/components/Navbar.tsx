@@ -111,8 +111,9 @@ export const Navbar = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="rounded-full h-9 w-9 p-0 overflow-hidden border border-border/50 hover:border-primary hover:shadow-[0_0_12px_hsl(var(--primary)/0.3)] transition-all"
+                  className="menu-trigger-3d rounded-full h-9 w-9 p-0 overflow-hidden border border-border/50 hover:border-primary hover:shadow-[0_0_12px_hsl(var(--primary)/0.3)] transition-all"
                   onMouseEnter={() => play("hover")}
+                  aria-label="Abrir menu"
                 >
                   <Avatar className="h-9 w-9">
                     <AvatarImage

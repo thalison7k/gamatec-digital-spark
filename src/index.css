@@ -508,8 +508,148 @@
     animation: navbar-3d-drop 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
     will-change: transform, opacity, filter;
   }
+
+  /* ===== MOBILE MENU TRIGGER (hamburger / avatar) ===== */
+  .menu-trigger-3d {
+    transform-style: preserve-3d;
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.35s ease,
+      border-color 0.3s ease;
+    will-change: transform;
+  }
+  @media (hover: hover) {
+    .menu-trigger-3d:hover {
+      transform: perspective(600px) rotateY(-12deg) rotateX(8deg) scale(1.06);
+    }
+  }
+  .menu-trigger-3d:active {
+    transform: perspective(600px) rotateY(0deg) rotateX(0deg) scale(0.94);
+  }
+  .menu-trigger-3d[data-state="open"] {
+    transform: perspective(600px) rotateY(180deg) scale(1.05);
+    box-shadow: 0 0 22px hsl(var(--primary) / 0.55);
+  }
+
+  /* ===== DROPDOWN / MENU 3D SURFACE ===== */
+  .menu-3d-surface {
+    transform-origin: top center;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    box-shadow:
+      0 18px 40px -12px hsl(220 26% 4% / 0.55),
+      0 0 24px hsl(var(--primary) / 0.18),
+      0 0 0 1px hsl(var(--primary) / 0.1) inset;
+  }
+  .menu-3d-surface[data-state="open"] {
+    animation: menu-3d-open 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .menu-3d-surface[data-state="closed"] {
+    animation: menu-3d-close 0.25s cubic-bezier(0.4, 0, 1, 1) both;
+  }
+  @keyframes menu-3d-open {
+    0% {
+      opacity: 0;
+      transform: perspective(1000px) translateY(-12px) rotateX(-18deg) scale(0.92);
+      filter: blur(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: perspective(1000px) translateY(0) rotateX(0deg) scale(1);
+      filter: blur(0);
+    }
+  }
+  @keyframes menu-3d-close {
+    0% {
+      opacity: 1;
+      transform: perspective(1000px) translateY(0) rotateX(0deg) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: perspective(1000px) translateY(-8px) rotateX(-12deg) scale(0.96);
+    }
+  }
+  .menu-3d-surface .menu-3d-item {
+    opacity: 0;
+    transform: translateX(-8px) translateZ(-10px);
+    animation: menu-item-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes menu-item-in {
+    to {
+      opacity: 1;
+      transform: translateX(0) translateZ(0);
+    }
+  }
+  .menu-3d-surface .menu-3d-item:nth-child(1) { animation-delay: 0.06s; }
+  .menu-3d-surface .menu-3d-item:nth-child(2) { animation-delay: 0.12s; }
+  .menu-3d-surface .menu-3d-item:nth-child(3) { animation-delay: 0.18s; }
+  .menu-3d-surface .menu-3d-item:nth-child(4) { animation-delay: 0.24s; }
+  .menu-3d-surface .menu-3d-item:nth-child(5) { animation-delay: 0.30s; }
+  .menu-3d-surface .menu-3d-item:nth-child(6) { animation-delay: 0.36s; }
+  .menu-3d-surface .menu-3d-item:nth-child(7) { animation-delay: 0.42s; }
+  .menu-3d-surface .menu-3d-item:nth-child(8) { animation-delay: 0.48s; }
+  @media (hover: hover) {
+    .menu-3d-item {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+    }
+    .menu-3d-item:hover {
+      transform: translateX(4px) translateZ(6px) scale(1.02);
+    }
+  }
+
+  /* ===== DRAWER (Sheet) 3D ===== */
+  .drawer-3d {
+    transform-style: preserve-3d;
+    perspective: 1400px;
+    box-shadow:
+      0 30px 60px -10px hsl(220 26% 4% / 0.6),
+      0 0 40px hsl(var(--primary) / 0.18);
+  }
+  .drawer-3d-right[data-state="open"] {
+    animation: drawer-3d-in-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .drawer-3d-left[data-state="open"] {
+    animation: drawer-3d-in-left 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .drawer-3d-top[data-state="open"] {
+    animation: drawer-3d-in-top 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .drawer-3d-bottom[data-state="open"] {
+    animation: drawer-3d-in-bottom 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes drawer-3d-in-right {
+    0% { opacity: 0; transform: perspective(1400px) translateX(100%) rotateY(35deg); }
+    100% { opacity: 1; transform: perspective(1400px) translateX(0) rotateY(0deg); }
+  }
+  @keyframes drawer-3d-in-left {
+    0% { opacity: 0; transform: perspective(1400px) translateX(-100%) rotateY(-35deg); }
+    100% { opacity: 1; transform: perspective(1400px) translateX(0) rotateY(0deg); }
+  }
+  @keyframes drawer-3d-in-top {
+    0% { opacity: 0; transform: perspective(1400px) translateY(-100%) rotateX(-30deg); }
+    100% { opacity: 1; transform: perspective(1400px) translateY(0) rotateX(0deg); }
+  }
+  @keyframes drawer-3d-in-bottom {
+    0% { opacity: 0; transform: perspective(1400px) translateY(100%) rotateX(30deg); }
+    100% { opacity: 1; transform: perspective(1400px) translateY(0) rotateX(0deg); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .navbar-3d-enter { animation: none !important; }
+    .navbar-3d-enter,
+    .menu-trigger-3d,
+    .menu-3d-surface,
+    .menu-3d-surface .menu-3d-item,
+    .drawer-3d,
+    .drawer-3d-right[data-state="open"],
+    .drawer-3d-left[data-state="open"],
+    .drawer-3d-top[data-state="open"],
+    .drawer-3d-bottom[data-state="open"] {
+      animation: none !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+    }
   }
 }
 
