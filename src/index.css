@@ -282,6 +282,13 @@
   .stagger-children.visible > *:nth-child(8) { transition-delay: 0.75s; }
 
   /* Respect reduced motion: disable all entry transforms/animations */
+  /* Accordion 3D content respects perspective on parent */
+  .accordion-3d {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform, opacity, height;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .scroll-reveal,
     .scroll-reveal-left,
@@ -292,6 +299,10 @@
       opacity: 1 !important;
       transform: none !important;
       transition: none !important;
+    }
+    .accordion-3d {
+      animation: none !important;
+      transform: none !important;
     }
   }
 
