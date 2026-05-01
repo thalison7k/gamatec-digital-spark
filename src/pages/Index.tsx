@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { Servicos } from "@/components/Servicos";
 import { DevelopmentPackages } from "@/components/DevelopmentPackages";
 import { MaintenancePlans } from "@/components/MaintenancePlans";
 import { Portfolio } from "@/components/Portfolio";
