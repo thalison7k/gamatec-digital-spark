@@ -9,15 +9,31 @@ export interface Badge {
   unlockedAt?: string;
 }
 
+export type ActivityType = "xp" | "coins" | "badge" | "level_up" | "daily_login";
+
+export interface ActivityEvent {
+  id: string;
+  type: ActivityType;
+  title: string;
+  description?: string;
+  xp?: number;
+  coins?: number;
+  badgeId?: string;
+  level?: number;
+  createdAt: string;
+}
+
 export interface GamificationData {
   xp: number;
   level: number;
   coins: number;
   badges: Badge[];
   lastDailyLogin?: string;
+  activity: ActivityEvent[];
 }
 
 const STORAGE_PREFIX = "gamatec_gamification_";
+const MAX_ACTIVITY = 50;
 
 // XP curve: 500 XP per level (linear keeps things readable)
 export const XP_PER_LEVEL = 500;
@@ -34,18 +50,22 @@ const DEFAULT_DATA: GamificationData = {
   level: 3,
   coins: 120,
   badges: DEFAULT_BADGES,
+  activity: [],
 };
+
+function uid() {
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
 
 function loadData(userId: string): GamificationData {
   try {
     const raw = localStorage.getItem(STORAGE_PREFIX + userId);
-    if (!raw) return { ...DEFAULT_DATA, badges: DEFAULT_BADGES.map(b => ({ ...b })) };
+    if (!raw) return { ...DEFAULT_DATA, badges: DEFAULT_BADGES.map(b => ({ ...b })), activity: [] };
     const parsed = JSON.parse(raw) as GamificationData;
-    // ensure all default badges exist (forward-compatible)
     const merged = DEFAULT_BADGES.map(def => parsed.badges?.find(b => b.id === def.id) || def);
-    return { ...DEFAULT_DATA, ...parsed, badges: merged };
+    return { ...DEFAULT_DATA, ...parsed, badges: merged, activity: parsed.activity || [] };
   } catch {
-    return { ...DEFAULT_DATA, badges: DEFAULT_BADGES.map(b => ({ ...b })) };
+    return { ...DEFAULT_DATA, badges: DEFAULT_BADGES.map(b => ({ ...b })), activity: [] };
   }
 }
 
@@ -55,6 +75,12 @@ function saveData(userId: string, data: GamificationData) {
   } catch {
     // ignore
   }
+}
+
+function pushActivity(data: GamificationData, event: Omit<ActivityEvent, "id" | "createdAt">): GamificationData {
+  const newEvent: ActivityEvent = { ...event, id: uid(), createdAt: new Date().toISOString() };
+  const activity = [newEvent, ...data.activity].slice(0, MAX_ACTIVITY);
+  return { ...data, activity };
 }
 
 export function calcLevel(xp: number) {
@@ -71,16 +97,32 @@ export function useGamification(userId: string | undefined) {
 
   useEffect(() => {
     if (!userId) return;
-    const loaded = loadData(userId);
+    let loaded = loadData(userId);
 
     // Daily login bonus
     const today = new Date().toDateString();
     if (loaded.lastDailyLogin !== today) {
+      const prevLevel = calcLevel(loaded.xp).level;
       loaded.xp += 25;
       loaded.coins += 5;
       loaded.lastDailyLogin = today;
-      const { level } = calcLevel(loaded.xp);
-      loaded.level = level;
+      const newLevel = calcLevel(loaded.xp).level;
+      loaded.level = newLevel;
+      loaded = pushActivity(loaded, {
+        type: "daily_login",
+        title: "Login diário",
+        description: "Bônus por acessar o painel hoje",
+        xp: 25,
+        coins: 5,
+      });
+      if (newLevel > prevLevel) {
+        loaded = pushActivity(loaded, {
+          type: "level_up",
+          title: `Subiu para o Nível ${newLevel}!`,
+          description: "Continue assim para desbloquear recompensas",
+          level: newLevel,
+        });
+      }
       saveData(userId, loaded);
       setRecentXp(25);
       setTimeout(() => setRecentXp(null), 2500);
@@ -88,11 +130,26 @@ export function useGamification(userId: string | undefined) {
     setData(loaded);
   }, [userId]);
 
-  const addXp = useCallback((amount: number, coinsAmount = 0) => {
+  const addXp = useCallback((amount: number, coinsAmount = 0, reason?: string) => {
     if (!userId) return;
     setData(prev => {
-      const next = { ...prev, xp: prev.xp + amount, coins: prev.coins + coinsAmount };
-      next.level = calcLevel(next.xp).level;
+      const prevLevel = calcLevel(prev.xp).level;
+      let next: GamificationData = { ...prev, xp: prev.xp + amount, coins: prev.coins + coinsAmount };
+      const newLevel = calcLevel(next.xp).level;
+      next.level = newLevel;
+      next = pushActivity(next, {
+        type: "xp",
+        title: reason || "XP ganho",
+        xp: amount,
+        coins: coinsAmount || undefined,
+      });
+      if (newLevel > prevLevel) {
+        next = pushActivity(next, {
+          type: "level_up",
+          title: `Subiu para o Nível ${newLevel}!`,
+          level: newLevel,
+        });
+      }
       saveData(userId, next);
       return next;
     });
@@ -103,11 +160,18 @@ export function useGamification(userId: string | undefined) {
   const unlockBadge = useCallback((badgeId: string) => {
     if (!userId) return;
     setData(prev => {
-      if (prev.badges.find(b => b.id === badgeId)?.unlocked) return prev;
+      const target = prev.badges.find(b => b.id === badgeId);
+      if (!target || target.unlocked) return prev;
       const badges = prev.badges.map(b =>
         b.id === badgeId ? { ...b, unlocked: true, unlockedAt: new Date().toISOString() } : b
       );
-      const next = { ...prev, badges };
+      let next: GamificationData = { ...prev, badges };
+      next = pushActivity(next, {
+        type: "badge",
+        title: `Conquista desbloqueada: ${target.name}`,
+        description: target.description,
+        badgeId: target.id,
+      });
       saveData(userId, next);
       return next;
     });
@@ -117,17 +181,33 @@ export function useGamification(userId: string | undefined) {
   const syncFromActivity = useCallback((opts: { totalProjects: number; publishedProjects: number }) => {
     if (!userId) return;
     setData(prev => {
+      let changed = false;
+      let next = { ...prev };
       const badges = prev.badges.map(b => {
         if (b.id === "first_project" && opts.totalProjects >= 1 && !b.unlocked) {
+          changed = true;
+          next = pushActivity(next, {
+            type: "badge",
+            title: `Conquista desbloqueada: ${b.name}`,
+            description: b.description,
+            badgeId: b.id,
+          });
           return { ...b, unlocked: true, unlockedAt: new Date().toISOString() };
         }
         if (b.id === "completed" && opts.publishedProjects >= 1 && !b.unlocked) {
+          changed = true;
+          next = pushActivity(next, {
+            type: "badge",
+            title: `Conquista desbloqueada: ${b.name}`,
+            description: b.description,
+            badgeId: b.id,
+          });
           return { ...b, unlocked: true, unlockedAt: new Date().toISOString() };
         }
         return b;
       });
-      if (badges.every((b, i) => b.unlocked === prev.badges[i].unlocked)) return prev;
-      const next = { ...prev, badges };
+      if (!changed) return prev;
+      next = { ...next, badges };
       saveData(userId, next);
       return next;
     });
