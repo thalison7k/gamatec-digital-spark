@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const SmartAssistant = lazy(() => import("@/components/dashboard/SmartAssistant"));
 import ProgressCard from "@/components/dashboard/ProgressCard";
+import ActivityFeed from "@/components/dashboard/ActivityFeed";
 
 interface Project {
   id: string;
