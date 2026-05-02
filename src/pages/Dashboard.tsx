@@ -158,6 +158,16 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Gamification / Progress Card (clients only) */}
+        {!isAdmin && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "80ms", animationFillMode: "both" }}>
+            <ProgressCard
+              totalProjects={projects.length}
+              publishedProjects={publishedCount}
+            />
+          </div>
+        )}
+
         {/* Stats Cards */}
         {projects.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
