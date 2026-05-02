@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const SmartAssistant = lazy(() => import("@/components/dashboard/SmartAssistant"));
 import ProgressCard from "@/components/dashboard/ProgressCard";
+import ActivityFeed from "@/components/dashboard/ActivityFeed";
 
 interface Project {
   id: string;
@@ -158,13 +159,14 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Gamification / Progress Card (clients only) */}
+        {/* Gamification: Progress + Activity Feed (clients only) */}
         {!isAdmin && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "80ms", animationFillMode: "both" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "80ms", animationFillMode: "both" }}>
             <ProgressCard
               totalProjects={projects.length}
               publishedProjects={publishedCount}
             />
+            <ActivityFeed />
           </div>
         )}
 
