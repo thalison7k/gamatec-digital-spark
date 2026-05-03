@@ -89,18 +89,18 @@ const ActivityFeed = () => {
         </div>
 
         {events.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center mb-3">
-              <Inbox className="h-5 w-5 text-muted-foreground" />
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500/20 to-primary/20 border border-purple-500/30 flex items-center justify-center mb-3 shadow-lg shadow-purple-500/20">
+              <Inbox className="h-6 w-6 text-purple-300" />
             </div>
-            <p className="text-sm font-medium text-foreground">Nenhuma conquista ainda</p>
-            <p className="text-xs text-muted-foreground mt-1 max-w-[240px]">
+            <p className="text-sm font-bold text-white">Nenhuma conquista ainda</p>
+            <p className="text-xs text-purple-300/70 mt-1 max-w-[260px]">
               Acesse o painel diariamente e crie projetos para começar a ganhar XP!
             </p>
           </div>
         ) : (
           <>
-            <ol className="relative space-y-2.5 pl-5 before:content-[''] before:absolute before:left-[14px] before:top-2 before:bottom-2 before:w-px before:bg-gradient-to-b before:from-primary/40 before:via-purple-500/30 before:to-transparent">
+            <ol className="relative space-y-2.5 pl-6 before:content-[''] before:absolute before:left-[15px] before:top-3 before:bottom-3 before:w-0.5 before:bg-gradient-to-b before:from-primary/60 before:via-purple-500/40 before:to-transparent">
               {visibleEvents.map((event, idx) => {
                 const { Icon, color, bg, border, glow } = getEventStyle(event);
                 const Custom = event.type === "badge" && event.badgeId
@@ -110,47 +110,45 @@ const ActivityFeed = () => {
                   <li
                     key={event.id}
                     className="relative animate-in fade-in slide-in-from-left-2 duration-300"
-                    style={{ animationDelay: `${idx * 40}ms`, animationFillMode: "both" }}
+                    style={{ animationDelay: `${idx * 50}ms`, animationFillMode: "both" }}
                     data-voice={`${event.title}. ${timeAgo(event.createdAt)}`}
                   >
-                    {/* Timeline dot */}
+                    {/* Timeline dot with glow */}
                     <div className={cn(
-                      "absolute -left-5 top-2 w-7 h-7 rounded-full flex items-center justify-center border shadow-lg",
-                      bg, border, glow
+                      "absolute -left-6 top-2 w-8 h-8 rounded-full flex items-center justify-center border-2 shadow-lg",
+                      bg, border, glow,
+                      "shadow-[0_0_15px_currentColor] ring-2 ring-slate-900"
                     )}>
-                      <Custom className={cn("h-3.5 w-3.5", color)} />
+                      <Custom className={cn("h-4 w-4 drop-shadow-[0_0_4px_currentColor]", color)} />
                     </div>
 
-                    <div className={cn(
-                      "ml-5 rounded-lg border bg-card/60 backdrop-blur-sm p-2.5 transition-all duration-300 hover:border-primary/40 hover:bg-card/80 hover:translate-x-0.5",
-                      "border-border/50"
-                    )}>
+                    <div className="ml-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-3 transition-all duration-300 hover:border-primary/40 hover:bg-white/10 hover:translate-x-1 hover:shadow-lg hover:shadow-primary/20">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs font-semibold text-foreground leading-snug">{event.title}</p>
+                          <p className="text-xs font-bold text-white leading-snug">{event.title}</p>
                           {event.description && (
-                            <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">{event.description}</p>
+                            <p className="text-[10px] text-purple-200/70 mt-0.5 leading-snug">{event.description}</p>
                           )}
                         </div>
-                        <span className="text-[9px] text-muted-foreground whitespace-nowrap shrink-0 mt-0.5">
+                        <span className="text-[9px] text-purple-300/60 whitespace-nowrap shrink-0 mt-0.5 font-semibold">
                           {timeAgo(event.createdAt)}
                         </span>
                       </div>
 
                       {(event.xp || event.coins || event.level) && (
-                        <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                        <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                           {event.xp ? (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary bg-primary/10 border border-primary/20 px-1.5 py-0.5 rounded-full">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-cyan-200 bg-cyan-500/15 border border-cyan-400/30 px-2 py-0.5 rounded-full shadow-sm shadow-cyan-500/20">
                               <Sparkles className="h-2.5 w-2.5" /> +{event.xp} XP
                             </span>
                           ) : null}
                           {event.coins ? (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-1.5 py-0.5 rounded-full">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-yellow-200 bg-yellow-500/15 border border-yellow-400/30 px-2 py-0.5 rounded-full shadow-sm shadow-yellow-500/20">
                               <Coins className="h-2.5 w-2.5" /> +{event.coins}
                             </span>
                           ) : null}
                           {event.level ? (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-purple-400 bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded-full">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-purple-200 bg-purple-500/15 border border-purple-400/30 px-2 py-0.5 rounded-full shadow-sm shadow-purple-500/20">
                               <TrendingUp className="h-2.5 w-2.5" /> Nível {event.level}
                             </span>
                           ) : null}
@@ -165,7 +163,7 @@ const ActivityFeed = () => {
             {events.length > 5 && (
               <button
                 onClick={() => setExpanded(e => !e)}
-                className="mt-3 w-full flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors py-1.5 rounded-lg hover:bg-primary/5"
+                className="mt-3 w-full flex items-center justify-center gap-1.5 text-xs text-purple-200 hover:text-white transition-colors py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/40 font-semibold"
                 data-voice={expanded ? "Mostrar menos" : `Ver todos os ${events.length} eventos`}
               >
                 {expanded ? (
