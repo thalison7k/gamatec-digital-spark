@@ -47,26 +47,42 @@ const ActivityFeed = () => {
 
   return (
     <Card
-      className="border-border/50 overflow-hidden relative"
+      className="border-2 border-purple-500/20 overflow-hidden relative bg-gradient-to-br from-slate-900/90 via-slate-900/95 to-purple-950/90 dark:from-slate-900/90 dark:via-slate-900/95 dark:to-purple-950/90 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/30 transition-shadow duration-500"
       data-voice={`Feed de Conquistas. ${events.length} eventos no histórico.`}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-primary/5 opacity-60 pointer-events-none" />
+      {/* Background orbs */}
+      <div className="absolute -top-24 -left-24 w-64 h-64 bg-purple-500/30 rounded-full blur-3xl opacity-60 animate-pulse" style={{ animationDuration: "5s" }} />
+      <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl opacity-50 animate-pulse" style={{ animationDuration: "6s", animationDelay: "1.5s" }} />
+
+      {/* Grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage: "linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
 
       <CardContent className="p-5 relative z-10">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center shadow-lg shadow-purple-500/30">
-              <History className="h-4 w-4 text-white" />
+          <div className="flex items-center gap-2.5">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-primary rounded-xl blur-md opacity-70 animate-pulse" style={{ animationDuration: "2.5s" }} />
+              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 via-fuchsia-500 to-primary flex items-center justify-center shadow-xl">
+                <History className="h-5 w-5 text-white drop-shadow-lg" />
+              </div>
             </div>
             <div>
-              <h3 className="font-orbitron text-sm font-bold text-foreground">Feed de Conquistas</h3>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+              <h3 className="font-orbitron text-base font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent">
+                Feed de Conquistas
+              </h3>
+              <p className="text-[10px] text-purple-300/80 uppercase tracking-wider">
                 Seu histórico de XP, coins e badges
               </p>
             </div>
           </div>
           {events.length > 0 && (
-            <span className="text-[10px] font-bold text-primary bg-primary/10 border border-primary/30 px-2 py-1 rounded-full">
+            <span className="text-xs font-black text-white bg-gradient-to-r from-purple-500 to-primary border border-white/20 px-2.5 py-1 rounded-full shadow-lg shadow-purple-500/40">
               {events.length}
             </span>
           )}
