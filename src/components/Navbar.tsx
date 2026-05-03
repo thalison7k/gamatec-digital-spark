@@ -210,35 +210,48 @@ export const Navbar = () => {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-52">
-                <DropdownMenuLabel className="font-normal">
-                  <p className="text-xs text-muted-foreground">Logado como</p>
-                  <p className="text-sm font-medium truncate">
+              <DropdownMenuContent
+                align="end"
+                sideOffset={8}
+                className="w-56 z-[100] border-2 border-primary/30 bg-slate-950/95 backdrop-blur-xl shadow-2xl shadow-primary/20 p-1.5"
+              >
+                <DropdownMenuLabel className="font-normal px-2 py-2 rounded-md bg-gradient-to-br from-primary/10 to-purple-500/10 mb-1 border border-primary/20">
+                  <p className="text-[10px] text-cyan-300/70 uppercase tracking-wider font-bold">Logado como</p>
+                  <p className="text-sm font-bold text-white truncate">
                     {profile?.full_name || user.email}
                   </p>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate("/dashboard")} className="cursor-pointer gap-2">
-                  <LayoutDashboard className="h-4 w-4" />
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem
+                  onClick={() => navigate("/dashboard")}
+                  className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white transition-colors"
+                >
+                  <LayoutDashboard className="h-4 w-4 text-primary" />
                   Meu Painel
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate("/site")} className="cursor-pointer gap-2">
-                  <ArrowLeft className="h-4 w-4" />
+                <DropdownMenuItem
+                  onClick={() => navigate("/site")}
+                  className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white transition-colors"
+                >
+                  <ArrowLeft className="h-4 w-4 text-cyan-400" />
                   Página Principal
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator className="bg-white/10" />
                 {/* Settings submenu */}
                 <DropdownMenuSub>
-                  <DropdownMenuSubTrigger className="cursor-pointer gap-2">
-                    <Settings className="h-4 w-4" />
+                  <DropdownMenuSubTrigger className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white data-[state=open]:bg-primary/20 data-[state=open]:text-white transition-colors">
+                    <Settings className="h-4 w-4 text-purple-400" />
                     Configurações
                   </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
+                  <DropdownMenuSubContent
+                    sideOffset={8}
+                    className="z-[100] border-2 border-primary/30 bg-slate-950/95 backdrop-blur-xl shadow-2xl shadow-primary/20 p-1.5"
+                  >
                     <DropdownMenuItem
                       onClick={(e) => { e.preventDefault(); toggleTheme(); }}
-                      className="cursor-pointer gap-2"
+                      className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white transition-colors"
                     >
-                      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                      {theme === "dark" ? <Sun className="h-4 w-4 text-yellow-400" /> : <Moon className="h-4 w-4 text-blue-300" />}
                       {theme === "dark" ? "Modo Claro" : "Modo Escuro"}
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -250,15 +263,18 @@ export const Navbar = () => {
                           setEnabled(false);
                         }
                       }}
-                      className="cursor-pointer gap-2"
+                      className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white transition-colors"
                     >
-                      {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                      {enabled ? <Volume2 className="h-4 w-4 text-green-400" /> : <VolumeX className="h-4 w-4 text-slate-400" />}
                       {enabled ? "Desativar Sons" : "Ativar Sons"}
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer gap-2 text-destructive focus:text-destructive">
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="cursor-pointer gap-2 rounded-md text-red-400 focus:bg-red-500/20 focus:text-red-300 data-[highlighted]:bg-red-500/20 data-[highlighted]:text-red-300 transition-colors"
+                >
                   <LogOut className="h-4 w-4" />
                   Sair
                 </DropdownMenuItem>

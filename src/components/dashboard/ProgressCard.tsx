@@ -224,34 +224,38 @@ const ProgressCard = ({ totalProjects, publishedProjects }: Props) => {
                   title={`${badge.name} — ${badge.description}`}
                   data-voice={`${badge.name}. ${badge.unlocked ? "Desbloqueado." : "Bloqueado."} ${badge.description}`}
                   className={cn(
-                    "group/badge relative aspect-square rounded-2xl border-2 flex flex-col items-center justify-center gap-1 p-2 transition-all duration-500 cursor-help overflow-hidden",
+                    "group/badge relative aspect-square rounded-2xl border-2 flex flex-col items-center justify-center gap-1.5 p-2 transition-all duration-500 cursor-help overflow-hidden min-h-[88px]",
                     badge.unlocked
-                      ? cn("bg-gradient-to-br", style.gradient, style.border, style.glow, "hover:scale-110 hover:rotate-3")
-                      : "bg-slate-800/40 border-slate-700/40 opacity-40 hover:opacity-60 grayscale"
+                      ? cn("bg-gradient-to-br", style.gradient, style.border, style.glow, "hover:scale-110 hover:-rotate-2")
+                      : "bg-slate-800/40 border-dashed border-slate-600/40 opacity-50 hover:opacity-80"
                   )}
                 >
                   {/* Inner shine */}
                   {badge.unlocked && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover/badge:opacity-100 transition-opacity duration-500" />
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/0 to-white/10 opacity-0 group-hover/badge:opacity-100 transition-opacity duration-500" />
+                    </>
                   )}
 
                   {badge.unlocked ? (
                     <>
-                      <Icon className={cn("h-6 w-6 drop-shadow-[0_0_8px_currentColor] group-hover/badge:scale-125 transition-transform duration-300 relative z-10", style.iconColor)} />
-                      <span className="text-[8px] uppercase tracking-wider text-center leading-tight font-bold text-white relative z-10 drop-shadow">
+                      <div className="relative z-10">
+                        <div className="absolute inset-0 blur-lg opacity-60 rounded-full" style={{ background: "currentColor" }} />
+                        <Icon className={cn("relative h-7 w-7 drop-shadow-[0_0_10px_currentColor] group-hover/badge:scale-125 transition-transform duration-300", style.iconColor)} />
+                      </div>
+                      <span className="text-[9px] uppercase tracking-wider text-center leading-tight font-black text-white relative z-10 drop-shadow-md px-0.5">
                         {badge.name.split(" ")[0]}
                       </span>
                       {/* Unlocked indicator with pulse */}
-                      <div className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-slate-900 shadow-[0_0_10px_rgba(74,222,128,0.8)]">
-                        <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-60" />
+                      <div className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-green-400 border-2 border-slate-900 shadow-[0_0_12px_rgba(74,222,128,0.9)] z-20">
+                        <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-75" />
                       </div>
-                      {/* Sparkle particles on hover */}
-                      <Sparkles className="absolute top-1 left-1 h-2 w-2 text-white/0 group-hover/badge:text-white/80 transition-all duration-300" />
                     </>
                   ) : (
                     <>
-                      <Lock className="h-4 w-4 text-slate-500" />
-                      <span className="text-[8px] uppercase tracking-wider text-center leading-tight font-semibold text-slate-500">
+                      <Lock className="h-5 w-5 text-slate-500" />
+                      <span className="text-[9px] uppercase tracking-wider text-center leading-tight font-semibold text-slate-500 px-0.5">
                         {badge.name.split(" ")[0]}
                       </span>
                     </>
