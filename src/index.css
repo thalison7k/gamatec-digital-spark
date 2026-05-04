@@ -720,3 +720,25 @@
   display: none !important;
 }
 body { top: 0 !important; }
+
+/* =====================================================
+   VLibras — ajustes de posição e responsividade
+   O widget vem como [vw], fixado pelo script externo.
+   No mobile estava sobrepondo o título do Hero.
+   ===================================================== */
+[vw] {
+  z-index: 40 !important;
+}
+[vw-access-button] {
+  right: 12px !important;
+  bottom: 96px !important; /* sobe acima do botão de WhatsApp */
+  transform: scale(0.85);
+  transform-origin: bottom right;
+}
+@media (max-width: 640px) {
+  [vw-access-button] {
+    bottom: 110px !important;
+    transform: scale(0.75);
+  }
+}
+
