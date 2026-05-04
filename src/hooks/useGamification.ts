@@ -1,3 +1,24 @@
+/**
+ * ============================================================
+ * useGamification — Sistema de Gamificação do Painel
+ * ============================================================
+ * Gerencia XP, nível, moedas, conquistas (badges) e feed de
+ * atividades de cada usuário, persistindo no localStorage
+ * (chave gamatec_gamification_<userId>).
+ *
+ * Conceitos:
+ *  - XP por nível: 500 (curva linear, fácil de entender).
+ *  - Bônus de login diário: +25 XP / +5 moedas (1x por dia).
+ *  - addXp(amount, coins?, motivo?): registra ganho e checa
+ *    se o usuário subiu de nível.
+ *  - unlockBadge(id): destrava conquista pontual.
+ *  - syncFromActivity({totalProjects, publishedProjects}):
+ *    destrava badges de marco baseados em dados reais.
+ *
+ * Tudo é client-side, sem migração no banco — fácil de
+ * portar para Supabase no futuro se desejado.
+ * ============================================================
+ */
 import { useEffect, useState, useCallback } from "react";
 
 export interface Badge {
