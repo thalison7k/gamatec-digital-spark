@@ -728,6 +728,9 @@ body { top: 0 !important; }
    o iframe de tradução em Libras quando aberto.
    ===================================================== */
 [vw-access-button] {
+  position: fixed !important;
+  top: auto !important;
+  left: auto !important;
   right: 12px !important;
   bottom: 96px !important; /* acima do botão de WhatsApp */
   transform: scale(0.8) !important;
@@ -737,8 +740,9 @@ body { top: 0 !important; }
 
 @media (max-width: 640px) {
   [vw-access-button] {
-    bottom: 120px !important;
-    transform: scale(0.7) !important;
+    bottom: 130px !important;
+    right: 8px !important;
+    transform: scale(0.65) !important;
   }
 }
 
