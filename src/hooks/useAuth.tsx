@@ -1,3 +1,19 @@
+/**
+ * ============================================================
+ * useAuth — Contexto Global de Autenticação
+ * ============================================================
+ * Expõe o usuário logado, sessão e função de logout para todo
+ * o app via Context API. Estratégia recomendada pelo Supabase:
+ *
+ *   1. Registra o listener `onAuthStateChange` PRIMEIRO
+ *      (para não perder eventos durante o boot).
+ *   2. DEPOIS chama `getSession()` para hidratar o estado
+ *      inicial com a sessão persistida no localStorage.
+ *
+ * Componentes consumidores: ProtectedRoute, Navbar, Dashboard,
+ * Configuracoes, etc.
+ * ============================================================
+ */
 import { useState, useEffect, createContext, useContext, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
