@@ -1,3 +1,26 @@
+/**
+ * ============================================================
+ * App.tsx — Raiz da Aplicação GamaTec.IA
+ * ============================================================
+ * Responsabilidades principais:
+ *  1. Encadear todos os Providers globais (Auth, Tema, Sons,
+ *     Voz/TTS, Acessibilidade, React Query, Tooltip).
+ *  2. Definir as rotas e gates de proteção:
+ *     - ProtectedRoute → exige usuário logado
+ *     - AdminRoute     → exige role = 'admin'
+ *     - AuthRedirect   → manda para /site se já estiver logado
+ *  3. Carregar páginas pesadas via lazy() para acelerar o boot.
+ *
+ * Fluxo de acesso:
+ *   /          → Login (ou redireciona para /site se logado)
+ *   /auth      → Login
+ *   /site      → Site institucional (protegido)
+ *   /dashboard → Painel do cliente (protegido)
+ *   /dashboard/configuracoes  → Preferências do usuário
+ *   /dashboard/admin|clients  → Apenas admins
+ *   /como-funciona            → Documentação técnica (TCC)
+ * ============================================================
+ */
 import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -15,6 +38,7 @@ import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import Auth from "./pages/Auth";
 import { useUserRole } from "@/hooks/useUserRole";
 
+// ===== Páginas carregadas sob demanda (code-splitting) =====
 const Index = lazy(() => import("./pages/Index"));
 const ComoFunciona = lazy(() => import("./pages/ComoFunciona"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -24,6 +48,7 @@ const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const Configuracoes = lazy(() => import("./pages/Configuracoes"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+// Cliente único do React Query (cache global de requisições)
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
