@@ -236,12 +236,19 @@ export const Navbar = () => {
                   <ArrowLeft className="h-4 w-4 text-cyan-400" />
                   Página Principal
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => navigate("/dashboard/configuracoes")}
+                  className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white transition-colors"
+                >
+                  <Settings className="h-4 w-4 text-purple-400" />
+                  Configurações
+                </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-white/10" />
-                {/* Settings submenu */}
+                {/* Quick toggles submenu */}
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white data-[state=open]:bg-primary/20 data-[state=open]:text-white transition-colors">
-                    <Settings className="h-4 w-4 text-purple-400" />
-                    Configurações
+                    <Sun className="h-4 w-4 text-yellow-400" />
+                    Ajustes Rápidos
                   </DropdownMenuSubTrigger>
                   <DropdownMenuSubContent
                     sideOffset={8}
@@ -257,11 +264,7 @@ export const Navbar = () => {
                     <DropdownMenuItem
                       onClick={(e) => {
                         e.preventDefault();
-                        if (!enabled) {
-                          setEnabled(true);
-                        } else {
-                          setEnabled(false);
-                        }
+                        setEnabled(!enabled);
                       }}
                       className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white transition-colors"
                     >
