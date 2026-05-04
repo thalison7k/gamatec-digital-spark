@@ -1,3 +1,21 @@
+/**
+ * ============================================================
+ * Navbar — Barra de Navegação Global
+ * ============================================================
+ * Aparece no topo do site institucional (/site). Contém:
+ *  - Logo (volta para /site)
+ *  - Links de seção (Serviços, Planos, Portfólio, FAQ)
+ *    → usa scrollToSection / navigateToSection para deep-link
+ *  - Botão "Painel" (vai para /dashboard)
+ *  - Avatar com dropdown:
+ *      Meu Painel | Página Principal | Configurações |
+ *      Ajustes Rápidos (tema/sons) | Sair
+ *  - Menu mobile (Sheet) replicando tudo acima
+ *
+ * Mobile-first: o dropdown usa z-[100] e backdrop-blur para
+ * nunca ficar atrás de outros elementos.
+ * ============================================================
+ */
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
