@@ -723,33 +723,24 @@ body { top: 0 !important; }
 
 /* =====================================================
    VLibras — ajustes de posição e responsividade
-   O widget é injetado pelo script externo como
-   <div vw> > <div vw-access-button> ... e <div vw-plugin-wrapper>.
-   No mobile estava sobrepondo o título do Hero.
+   O widget é injetado pelo script externo. Aplicamos
+   regras apenas no botão flutuante para não quebrar
+   o iframe de tradução em Libras quando aberto.
    ===================================================== */
-div[vw],
-div.enabled[vw],
-div[vw-access-button],
-div[vw-plugin-wrapper] {
+[vw-access-button] {
+  right: 12px !important;
+  bottom: 96px !important; /* acima do botão de WhatsApp */
+  transform: scale(0.8) !important;
+  transform-origin: bottom right !important;
   z-index: 40 !important;
 }
 
-/* Botão flutuante de acesso (o "boneco") */
-div[vw] > div:first-child,
-div[vw-access-button] {
-  position: fixed !important;
-  right: 12px !important;
-  bottom: 96px !important; /* acima do botão de WhatsApp */
-  transform: scale(0.78) !important;
-  transform-origin: bottom right !important;
-}
-
 @media (max-width: 640px) {
-  div[vw] > div:first-child,
-  div[vw-access-button] {
+  [vw-access-button] {
     bottom: 120px !important;
-    transform: scale(0.65) !important;
+    transform: scale(0.7) !important;
   }
 }
+
 
 
