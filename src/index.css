@@ -727,22 +727,27 @@ body { top: 0 !important; }
    regras apenas no botão flutuante para não quebrar
    o iframe de tradução em Libras quando aberto.
    ===================================================== */
-[vw-access-button] {
+/* Desktop: posiciona o botão flutuante longe do conteúdo principal */
+[vw-access-button],
+div[vw-access-button],
+.vw-access-button {
   position: fixed !important;
   top: auto !important;
   left: auto !important;
   right: 12px !important;
-  bottom: 96px !important; /* acima do botão de WhatsApp */
+  bottom: 96px !important;
   transform: scale(0.8) !important;
   transform-origin: bottom right !important;
   z-index: 40 !important;
 }
 
-@media (max-width: 640px) {
-  [vw-access-button] {
-    bottom: 130px !important;
-    right: 8px !important;
-    transform: scale(0.65) !important;
+/* Mobile: oculta o widget — já oferecemos AccessibilityPanel + VoiceProvider */
+@media (max-width: 768px) {
+  div[vw],
+  [vw-access-button],
+  div[vw-access-button],
+  div[vw-plugin-wrapper] {
+    display: none !important;
   }
 }
 
