@@ -171,8 +171,8 @@ const Configuracoes = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="jarvis">JARVIS (Masculina)</SelectItem>
-                  <SelectItem value="friday">FRIDAY (Feminina)</SelectItem>
+                  <SelectItem value="masculina">JARVIS (Masculina)</SelectItem>
+                  <SelectItem value="feminina">FRIDAY (Feminina)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
