@@ -59,17 +59,23 @@ export const Hero = () => {
 
       <div className="container relative z-10 px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          {/* Logo */}
-          <div className="logo-container inline-flex items-center gap-4 mb-4 scroll-reveal-scale visible" style={{ transitionDelay: "0.1s" }}>
-            <img src={logo} alt="GamaTec.IA Logo" className="logo-image w-24 h-24 md:w-32 md:h-32 object-contain text-accent bg-accent font-mono text-center border-accent rounded-full" />
-            <span className="logo-text text-4xl md:text-5xl font-orbitron font-bold glow-text">GamaTec.IA</span>
+          {/* ===== Bloco do Logo ===== */}
+          {/* Empilha em coluna no mobile e em linha no desktop, evitando o "círculo gigante" */}
+          <div className="logo-container flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 scroll-reveal-scale visible" style={{ transitionDelay: "0.1s" }}>
+            <img
+              src={logo}
+              alt="GamaTec.IA Logo"
+              className="logo-image w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 object-contain rounded-full ring-2 ring-primary/40 shadow-[0_0_25px_hsl(var(--primary)/0.35)]"
+            />
+            <span className="logo-text text-3xl sm:text-4xl md:text-5xl font-orbitron font-bold glow-text">GamaTec.IA</span>
           </div>
 
-          {/* Main Heading */}
-          <h1 className="text-5xl md:text-7xl font-orbitron font-black leading-tight reveal-3d-flip visible" style={{ transitionDelay: "0.3s" }}>
+          {/* ===== Título principal ===== */}
+          {/* Tamanho reduzido no mobile para evitar quebra com o widget VLibras */}
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-orbitron font-black leading-tight reveal-3d-flip visible" style={{ transitionDelay: "0.3s" }}>
             <span className="gradient-text">Sites Profissionais</span>
             <br />
-            <span className="text-foreground">Rápidos & Acessíveis</span>
+            <span className="text-foreground">Rápidos &amp; Acessíveis</span>
           </h1>
 
           {/* Subtitle */}
