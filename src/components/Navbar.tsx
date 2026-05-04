@@ -171,6 +171,50 @@ export const Navbar = () => {
                   {label}
                 </button>
               ))}
+
+              {user && (
+                <>
+                  <div className="my-3 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+                  <p className="px-3 text-[10px] uppercase tracking-wider text-cyan-300/70 font-bold mb-1">
+                    Conta
+                  </p>
+                  <button
+                    onClick={() => { play("click"); setMobileOpen(false); navigate("/dashboard"); }}
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all border border-transparent hover:border-primary/30"
+                  >
+                    <LayoutDashboard className="h-5 w-5 text-primary" />
+                    Meu Painel
+                  </button>
+                  <button
+                    onClick={() => { play("click"); setMobileOpen(false); navigate("/dashboard/configuracoes"); }}
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all border border-transparent hover:border-primary/30"
+                  >
+                    <Settings className="h-5 w-5 text-purple-400" />
+                    Configurações
+                  </button>
+                  <button
+                    onClick={(e) => { e.preventDefault(); toggleTheme(); }}
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all border border-transparent hover:border-primary/30"
+                  >
+                    {theme === "dark" ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-blue-300" />}
+                    {theme === "dark" ? "Modo Claro" : "Modo Escuro"}
+                  </button>
+                  <button
+                    onClick={(e) => { e.preventDefault(); setEnabled(!enabled); }}
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all border border-transparent hover:border-primary/30"
+                  >
+                    {enabled ? <Volume2 className="h-5 w-5 text-green-400" /> : <VolumeX className="h-5 w-5 text-slate-400" />}
+                    {enabled ? "Desativar Sons" : "Ativar Sons"}
+                  </button>
+                  <button
+                    onClick={() => { setMobileOpen(false); handleLogout(); }}
+                    className="flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium text-red-400 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/30 mt-1"
+                  >
+                    <LogOut className="h-5 w-5" />
+                    Sair
+                  </button>
+                </>
+              )}
             </nav>
           </SheetContent>
         </Sheet>
@@ -236,12 +280,19 @@ export const Navbar = () => {
                   <ArrowLeft className="h-4 w-4 text-cyan-400" />
                   Página Principal
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => navigate("/dashboard/configuracoes")}
+                  className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white transition-colors"
+                >
+                  <Settings className="h-4 w-4 text-purple-400" />
+                  Configurações
+                </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-white/10" />
-                {/* Settings submenu */}
+                {/* Quick toggles submenu */}
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white data-[state=open]:bg-primary/20 data-[state=open]:text-white transition-colors">
-                    <Settings className="h-4 w-4 text-purple-400" />
-                    Configurações
+                    <Sun className="h-4 w-4 text-yellow-400" />
+                    Ajustes Rápidos
                   </DropdownMenuSubTrigger>
                   <DropdownMenuSubContent
                     sideOffset={8}
@@ -257,11 +308,7 @@ export const Navbar = () => {
                     <DropdownMenuItem
                       onClick={(e) => {
                         e.preventDefault();
-                        if (!enabled) {
-                          setEnabled(true);
-                        } else {
-                          setEnabled(false);
-                        }
+                        setEnabled(!enabled);
                       }}
                       className="cursor-pointer gap-2 rounded-md text-slate-200 focus:bg-primary/20 focus:text-white data-[highlighted]:bg-primary/20 data-[highlighted]:text-white transition-colors"
                     >
