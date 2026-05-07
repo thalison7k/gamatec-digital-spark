@@ -15,7 +15,7 @@ export const ScrollToTop = () => {
   return (
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-4 right-4 z-50 p-3 rounded-full bg-card border border-border shadow-lg hover:border-primary transition-all duration-300 hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] hover:scale-110 active:scale-95"
+      className="fixed bottom-36 right-4 z-50 p-3 rounded-full bg-card border border-border shadow-lg hover:border-primary transition-all duration-300 hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] hover:scale-110 active:scale-95"
       aria-label="Voltar ao topo"
       title="Voltar ao topo"
     >
