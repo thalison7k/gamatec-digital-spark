@@ -42,10 +42,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    // THEN check for existing session.
+    // Se o refresh token estiver inválido/ausente (ex.: sessão antiga),
+    // limpamos o storage para evitar 401/403 em chamadas subsequentes.
+    supabase.auth.getSession().then(async ({ data: { session }, error }) => {
+      if (error) {
+        await supabase.auth.signOut();
+        setSession(null);
+        setUser(null);
+      } else {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
       setLoading(false);
     });
 
