@@ -40,6 +40,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [ticketCount, setTicketCount] = useState(0);
+  // Filtro do bloco "Meus Projetos" — todos | published | progress | pending
+  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "progress" | "pending">("all");
   const navigate = useNavigate();
 
   useEffect(() => {
