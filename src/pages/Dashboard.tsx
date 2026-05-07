@@ -40,6 +40,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [ticketCount, setTicketCount] = useState(0);
+  // Filtro do bloco "Meus Projetos" — todos | published | progress | pending
+  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "progress" | "pending">("all");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -227,18 +229,36 @@ const Dashboard = () => {
 
         {/* Projects */}
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "300ms", animationFillMode: "both" }}>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <h3
               className="font-orbitron text-sm font-semibold text-muted-foreground uppercase tracking-wider"
               data-voice={isAdmin ? "Todos os Projetos" : "Meus Projetos"}
             >
               {isAdmin ? "Todos os Projetos" : "Meus Projetos"}
             </h3>
-            {projects.length > 0 && (
-              <span className="text-xs text-muted-foreground bg-muted px-2.5 py-1 rounded-full">
-                {projects.length} {projects.length === 1 ? "projeto" : "projetos"}
-              </span>
-            )}
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Filtros rápidos por status */}
+              {([
+                { id: "all", label: "Todos", count: projects.length },
+                { id: "published", label: "Publicados", count: publishedCount },
+                { id: "progress", label: "Em andamento", count: inProgressCount },
+                { id: "pending", label: "Pendentes", count: pendingCount },
+              ] as const).map((f) => (
+                <button
+                  key={f.id}
+                  onClick={() => setStatusFilter(f.id)}
+                  className={cn(
+                    "text-xs px-3 py-1.5 rounded-full border transition-all",
+                    statusFilter === f.id
+                      ? "bg-primary text-primary-foreground border-primary shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
+                      : "bg-muted/40 border-border/50 text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                  )}
+                  data-voice={`Filtrar ${f.label}`}
+                >
+                  {f.label} <span className="opacity-70">({f.count})</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {loading ? (
@@ -269,13 +289,32 @@ const Dashboard = () => {
                 </Button>
               </CardContent>
             </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {projects.map((project, i) => (
-                <ProjectCard key={project.id} project={project} index={i} />
-              ))}
-            </div>
-          )}
+          ) : (() => {
+            // Aplica filtro selecionado
+            const filtered = projects.filter((p) => {
+              if (statusFilter === "all") return true;
+              if (statusFilter === "published") return p.status === "published";
+              if (statusFilter === "progress") return ["in_development", "in_review"].includes(p.status);
+              if (statusFilter === "pending") return ["awaiting_info", "awaiting_approval"].includes(p.status);
+              return true;
+            });
+            if (filtered.length === 0) {
+              return (
+                <Card className="border-dashed border-border/40">
+                  <CardContent className="py-10 text-center text-sm text-muted-foreground">
+                    Nenhum projeto neste filtro.
+                  </CardContent>
+                </Card>
+              );
+            }
+            return (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filtered.map((project, i) => (
+                  <ProjectCard key={project.id} project={project} index={i} />
+                ))}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Smart Assistant FAB */}
