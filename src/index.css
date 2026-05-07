@@ -727,7 +727,7 @@ body { top: 0 !important; }
    regras apenas no botão flutuante para não quebrar
    o iframe de tradução em Libras quando aberto.
    ===================================================== */
-/* Desktop: posiciona o botão flutuante longe do conteúdo principal */
+/* Desktop: posiciona o botão flutuante longe dos demais flutuantes (WhatsApp, ScrollTop) */
 [vw-access-button],
 div[vw-access-button],
 .vw-access-button {
@@ -735,10 +735,16 @@ div[vw-access-button],
   top: auto !important;
   left: auto !important;
   right: 12px !important;
-  bottom: 96px !important;
-  transform: scale(0.8) !important;
+  bottom: 140px !important;
+  transform: scale(0.7) !important;
   transform-origin: bottom right !important;
   z-index: 40 !important;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+[vw-access-button]:hover,
+div[vw-access-button]:hover {
+  opacity: 1;
 }
 
 /* Mobile: oculta o widget — já oferecemos AccessibilityPanel + VoiceProvider */
