@@ -74,7 +74,7 @@ export const PWAInstallPrompt = () => {
   if (isInstalled || !show) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-[60] animate-in slide-in-from-bottom-5 fade-in duration-500 sm:left-auto sm:right-4 sm:max-w-sm">
+    <div className="fixed bottom-32 left-4 right-4 z-[55] animate-in slide-in-from-bottom-5 fade-in duration-500 sm:bottom-4 sm:left-auto sm:right-4 sm:max-w-sm">
       <div className="relative bg-card border border-border rounded-2xl shadow-2xl shadow-primary/10 p-4 backdrop-blur-xl">
         {/* Close */}
         <button
