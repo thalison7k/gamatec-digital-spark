@@ -63,7 +63,7 @@ const Dashboard = () => {
     };
 
     fetchData();
-  }, [user]);
+  }, [user, isAdmin]);
 
   const publishedCount = projects.filter(p => p.status === "published").length;
   const inProgressCount = projects.filter(p => ["in_development", "in_review"].includes(p.status)).length;
