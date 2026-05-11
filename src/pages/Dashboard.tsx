@@ -48,8 +48,13 @@ const Dashboard = () => {
     if (!user) return;
 
     const fetchData = async () => {
+      // Query de projetos: admin vê todos, cliente vê apenas os próprios
+      const projectsQuery = isAdmin
+        ? supabase.from("projects").select("*").order("created_at", { ascending: false })
+        : supabase.from("projects").select("*").eq("client_id", user.id).order("created_at", { ascending: false });
+
       const [projectsRes, ticketsRes] = await Promise.all([
-        supabase.from("projects").select("*").order("created_at", { ascending: false }),
+        projectsQuery,
         supabase.from("tickets").select("id", { count: "exact", head: true }).eq("created_by", user.id),
       ]);
       setProjects((projectsRes.data as Project[]) || []);
