@@ -34,7 +34,7 @@ interface Project {
 const Dashboard = () => {
   const { user } = useAuth();
   const { profile } = useProfile();
-  const { isAdmin } = useUserRole();
+  const { isAdmin, loading: roleLoading } = useUserRole();
   const { enabled: hoverVozAtiva, setEnabled: setHoverVozAtiva, vozTipo: hoverVozTipo, setVozTipo: setHoverVozTipo } = useVoice();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,8 +46,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!user) return;
+    // Aguarda a role carregar para evitar race (cliente buscando como admin ou vice-versa)
+    if (roleLoading) return;
 
     const fetchData = async () => {
+      setLoading(true);
       // Query de projetos: admin vê todos, cliente vê apenas os próprios
       const projectsQuery = isAdmin
         ? supabase.from("projects").select("*").order("created_at", { ascending: false })
@@ -57,13 +60,20 @@ const Dashboard = () => {
         projectsQuery,
         supabase.from("tickets").select("id", { count: "exact", head: true }).eq("created_by", user.id),
       ]);
+
+      if (projectsRes.error) {
+        console.error("[Dashboard] Erro ao buscar projetos:", projectsRes.error, "user.id:", user.id, "isAdmin:", isAdmin);
+      } else {
+        console.log("[Dashboard] Projetos carregados:", projectsRes.data?.length, "para user.id:", user.id);
+      }
+
       setProjects((projectsRes.data as Project[]) || []);
       setTicketCount(ticketsRes.count || 0);
       setLoading(false);
     };
 
     fetchData();
-  }, [user, isAdmin]);
+  }, [user, isAdmin, roleLoading]);
 
   const publishedCount = projects.filter(p => p.status === "published").length;
   const inProgressCount = projects.filter(p => ["in_development", "in_review"].includes(p.status)).length;
