@@ -12,7 +12,7 @@ export const FpsCounter = () => {
 
   return (
     <div
-      className={`fixed top-3 left-3 z-[9999] flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-background/70 backdrop-blur-md border ${color} font-mono text-xs font-bold shadow-lg pointer-events-none select-none`}
+      className={`fixed bottom-3 left-3 z-[60] flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-background/70 backdrop-blur-md border ${color} font-mono text-xs font-bold shadow-lg pointer-events-none select-none`}
       aria-hidden="true"
     >
       <Activity className="h-3 w-3" />
