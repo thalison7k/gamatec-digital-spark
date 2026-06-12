@@ -17,6 +17,7 @@ export const Hero = () => {
   const { play } = useSounds();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { floatingLinesEnabled } = usePerformance();
 
   const scrollToPricing = () => {
     play("whoosh");
