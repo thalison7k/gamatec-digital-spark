@@ -30,6 +30,9 @@ interface PerformanceContextType {
   /** Aplica preset ideal baseado no hardware do usuário */
   applyAutoTune: () => void;
   autoTuned: boolean;
+  /** Liga/desliga o efeito WebGL de Linhas Flutuantes (background interativo) */
+  floatingLinesEnabled: boolean;
+  setFloatingLinesEnabled: (v: boolean) => void;
 }
 
 const PerformanceContext = createContext<PerformanceContextType | null>(null);
