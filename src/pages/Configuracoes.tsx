@@ -32,6 +32,7 @@ const Configuracoes = () => {
     showFpsCounter, setShowFpsCounter,
     currentFps,
     performanceModeManual, setPerformanceModeManual, performanceMode,
+    hardware, applyAutoTune, autoTuned,
   } = usePerformance();
   const [notifications, setNotifications] = useState(
     () => localStorage.getItem("gamatec_notifications") !== "false"
