@@ -11,6 +11,11 @@ interface PerformanceContextType {
   showFpsCounter: boolean;
   setShowFpsCounter: (v: boolean) => void;
   currentFps: number;
+  /** Modo performance manual (toggle do usuário) */
+  performanceModeManual: boolean;
+  setPerformanceModeManual: (v: boolean) => void;
+  /** Flag final: manual OU derivado de resolução baixa / FPS limitado */
+  performanceMode: boolean;
 }
 
 const PerformanceContext = createContext<PerformanceContextType | null>(null);
