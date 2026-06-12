@@ -83,15 +83,9 @@ const Auth = () => {
         } />
       <div className="absolute inset-0 bg-background/30 z-0" />
       
-      {/* Floating particles */}
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="particle bg-primary/20"
-          style={{
-            width: `${Math.random() * 3 + 2}px`, height: `${Math.random() * 3 + 2}px`,
-            left: `${Math.random() * 100}%`, bottom: '-10px',
-            animationDuration: `${Math.random() * 10 + 8}s`, animationDelay: `${Math.random() * 5}s`,
-          }} />
-      ))}
+      {/* Floating particles (memoizado para não recriar a cada render) */}
+      <Particles />
+
 
       <div className="relative w-full max-w-sm z-10 opacity-0 animate-hero-entrance" style={{ animationDelay: "0.2s" }}>
         <div className="relative rounded-xl p-6 shadow-2xl border border-border/30 overflow-hidden shimmer"
@@ -180,5 +174,34 @@ const Auth = () => {
     </div>
   );
 };
+
+// Partículas geradas uma única vez (fora do componente Auth) para que a
+// digitação no formulário não cause re-render com novos Math.random.
+const PARTICLES = Array.from({ length: 8 }).map(() => ({
+  width: Math.random() * 3 + 2,
+  height: Math.random() * 3 + 2,
+  left: Math.random() * 100,
+  duration: Math.random() * 10 + 8,
+  delay: Math.random() * 5,
+}));
+const Particles = () => (
+  <>
+    {PARTICLES.map((p, i) => (
+      <div
+        key={i}
+        className="particle bg-primary/20"
+        style={{
+          width: `${p.width}px`,
+          height: `${p.height}px`,
+          left: `${p.left}%`,
+          bottom: "-10px",
+          animationDuration: `${p.duration}s`,
+          animationDelay: `${p.delay}s`,
+          willChange: "transform",
+        }}
+      />
+    ))}
+  </>
+);
 
 export default Auth;
