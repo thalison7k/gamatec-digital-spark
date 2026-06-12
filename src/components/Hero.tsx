@@ -42,7 +42,7 @@ export const Hero = () => {
       </div>
 
       {/* WebGL Floating Lines */}
-      {!isMobile &&
+      {!isMobile && floatingLinesEnabled &&
       <Suspense fallback={null}>
           <FloatingLines
           linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
