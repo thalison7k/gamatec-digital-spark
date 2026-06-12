@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import logo from "@/assets/gamatec-logo.png";
 import { useAuth } from "@/hooks/useAuth";
+import { usePerformance } from "@/hooks/usePerformance";
 
 const FloatingLines = lazy(() => import("@/components/FloatingLines"));
 import { useToast } from "@/hooks/use-toast";
