@@ -96,31 +96,6 @@ Deno.serve(async (req) => {
   </div>
 </body>
 </html>`;
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="font-family:Arial,sans-serif;background:#0a0a0a;color:#e0e0e0;padding:32px;">
-  <div style="max-width:600px;margin:0 auto;background:#111;border-radius:12px;padding:32px;border:1px solid #222;">
-    <div style="text-align:center;margin-bottom:24px;">
-      <h1 style="color:#00bfff;font-size:24px;margin:0;">GamaTec.IA</h1>
-      <p style="color:#888;font-size:13px;margin-top:4px;">Nova Solicitação Recebida</p>
-    </div>
-    <hr style="border:none;border-top:1px solid #222;margin:16px 0;">
-    <h2 style="color:#fff;font-size:18px;">${subject}</h2>
-    <div style="background:#0a0a0a;border-radius:8px;padding:16px;margin:16px 0;">
-      <p style="margin:0;white-space:pre-line;line-height:1.6;font-size:14px;color:#ccc;">${description}</p>
-    </div>
-    <table style="width:100%;font-size:13px;color:#aaa;margin-top:16px;">
-      <tr><td style="padding:6px 0;"><strong style="color:#fff;">Cliente:</strong></td><td>${clientName}</td></tr>
-      <tr><td style="padding:6px 0;"><strong style="color:#fff;">E-mail:</strong></td><td>${userEmail}</td></tr>
-      <tr><td style="padding:6px 0;"><strong style="color:#fff;">Telefone:</strong></td><td>${clientPhone}</td></tr>
-      <tr><td style="padding:6px 0;"><strong style="color:#fff;">Prioridade:</strong></td><td>${priority === "high" ? "🔴 Alta" : priority === "medium" ? "🟡 Média" : "🟢 Baixa"}</td></tr>
-    </table>
-    <hr style="border:none;border-top:1px solid #222;margin:24px 0 16px;">
-    <p style="font-size:11px;color:#555;text-align:center;">Este e-mail foi enviado automaticamente pela plataforma GamaTec.IA</p>
-  </div>
-</body>
-</html>`;
 
     // Send email via Supabase's built-in email (using auth.admin)
     // For now, log the notification and store it
