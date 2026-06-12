@@ -275,7 +275,7 @@ export const Navbar = () => {
               <DropdownMenuContent
                 align="end"
                 sideOffset={8}
-                className="w-56 z-[100] border-2 border-primary/30 bg-slate-950/95 backdrop-blur-xl shadow-2xl shadow-primary/20 p-1.5"
+                className="w-56 z-[200] border-2 border-primary/30 bg-slate-950/95 backdrop-blur-xl shadow-2xl shadow-primary/20 p-1.5"
               >
                 <DropdownMenuLabel className="font-normal px-2 py-2 rounded-md bg-gradient-to-br from-primary/10 to-purple-500/10 mb-1 border border-primary/20">
                   <p className="text-[10px] text-cyan-300/70 uppercase tracking-wider font-bold">Logado como</p>
