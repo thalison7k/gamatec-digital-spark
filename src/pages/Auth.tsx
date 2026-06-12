@@ -73,9 +73,14 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4 md:p-8 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 z-0"
-        style={{ backgroundImage: `url(${loginBackground})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />
+      {/* Background — gradient inicial; GIF é injetado depois do paint */}
+      <div
+        className="absolute inset-0 z-0 transition-opacity duration-700"
+        style={
+          bgUrls.login
+            ? { backgroundImage: `url(${bgUrls.login})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }
+            : { background: "radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.18), hsl(var(--background)) 70%)" }
+        } />
       <div className="absolute inset-0 bg-background/30 z-0" />
       
       {/* Floating particles */}
@@ -90,7 +95,7 @@ const Auth = () => {
 
       <div className="relative w-full max-w-sm z-10 opacity-0 animate-hero-entrance" style={{ animationDelay: "0.2s" }}>
         <div className="relative rounded-xl p-6 shadow-2xl border border-border/30 overflow-hidden shimmer"
-          style={{ backgroundImage: `url(${formBackground})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+          style={bgUrls.form ? { backgroundImage: `url(${bgUrls.form})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}>
           <div className="absolute inset-0 bg-card/85 backdrop-blur-sm" />
           
           <div className="relative z-10">
