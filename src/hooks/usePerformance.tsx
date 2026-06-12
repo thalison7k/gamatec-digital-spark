@@ -30,6 +30,9 @@ interface PerformanceContextType {
   /** Aplica preset ideal baseado no hardware do usuário */
   applyAutoTune: () => void;
   autoTuned: boolean;
+  /** Liga/desliga o efeito WebGL de Linhas Flutuantes (background interativo) */
+  floatingLinesEnabled: boolean;
+  setFloatingLinesEnabled: (v: boolean) => void;
 }
 
 const PerformanceContext = createContext<PerformanceContextType | null>(null);
@@ -194,6 +197,15 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
     return localStorage.getItem("gamatec-auto-tuned") === "true";
   });
 
+  const [floatingLinesEnabled, setFloatingLinesEnabledState] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    const v = localStorage.getItem("gamatec-floating-lines");
+    return v === null ? true : v === "true";
+  });
+  useEffect(() => {
+    localStorage.setItem("gamatec-floating-lines", String(floatingLinesEnabled));
+  }, [floatingLinesEnabled]);
+
   const applyAutoTune = useCallback(() => {
     const preset = presetForTier(hardware.tier);
     setResolutionState(preset.resolution);
@@ -232,6 +244,8 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
         hardware,
         applyAutoTune,
         autoTuned,
+        floatingLinesEnabled,
+        setFloatingLinesEnabled: setFloatingLinesEnabledState,
       }}
     >
       {children}

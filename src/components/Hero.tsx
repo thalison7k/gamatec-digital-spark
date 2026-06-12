@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import logo from "@/assets/gamatec-logo.png";
 import { useAuth } from "@/hooks/useAuth";
+import { usePerformance } from "@/hooks/usePerformance";
 
 const FloatingLines = lazy(() => import("@/components/FloatingLines"));
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +17,7 @@ export const Hero = () => {
   const { play } = useSounds();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { floatingLinesEnabled } = usePerformance();
 
   const scrollToPricing = () => {
     play("whoosh");
@@ -40,7 +42,7 @@ export const Hero = () => {
       </div>
 
       {/* WebGL Floating Lines */}
-      {!isMobile &&
+      {!isMobile && floatingLinesEnabled &&
       <Suspense fallback={null}>
           <FloatingLines
           linesGradient={["#00bfff", "#8b5cf6", "#00bfff"]}
@@ -67,7 +69,12 @@ export const Hero = () => {
               alt="GamaTec.IA Logo"
               className="logo-image w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 object-contain rounded-full ring-2 ring-primary/40 shadow-[0_0_25px_hsl(var(--primary)/0.35)]"
             />
-            <span className="logo-text text-3xl sm:text-4xl md:text-5xl font-orbitron font-bold glow-text">GamaTec.IA</span>
+            <span
+              className="logo-text text-3xl sm:text-4xl md:text-5xl font-orbitron font-bold glow-text text-white"
+              style={{ textShadow: '0 2px 16px rgba(0,0,0,0.85), 0 0 24px hsl(var(--primary) / 0.6)' }}
+            >
+              GamaTec.IA
+            </span>
           </div>
 
           {/* ===== Título principal ===== */}
