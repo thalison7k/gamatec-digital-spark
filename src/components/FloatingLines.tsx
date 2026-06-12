@@ -247,14 +247,24 @@ export default function FloatingLines({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // Respeita acessibilidade: não anima se o usuário pediu redução de movimento.
+    const prefersReduced =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
     let active = true;
+    let visible = true;          // tab visível
+    let inView = true;           // canvas visível na tela
 
     const scene = new Scene();
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const renderer = new WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
+    // Cap mais conservador no DPR para reduzir custo de GPU em telas Retina/4K.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
@@ -333,11 +343,27 @@ export default function FloatingLines({
       : null;
     if (ro) ro.observe(container);
 
-    const handlePointerMove = (event: PointerEvent) => {
+    // Pausa quando o canvas sai da viewport (rolagem em páginas longas).
+    const io = typeof IntersectionObserver !== 'undefined'
+      ? new IntersectionObserver((entries) => {
+          inView = entries[0]?.isIntersecting ?? true;
+        }, { threshold: 0 })
+      : null;
+    if (io) io.observe(container);
+
+    // Pausa quando a aba não está visível (economiza CPU/GPU/bateria).
+    const onVisibility = () => { visible = document.visibilityState !== 'hidden'; };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    // pointermove é throttled via rAF (só atualiza alvo 1x por frame).
+    let pendingPointer: PointerEvent | null = null;
+    const applyPointer = () => {
+      const event = pendingPointer;
+      pendingPointer = null;
+      if (!event) return;
       const rect = renderer.domElement.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      // Only respond if pointer is within canvas bounds
       if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
         targetInfluenceRef.current = 0.0;
         return;
@@ -354,14 +380,19 @@ export default function FloatingLines({
         );
       }
     };
-
+    const handlePointerMove = (event: PointerEvent) => {
+      pendingPointer = event;
+    };
     if (interactive) {
-      window.addEventListener('pointermove', handlePointerMove);
+      window.addEventListener('pointermove', handlePointerMove, { passive: true });
     }
 
     let raf = 0;
     const renderLoop = () => {
       if (!active) return;
+      raf = requestAnimationFrame(renderLoop);
+      if (!visible || !inView) return; // pula o frame quando ocioso
+      if (pendingPointer) applyPointer();
       uniforms.iTime.value = clock.getElapsedTime();
       if (interactive) {
         currentMouseRef.current.lerp(targetMouseRef.current, mouseDamping);
@@ -374,7 +405,6 @@ export default function FloatingLines({
         uniforms.parallaxOffset.value.copy(currentParallaxRef.current);
       }
       renderer.render(scene, camera);
-      raf = requestAnimationFrame(renderLoop);
     };
     renderLoop();
 
@@ -382,6 +412,8 @@ export default function FloatingLines({
       active = false;
       cancelAnimationFrame(raf);
       if (ro) ro.disconnect();
+      if (io) io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
       if (interactive) {
         window.removeEventListener('pointermove', handlePointerMove);
       }
