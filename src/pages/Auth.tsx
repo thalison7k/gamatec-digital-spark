@@ -175,4 +175,33 @@ const Auth = () => {
   );
 };
 
+// Partículas geradas uma única vez (fora do componente Auth) para que a
+// digitação no formulário não cause re-render com novos Math.random.
+const PARTICLES = Array.from({ length: 8 }).map(() => ({
+  width: Math.random() * 3 + 2,
+  height: Math.random() * 3 + 2,
+  left: Math.random() * 100,
+  duration: Math.random() * 10 + 8,
+  delay: Math.random() * 5,
+}));
+const Particles = () => (
+  <>
+    {PARTICLES.map((p, i) => (
+      <div
+        key={i}
+        className="particle bg-primary/20"
+        style={{
+          width: `${p.width}px`,
+          height: `${p.height}px`,
+          left: `${p.left}%`,
+          bottom: "-10px",
+          animationDuration: `${p.duration}s`,
+          animationDelay: `${p.delay}s`,
+          willChange: "transform",
+        }}
+      />
+    ))}
+  </>
+);
+
 export default Auth;
