@@ -244,6 +244,8 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
         hardware,
         applyAutoTune,
         autoTuned,
+        floatingLinesEnabled,
+        setFloatingLinesEnabled: setFloatingLinesEnabledState,
       }}
     >
       {children}
