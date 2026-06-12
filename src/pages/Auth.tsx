@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,8 +7,6 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import gamatecLogo from "@/assets/gamatec-logo.png";
-import loginBackground from "@/assets/login-background.gif";
-import formBackground from "@/assets/form-background.gif";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,6 +17,30 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Backgrounds pesados (GIFs ~10MB cada) são carregados de forma adiada
+  // após o primeiro paint e ignorados em telas pequenas / conexões lentas.
+  const [bgUrls, setBgUrls] = useState<{ login?: string; form?: string }>({});
+  useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const conn = (navigator as any).connection;
+    const saveData = conn?.saveData === true;
+    const slowNet = conn && ["slow-2g", "2g", "3g"].includes(conn.effectiveType);
+    if (isMobile || saveData || slowNet) return;
+
+    const idle = (cb: () => void) =>
+      (window as any).requestIdleCallback
+        ? (window as any).requestIdleCallback(cb, { timeout: 2000 })
+        : setTimeout(cb, 600);
+
+    idle(async () => {
+      const [login, form] = await Promise.all([
+        import("@/assets/login-background.gif"),
+        import("@/assets/form-background.gif"),
+      ]);
+      setBgUrls({ login: login.default, form: form.default });
+    });
+  }, []);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
