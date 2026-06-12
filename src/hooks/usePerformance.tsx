@@ -124,9 +124,12 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("gamatec-perf-mode", String(performanceModeManual));
   }, [performanceModeManual]);
 
-  // Aplica resolução (zoom). Usa CSS zoom (suportado em todos navegadores modernos).
+  // Persiste preferência de resolução. Não aplicamos CSS `zoom` no <html> porque isso
+  // quebra o posicionamento dos portais do Radix (DropdownMenu, Popover, Tooltip, etc.)
+  // e faz menus aparecerem fora da tela / atrás de elementos. A escala de resolução
+  // é usada apenas pelo WebGL (FloatingLines) para reduzir custo de GPU.
   useEffect(() => {
-    (document.documentElement.style as any).zoom = String(resolution);
+    (document.documentElement.style as any).zoom = "";
     localStorage.setItem("gamatec-resolution", String(resolution));
   }, [resolution]);
 
