@@ -26,6 +26,12 @@ const Configuracoes = () => {
   const { profile } = useProfile();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const {
+    resolution, setResolution,
+    fpsCap, setFpsCap,
+    showFpsCounter, setShowFpsCounter,
+    currentFps,
+  } = usePerformance();
   const [notifications, setNotifications] = useState(
     () => localStorage.getItem("gamatec_notifications") !== "false"
   );
