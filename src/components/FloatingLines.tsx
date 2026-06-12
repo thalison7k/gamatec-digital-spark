@@ -272,14 +272,17 @@ export default function FloatingLines({
     renderer.domElement.style.height = '100%';
     container.appendChild(renderer.domElement);
 
-    // Cap interno em ~720p: nunca renderiza mais do que 1280x720 px reais,
-    // independente do tamanho CSS ou do DPR do monitor. Isso reduz drasticamente
-    // o custo de GPU/fragment shader em telas grandes/Retina.
-    const MAX_W = 1280;
-    const MAX_H = 720;
+    // Cap interno adaptativo: escala pelo `resolution` (50%–125%) escolhido nas Configurações
+    // e por um fator extra quando o modo performance está ativo ou o FPS está limitado <= 45.
+    // Resoluções menores = menos pixels renderizados pelo shader = mais fluido, mas o efeito
+    // continua ativo e interativo com o mouse.
+    const perfFactor = performanceMode ? 0.6 : (fpsCap && fpsCap <= 45 ? 0.8 : 1);
+    const resScale = Math.max(0.4, Math.min(1.25, resolution)) * perfFactor;
+    const MAX_W = 1280 * resScale;
+    const MAX_H = 720 * resScale;
     const computeCappedDpr = (cssW: number, cssH: number) => {
       const dpr = window.devicePixelRatio || 1;
-      return Math.max(0.5, Math.min(dpr, 1.5, MAX_W / Math.max(cssW, 1), MAX_H / Math.max(cssH, 1)));
+      return Math.max(0.35, Math.min(dpr, 1.5, MAX_W / Math.max(cssW, 1), MAX_H / Math.max(cssH, 1)));
     };
 
     const uniforms = {
