@@ -441,7 +441,7 @@ export default function FloatingLines({
         renderer.domElement.parentElement.removeChild(renderer.domElement);
       }
     };
-  }, [performanceMode]);
+  }, [performanceMode, resolution, fpsCap]);
 
   return (
     <div
