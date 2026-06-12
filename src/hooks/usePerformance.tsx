@@ -77,13 +77,7 @@ function presetForTier(tier: "low" | "mid" | "high"): { resolution: ResolutionSc
 }
 
 
-const PerformanceContext = createContext<PerformanceContextType | null>(null);
 
-export const usePerformance = () => {
-  const ctx = useContext(PerformanceContext);
-  if (!ctx) throw new Error("usePerformance deve estar dentro de PerformanceProvider");
-  return ctx;
-};
 
 // Guarda o RAF original para podermos restaurar quando ilimitado
 const originalRAF: typeof window.requestAnimationFrame =
