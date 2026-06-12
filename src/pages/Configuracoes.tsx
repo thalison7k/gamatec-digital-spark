@@ -186,6 +186,94 @@ const Configuracoes = () => {
           </CardContent>
         </Card>
 
+        {/* Performance */}
+        <Card className="border-primary/20 bg-card/60 backdrop-blur-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Gauge className="h-5 w-5 text-orange-400" />
+              Performance
+            </CardTitle>
+            <CardDescription>
+              Ajustes opcionais de resolução e taxa de quadros (FPS) do app
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {/* Resolução */}
+            <div className="p-4 rounded-lg bg-muted/30">
+              <div className="flex items-center gap-3 mb-2">
+                <Gauge className="h-5 w-5 text-orange-400" />
+                <div className="flex-1">
+                  <Label className="text-sm font-medium">Resolução do App</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Diminua para ganhar performance, aumente para mais detalhes
+                  </p>
+                </div>
+              </div>
+              <Select
+                value={String(resolution)}
+                onValueChange={(v) => setResolution(parseFloat(v) as ResolutionScale)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0.5">50% — Máxima performance</SelectItem>
+                  <SelectItem value="0.75">75% — Performance</SelectItem>
+                  <SelectItem value="1">100% — Padrão (recomendado)</SelectItem>
+                  <SelectItem value="1.1">110% — Maior</SelectItem>
+                  <SelectItem value="1.25">125% — Acessibilidade</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Limite de FPS */}
+            <div className="p-4 rounded-lg bg-muted/30">
+              <div className="flex items-center gap-3 mb-2">
+                <Activity className="h-5 w-5 text-orange-400" />
+                <div className="flex-1">
+                  <Label className="text-sm font-medium">Limite de FPS</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Limitar a taxa de quadros economiza bateria e reduz aquecimento
+                  </p>
+                </div>
+              </div>
+              <Select
+                value={String(fpsCap)}
+                onValueChange={(v) => setFpsCap(parseInt(v, 10) as FpsCap)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="30">30 FPS — Economia</SelectItem>
+                  <SelectItem value="45">45 FPS — Equilibrado</SelectItem>
+                  <SelectItem value="60">60 FPS — Suave</SelectItem>
+                  <SelectItem value="0">Ilimitado — Padrão do dispositivo</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Contador de FPS */}
+            <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+              <div className="flex items-center gap-3">
+                <Activity className="h-5 w-5 text-orange-400" />
+                <div>
+                  <Label className="text-sm font-medium">Contador de FPS</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Exibe um medidor no canto superior esquerdo
+                    {showFpsCounter && currentFps > 0 && (
+                      <span className="ml-1 font-mono text-foreground">
+                        — atual: {currentFps} FPS
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+              <Switch checked={showFpsCounter} onCheckedChange={setShowFpsCounter} />
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Notificações */}
         <Card className="border-primary/20 bg-card/60 backdrop-blur-md">
           <CardHeader>
