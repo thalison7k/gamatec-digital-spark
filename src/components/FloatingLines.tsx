@@ -250,8 +250,7 @@ export default function FloatingLines({
     const container = containerRef.current;
     if (!container) return;
 
-    // Modo performance: pula totalmente o WebGL (FloatingLines é o efeito mais pesado).
-    if (performanceMode) return;
+    // Mantém o efeito ativo mesmo em modo performance; apenas reduzimos a resolução interna abaixo.
 
     // Respeita acessibilidade: não anima se o usuário pediu redução de movimento.
     const prefersReduced =
