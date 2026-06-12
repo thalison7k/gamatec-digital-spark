@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { usePerformance } from '@/hooks/usePerformance';
 import {
   Clock,
   Mesh,
@@ -216,6 +217,7 @@ export default function FloatingLines({
   className = '',
 }: FloatingLinesProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { performanceMode } = usePerformance();
   const targetMouseRef = useRef<Vector2>(new Vector2(-1000, -1000));
   const currentMouseRef = useRef<Vector2>(new Vector2(-1000, -1000));
   const targetInfluenceRef = useRef<number>(0);
@@ -247,6 +249,9 @@ export default function FloatingLines({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // Modo performance: pula totalmente o WebGL (FloatingLines é o efeito mais pesado).
+    if (performanceMode) return;
 
     // Respeita acessibilidade: não anima se o usuário pediu redução de movimento.
     const prefersReduced =
@@ -425,7 +430,7 @@ export default function FloatingLines({
         renderer.domElement.parentElement.removeChild(renderer.domElement);
       }
     };
-  }, []);
+  }, [performanceMode]);
 
   return (
     <div

@@ -757,5 +757,32 @@ div[vw-access-button]:hover {
   }
 }
 
-
+/* =========================================================
+   Modo Performance — ativado via classe .perf-mode no <html>
+   Desliga efeitos visuais pesados para reduzir lag de navegação.
+   ========================================================= */
+html.perf-mode * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html.perf-mode *,
+html.perf-mode *::before,
+html.perf-mode *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 80ms !important;
+}
+/* Remove sombras coloridas/glow caras */
+html.perf-mode [class*="shadow-["],
+html.perf-mode [class*="drop-shadow"] {
+  box-shadow: none !important;
+  filter: none !important;
+}
+/* Reduz blurs absurdos do fundo */
+html.perf-mode [class*="blur-3xl"],
+html.perf-mode [class*="blur-2xl"],
+html.perf-mode [class*="blur-xl"] {
+  filter: blur(8px) !important;
+  opacity: 0.4 !important;
+}
 

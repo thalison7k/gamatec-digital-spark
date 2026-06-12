@@ -31,6 +31,7 @@ const Configuracoes = () => {
     fpsCap, setFpsCap,
     showFpsCounter, setShowFpsCounter,
     currentFps,
+    performanceModeManual, setPerformanceModeManual, performanceMode,
   } = usePerformance();
   const [notifications, setNotifications] = useState(
     () => localStorage.getItem("gamatec_notifications") !== "false"
@@ -194,10 +195,32 @@ const Configuracoes = () => {
               Performance
             </CardTitle>
             <CardDescription>
-              Ajustes opcionais de resolução e taxa de quadros (FPS) do app
+              Ajustes opcionais para reduzir lentidões na navegação
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
+            {/* Modo Performance */}
+            <div className="flex items-center justify-between p-4 rounded-lg bg-gradient-to-br from-orange-500/10 to-transparent border border-orange-500/20">
+              <div className="flex items-center gap-3">
+                <Gauge className="h-5 w-5 text-orange-400" />
+                <div>
+                  <Label className="text-sm font-medium">Modo Performance</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Desliga WebGL, blurs e animações pesadas
+                    {performanceMode && !performanceModeManual && (
+                      <span className="ml-1 text-orange-400">
+                        (ativo automaticamente pelas opções abaixo)
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+              <Switch
+                checked={performanceModeManual}
+                onCheckedChange={setPerformanceModeManual}
+              />
+            </div>
+
             {/* Resolução */}
             <div className="p-4 rounded-lg bg-muted/30">
               <div className="flex items-center gap-3 mb-2">

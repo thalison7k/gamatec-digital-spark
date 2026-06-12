@@ -11,6 +11,11 @@ interface PerformanceContextType {
   showFpsCounter: boolean;
   setShowFpsCounter: (v: boolean) => void;
   currentFps: number;
+  /** Modo performance manual (toggle do usuário) */
+  performanceModeManual: boolean;
+  setPerformanceModeManual: (v: boolean) => void;
+  /** Flag final: manual OU derivado de resolução baixa / FPS limitado */
+  performanceMode: boolean;
 }
 
 const PerformanceContext = createContext<PerformanceContextType | null>(null);
@@ -44,6 +49,24 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const [currentFps, setCurrentFps] = useState(0);
+
+  const [performanceModeManual, setPerformanceModeManual] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("gamatec-perf-mode") === "true";
+  });
+
+  // Modo performance derivado: liga automaticamente se resolução baixa ou FPS limitado <= 45
+  const performanceMode =
+    performanceModeManual || resolution < 1 || (fpsCap !== 0 && fpsCap <= 45);
+
+  // Aplica classe global no <html> para CSS desabilitar efeitos pesados
+  useEffect(() => {
+    document.documentElement.classList.toggle("perf-mode", performanceMode);
+  }, [performanceMode]);
+
+  useEffect(() => {
+    localStorage.setItem("gamatec-perf-mode", String(performanceModeManual));
+  }, [performanceModeManual]);
 
   // Aplica resolução (zoom). Usa CSS zoom (suportado em todos navegadores modernos).
   useEffect(() => {
@@ -118,6 +141,9 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
         showFpsCounter,
         setShowFpsCounter: setShowFpsCounterState,
         currentFps,
+        performanceModeManual,
+        setPerformanceModeManual,
+        performanceMode,
       }}
     >
       {children}
