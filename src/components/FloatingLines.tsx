@@ -217,7 +217,7 @@ export default function FloatingLines({
   className = '',
 }: FloatingLinesProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { performanceMode } = usePerformance();
+  const { performanceMode, resolution, fpsCap } = usePerformance();
   const targetMouseRef = useRef<Vector2>(new Vector2(-1000, -1000));
   const currentMouseRef = useRef<Vector2>(new Vector2(-1000, -1000));
   const targetInfluenceRef = useRef<number>(0);
