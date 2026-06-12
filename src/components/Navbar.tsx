@@ -314,7 +314,7 @@ export const Navbar = () => {
                   </DropdownMenuSubTrigger>
                   <DropdownMenuSubContent
                     sideOffset={8}
-                    className="z-[100] border-2 border-primary/30 bg-slate-950/95 backdrop-blur-xl shadow-2xl shadow-primary/20 p-1.5"
+                    className="z-[200] border-2 border-primary/30 bg-slate-950/95 backdrop-blur-xl shadow-2xl shadow-primary/20 p-1.5"
                   >
                     <DropdownMenuItem
                       onClick={(e) => { e.preventDefault(); toggleTheme(); }}
