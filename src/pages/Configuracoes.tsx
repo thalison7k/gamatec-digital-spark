@@ -13,9 +13,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import {
   Sun, Moon, Volume2, VolumeX, Mic, MicOff, User, LogOut,
-  Palette, Bell, Shield, Sparkles
+  Palette, Bell, Shield, Sparkles, Gauge, Activity
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { usePerformance, ResolutionScale, FpsCap } from "@/hooks/usePerformance";
 
 const Configuracoes = () => {
   const { theme, toggleTheme } = useTheme();
