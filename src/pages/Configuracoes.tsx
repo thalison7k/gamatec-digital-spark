@@ -329,6 +329,20 @@ const Configuracoes = () => {
               </div>
               <Switch checked={showFpsCounter} onCheckedChange={setShowFpsCounter} />
             </div>
+
+            {/* Efeito de Linhas Flutuantes (WebGL) */}
+            <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+              <div className="flex items-center gap-3">
+                <Sparkles className="h-5 w-5 text-cyan-400" />
+                <div>
+                  <Label className="text-sm font-medium">Efeito de Linhas Flutuantes</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Fundo animado com linhas neon que reagem ao mouse. Desligue para ganhar fluidez em máquinas modestas.
+                  </p>
+                </div>
+              </div>
+              <Switch checked={floatingLinesEnabled} onCheckedChange={setFloatingLinesEnabled} />
+            </div>
           </CardContent>
         </Card>
 
