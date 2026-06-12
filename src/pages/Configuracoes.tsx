@@ -31,6 +31,7 @@ const Configuracoes = () => {
     fpsCap, setFpsCap,
     showFpsCounter, setShowFpsCounter,
     currentFps,
+    performanceModeManual, setPerformanceModeManual, performanceMode,
   } = usePerformance();
   const [notifications, setNotifications] = useState(
     () => localStorage.getItem("gamatec_notifications") !== "false"
