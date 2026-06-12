@@ -101,14 +101,12 @@ const App = () => (
     <AuthProvider>
       <ThemeProvider>
         <AccessibilityProvider>
+          <PerformanceProvider>
           <SoundProvider>
             <VoiceProvider>
             <TooltipProvider>
               <Toaster />
               <Sonner />
-              {/* ===== Roteador da aplicação =====
-                  future flags ativam o comportamento do React Router v7 antecipadamente,
-                  eliminando os warnings de deprecação no console. */}
               <BrowserRouter
                 future={{
                   v7_startTransition: true,
@@ -136,10 +134,12 @@ const App = () => (
                 <AccessibilityPanel />
                 <PWAInstallPrompt />
                 <ScrollToTop />
+                <FpsCounter />
               </BrowserRouter>
             </TooltipProvider>
             </VoiceProvider>
           </SoundProvider>
+          </PerformanceProvider>
         </AccessibilityProvider>
       </ThemeProvider>
     </AuthProvider>

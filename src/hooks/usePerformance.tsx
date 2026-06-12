@@ -54,7 +54,7 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
   // Aplica cap de FPS sobrescrevendo requestAnimationFrame
   useEffect(() => {
     localStorage.setItem("gamatec-fps-cap", String(fpsCap));
-    if (!fpsCap || fpsCap === 0) {
+    if (!fpsCap) {
       window.requestAnimationFrame = originalRAF;
       return;
     }
