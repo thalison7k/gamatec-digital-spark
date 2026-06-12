@@ -184,6 +184,38 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [showFpsCounter]);
 
+  // Hardware detectado (memoizado uma vez)
+  const hardwareRef = useRef<HardwareTier | null>(null);
+  if (!hardwareRef.current) hardwareRef.current = detectHardware();
+  const hardware = hardwareRef.current;
+
+  const [autoTuned, setAutoTuned] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("gamatec-auto-tuned") === "true";
+  });
+
+  const applyAutoTune = useCallback(() => {
+    const preset = presetForTier(hardware.tier);
+    setResolutionState(preset.resolution);
+    setFpsCapState(preset.fpsCap);
+    setPerformanceModeManual(preset.perfMode);
+    setAutoTuned(true);
+    localStorage.setItem("gamatec-auto-tuned", "true");
+  }, [hardware.tier]);
+
+  // Auto-tune na primeira visita (sem nenhuma preferência salva)
+  useEffect(() => {
+    const hasAnyPref =
+      localStorage.getItem("gamatec-resolution") ||
+      localStorage.getItem("gamatec-fps-cap") ||
+      localStorage.getItem("gamatec-perf-mode") ||
+      localStorage.getItem("gamatec-auto-tuned");
+    if (!hasAnyPref && hardware.tier !== "mid") {
+      applyAutoTune();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <PerformanceContext.Provider
       value={{
@@ -197,6 +229,9 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
         performanceModeManual,
         setPerformanceModeManual,
         performanceMode,
+        hardware,
+        applyAutoTune,
+        autoTuned,
       }}
     >
       {children}
