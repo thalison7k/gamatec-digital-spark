@@ -35,6 +35,8 @@ import { VoiceProvider } from "@/components/VoiceProvider";
 import { AccessibilityPanel } from "@/components/AccessibilityPanel";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
+import { PerformanceProvider } from "@/hooks/usePerformance";
+import { FpsCounter } from "@/components/FpsCounter";
 import Auth from "./pages/Auth";
 import { useUserRole } from "@/hooks/useUserRole";
 
