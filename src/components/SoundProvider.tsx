@@ -22,53 +22,53 @@ export const SoundProvider = ({ children }: { children: ReactNode }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hasInteracted = useRef(false);
 
-  // Create audio element for background music
+  // Lazy: cria o áudio só na primeira interação (evita baixar ~3MB antes do FCP)
   useEffect(() => {
-    const audio = new Audio("/audio/ambient-music.mp3");
-    audio.loop = true;
-    audio.volume = 0.15;
-    audioRef.current = audio;
+    const ensureAudio = () => {
+      if (audioRef.current) return audioRef.current;
+      const audio = new Audio();
+      audio.preload = "none";
+      audio.loop = true;
+      audio.volume = 0.15;
+      audio.src = "/audio/ambient-music.mp3";
+      audioRef.current = audio;
+      return audio;
+    };
+
+    const startMusic = () => {
+      if (hasInteracted.current) return;
+      hasInteracted.current = true;
+      const audio = ensureAudio();
+      if (enabled) audio.play().catch(() => {});
+    };
+
+    window.addEventListener("click", startMusic);
+    window.addEventListener("touchstart", startMusic);
+    window.addEventListener("keydown", startMusic);
 
     return () => {
-      audio.pause();
-      audio.src = "";
+      window.removeEventListener("click", startMusic);
+      window.removeEventListener("touchstart", startMusic);
+      window.removeEventListener("keydown", startMusic);
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
+        audio.src = "";
+      }
     };
-  }, []);
+  }, [enabled]);
 
-  // Handle play/pause based on enabled state
+  // Reage ao toggle on/off
   useEffect(() => {
     toggle(enabled);
     const audio = audioRef.current;
     if (!audio) return;
-
     if (enabled && hasInteracted.current) {
       audio.play().catch(() => {});
     } else {
       audio.pause();
     }
   }, [enabled, toggle]);
-
-  // Start music on first user interaction
-  useEffect(() => {
-    const startMusic = () => {
-      if (hasInteracted.current) return;
-      hasInteracted.current = true;
-      const audio = audioRef.current;
-      if (audio && enabled) {
-        audio.play().catch(() => {});
-      }
-    };
-
-    window.addEventListener("click", startMusic, { once: false });
-    window.addEventListener("touchstart", startMusic, { once: false });
-    window.addEventListener("keydown", startMusic, { once: false });
-
-    return () => {
-      window.removeEventListener("click", startMusic);
-      window.removeEventListener("touchstart", startMusic);
-      window.removeEventListener("keydown", startMusic);
-    };
-  }, [enabled]);
 
   return (
     <SoundContext.Provider value={{ play, stop, enabled, setEnabled }}>
