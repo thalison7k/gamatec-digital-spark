@@ -1,7 +1,16 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useRef } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useRef, useCallback } from "react";
 
 export type ResolutionScale = 0.5 | 0.75 | 1 | 1.1 | 1.25;
 export type FpsCap = 30 | 45 | 60 | 0; // 0 = ilimitado
+
+export interface HardwareTier {
+  tier: "low" | "mid" | "high";
+  cores: number;
+  memoryGB: number | null;
+  isMobile: boolean;
+  saveData: boolean;
+  reason: string;
+}
 
 interface PerformanceContextType {
   resolution: ResolutionScale;
@@ -16,6 +25,11 @@ interface PerformanceContextType {
   setPerformanceModeManual: (v: boolean) => void;
   /** Flag final: manual OU derivado de resolução baixa / FPS limitado */
   performanceMode: boolean;
+  /** Info do hardware detectado */
+  hardware: HardwareTier;
+  /** Aplica preset ideal baseado no hardware do usuário */
+  applyAutoTune: () => void;
+  autoTuned: boolean;
 }
 
 const PerformanceContext = createContext<PerformanceContextType | null>(null);
@@ -25,6 +39,45 @@ export const usePerformance = () => {
   if (!ctx) throw new Error("usePerformance deve estar dentro de PerformanceProvider");
   return ctx;
 };
+
+function detectHardware(): HardwareTier {
+  if (typeof window === "undefined") {
+    return { tier: "mid", cores: 4, memoryGB: null, isMobile: false, saveData: false, reason: "ssr" };
+  }
+  const cores = navigator.hardwareConcurrency || 4;
+  const memoryGB = (navigator as any).deviceMemory ?? null;
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    window.innerWidth < 768;
+  const conn = (navigator as any).connection;
+  const saveData = !!conn?.saveData;
+  const slowNet = conn?.effectiveType && /2g|slow-2g|3g/.test(conn.effectiveType);
+
+  let tier: "low" | "mid" | "high" = "mid";
+  const reasons: string[] = [];
+
+  if (saveData || slowNet) { tier = "low"; reasons.push("rede limitada"); }
+  else if (isMobile && (cores <= 4 || (memoryGB !== null && memoryGB <= 3))) {
+    tier = "low"; reasons.push("mobile modesto");
+  } else if (cores >= 8 && (memoryGB === null || memoryGB >= 8) && !isMobile) {
+    tier = "high"; reasons.push("desktop potente");
+  } else if (cores <= 2 || (memoryGB !== null && memoryGB <= 2)) {
+    tier = "low"; reasons.push("hardware limitado");
+  }
+
+  return { tier, cores, memoryGB, isMobile, saveData, reason: reasons.join(", ") || "padrão" };
+}
+
+function presetForTier(tier: "low" | "mid" | "high"): { resolution: ResolutionScale; fpsCap: FpsCap; perfMode: boolean } {
+  switch (tier) {
+    case "low":  return { resolution: 0.75, fpsCap: 30, perfMode: true };
+    case "mid":  return { resolution: 1,    fpsCap: 60, perfMode: false };
+    case "high": return { resolution: 1,    fpsCap: 0,  perfMode: false };
+  }
+}
+
+
+
 
 // Guarda o RAF original para podermos restaurar quando ilimitado
 const originalRAF: typeof window.requestAnimationFrame =
@@ -131,6 +184,38 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [showFpsCounter]);
 
+  // Hardware detectado (memoizado uma vez)
+  const hardwareRef = useRef<HardwareTier | null>(null);
+  if (!hardwareRef.current) hardwareRef.current = detectHardware();
+  const hardware = hardwareRef.current;
+
+  const [autoTuned, setAutoTuned] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("gamatec-auto-tuned") === "true";
+  });
+
+  const applyAutoTune = useCallback(() => {
+    const preset = presetForTier(hardware.tier);
+    setResolutionState(preset.resolution);
+    setFpsCapState(preset.fpsCap);
+    setPerformanceModeManual(preset.perfMode);
+    setAutoTuned(true);
+    localStorage.setItem("gamatec-auto-tuned", "true");
+  }, [hardware.tier]);
+
+  // Auto-tune na primeira visita (sem nenhuma preferência salva)
+  useEffect(() => {
+    const hasAnyPref =
+      localStorage.getItem("gamatec-resolution") ||
+      localStorage.getItem("gamatec-fps-cap") ||
+      localStorage.getItem("gamatec-perf-mode") ||
+      localStorage.getItem("gamatec-auto-tuned");
+    if (!hasAnyPref && hardware.tier !== "mid") {
+      applyAutoTune();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <PerformanceContext.Provider
       value={{
@@ -144,6 +229,9 @@ export const PerformanceProvider = ({ children }: { children: ReactNode }) => {
         performanceModeManual,
         setPerformanceModeManual,
         performanceMode,
+        hardware,
+        applyAutoTune,
+        autoTuned,
       }}
     >
       {children}

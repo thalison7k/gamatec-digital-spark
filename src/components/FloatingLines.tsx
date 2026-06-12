@@ -267,13 +267,21 @@ export default function FloatingLines({
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
-    // Cap mais conservador no DPR para reduzir custo de GPU em telas Retina/4K.
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    const renderer = new WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'low-power' });
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
     container.appendChild(renderer.domElement);
+
+    // Cap interno em ~720p: nunca renderiza mais do que 1280x720 px reais,
+    // independente do tamanho CSS ou do DPR do monitor. Isso reduz drasticamente
+    // o custo de GPU/fragment shader em telas grandes/Retina.
+    const MAX_W = 1280;
+    const MAX_H = 720;
+    const computeCappedDpr = (cssW: number, cssH: number) => {
+      const dpr = window.devicePixelRatio || 1;
+      return Math.max(0.5, Math.min(dpr, 1.5, MAX_W / Math.max(cssW, 1), MAX_H / Math.max(cssH, 1)));
+    };
 
     const uniforms = {
       iTime: { value: 0 },
@@ -338,6 +346,7 @@ export default function FloatingLines({
       if (!el) return;
       const width = el.clientWidth || 1;
       const height = el.clientHeight || 1;
+      renderer.setPixelRatio(computeCappedDpr(width, height));
       renderer.setSize(width, height, false);
       uniforms.iResolution.value.set(renderer.domElement.width, renderer.domElement.height, 1);
     };

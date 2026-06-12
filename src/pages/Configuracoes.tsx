@@ -32,6 +32,7 @@ const Configuracoes = () => {
     showFpsCounter, setShowFpsCounter,
     currentFps,
     performanceModeManual, setPerformanceModeManual, performanceMode,
+    hardware, applyAutoTune, autoTuned,
   } = usePerformance();
   const [notifications, setNotifications] = useState(
     () => localStorage.getItem("gamatec_notifications") !== "false"
@@ -199,6 +200,39 @@ const Configuracoes = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
+            {/* Auto-tune por hardware */}
+            <div className="p-4 rounded-lg bg-gradient-to-br from-primary/10 via-purple-500/5 to-transparent border border-primary/20">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <Sparkles className="h-5 w-5 text-primary shrink-0" />
+                  <div className="min-w-0">
+                    <Label className="text-sm font-medium">Otimização Automática</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Detecta seu hardware e aplica o melhor preset
+                    </p>
+                    <p className="text-[11px] text-muted-foreground/80 mt-1 font-mono">
+                      Tier: <span className={
+                        hardware.tier === "high" ? "text-green-400"
+                        : hardware.tier === "mid" ? "text-yellow-400"
+                        : "text-orange-400"
+                      }>{hardware.tier.toUpperCase()}</span>
+                      {" · "}{hardware.cores} cores
+                      {hardware.memoryGB ? ` · ${hardware.memoryGB}GB RAM` : ""}
+                      {hardware.isMobile ? " · mobile" : " · desktop"}
+                      {autoTuned && <span className="ml-1 text-green-400">✓ aplicado</span>}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => { applyAutoTune(); toast({ title: "Otimização aplicada", description: `Preset ${hardware.tier.toUpperCase()} ativado.` }); }}
+                  className="shrink-0"
+                >
+                  Auto-ajustar
+                </Button>
+              </div>
+            </div>
+
             {/* Modo Performance */}
             <div className="flex items-center justify-between p-4 rounded-lg bg-gradient-to-br from-orange-500/10 to-transparent border border-orange-500/20">
               <div className="flex items-center gap-3">
