@@ -64,8 +64,7 @@ export const Hero = () => {
           {/* ===== Bloco do Logo ===== */}
           {/* Empilha em coluna no mobile e em linha no desktop, evitando o "círculo gigante" */}
           <div className="logo-container flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 scroll-reveal-scale visible" style={{ transitionDelay: "0.1s" }}>
-            <img
-              src={logo}
+            <ThemeLogo
               alt="GamaTec.IA Logo"
               className="logo-image w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 object-contain rounded-full ring-2 ring-primary/40 shadow-[0_0_25px_hsl(var(--primary)/0.35)]"
             />

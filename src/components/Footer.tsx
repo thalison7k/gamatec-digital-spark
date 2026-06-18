@@ -16,7 +16,7 @@ export const Footer = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="space-y-4">
               <div className="logo-container flex items-center gap-3">
-                <img src={logo} alt="GamaTec.IA Logo" className="logo-image w-16 h-16 object-contain rounded-lg" />
+                <ThemeLogo alt="GamaTec.IA Logo" className="logo-image w-16 h-16 object-contain rounded-lg" />
                 <span className="logo-text text-2xl font-orbitron font-bold glow-text">GamaTec.IA</span>
               </div>
               <p className="text-muted-foreground text-sm">

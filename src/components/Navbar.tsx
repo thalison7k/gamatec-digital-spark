@@ -136,7 +136,7 @@ export const Navbar = () => {
         onClick={() => { play("whoosh"); navigate("/site"); }}
         className="flex items-center gap-2 hover:opacity-80 transition-opacity"
       >
-        <img src={gamatecLogo} alt="GamaTec" className="h-8 w-auto" />
+        <ThemeLogo alt="GamaTec" className="h-8 w-auto" />
         <span className="font-orbitron text-sm font-bold text-primary hidden sm:inline">
           GamaTec.IA
         </span>
