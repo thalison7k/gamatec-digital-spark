@@ -55,7 +55,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
-import gamatecLogo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 
 function getAvatarUrl(user: any, profileName?: string | null): string {
   // 1. OAuth avatar (Google, GitHub, etc.)

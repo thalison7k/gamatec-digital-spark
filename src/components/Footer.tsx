@@ -1,4 +1,4 @@
-import logo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 import { Youtube, Instagram, MessageCircle, BookOpen } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useNavigate } from "react-router-dom";

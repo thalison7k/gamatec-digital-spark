@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
-import gamatecLogo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);

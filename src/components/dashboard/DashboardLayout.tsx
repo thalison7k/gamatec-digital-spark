@@ -21,7 +21,7 @@ import {
   VolumeX,
   Settings,
 } from "lucide-react";
-import gamatecLogo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 import NotificationBell from "@/components/dashboard/NotificationBell";
 
 

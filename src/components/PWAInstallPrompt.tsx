@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { X, Download, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import gamatecLogo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;

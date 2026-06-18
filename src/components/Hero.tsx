@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Zap, Shield, Sparkles, Youtube, Instagram, MessageCircle, LogOut, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import logo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { usePerformance } from "@/hooks/usePerformance";
 
