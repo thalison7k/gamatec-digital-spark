@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
-import gamatecLogo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -95,7 +95,7 @@ const Auth = () => {
           <div className="relative z-10">
             {/* Logo */}
             <div className="flex justify-center mb-4">
-              <img src={gamatecLogo} alt="GamaTec.IA" className="h-14 w-auto animate-float-gentle" />
+              <ThemeLogo alt="GamaTec.IA" className="h-14 w-auto animate-float-gentle" />
             </div>
 
             <h1 className="text-lg font-bold text-center mb-1 font-orbitron text-foreground">

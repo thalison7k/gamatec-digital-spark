@@ -21,7 +21,7 @@ import {
   VolumeX,
   Settings,
 } from "lucide-react";
-import gamatecLogo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 import NotificationBell from "@/components/dashboard/NotificationBell";
 
 
@@ -71,7 +71,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         }`}
       >
         <div className="p-4 border-b border-border flex items-center gap-3">
-          <img src={gamatecLogo} alt="GamaTec" className="h-8 w-auto" />
+          <ThemeLogo alt="GamaTec" className="h-8 w-auto" />
           <span className="font-orbitron text-sm text-primary font-bold">GamaTec.IA</span>
           <button className="lg:hidden ml-auto text-muted-foreground" onClick={() => setSidebarOpen(false)}>
             <X className="h-5 w-5" />

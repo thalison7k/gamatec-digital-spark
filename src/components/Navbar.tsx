@@ -55,7 +55,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
-import gamatecLogo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 
 function getAvatarUrl(user: any, profileName?: string | null): string {
   // 1. OAuth avatar (Google, GitHub, etc.)
@@ -136,7 +136,7 @@ export const Navbar = () => {
         onClick={() => { play("whoosh"); navigate("/site"); }}
         className="flex items-center gap-2 hover:opacity-80 transition-opacity"
       >
-        <img src={gamatecLogo} alt="GamaTec" className="h-8 w-auto" />
+        <ThemeLogo alt="GamaTec" className="h-8 w-auto" />
         <span className="font-orbitron text-sm font-bold text-primary hidden sm:inline">
           GamaTec.IA
         </span>

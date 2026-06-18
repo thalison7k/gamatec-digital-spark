@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { X, Download, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import gamatecLogo from "@/assets/gamatec-logo.png";
+import { ThemeLogo } from "@/components/ThemeLogo";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -88,7 +88,7 @@ export const PWAInstallPrompt = () => {
         <div className="flex items-start gap-3 pr-6">
           {/* Logo */}
           <div className="shrink-0 h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
-            <img src={gamatecLogo} alt="GamaTec" className="h-8 w-8 object-contain" />
+            <ThemeLogo alt="GamaTec" className="h-8 w-8 object-contain" />
           </div>
 
           <div className="min-w-0 flex-1">
