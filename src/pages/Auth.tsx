@@ -52,22 +52,66 @@ const Auth = () => {
         toast({ title: "Login realizado com sucesso!", description: "Bem-vindo de volta à GamaTec.IA" });
         navigate("/site");
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email, password,
           options: { emailRedirectTo: `${window.location.origin}/`, data: { full_name: name } },
         });
         if (error) throw error;
-        toast({ title: "Conta criada com sucesso!", description: "Você já pode acessar o conteúdo exclusivo." });
-        navigate("/site");
+        // Se não há sessão, o projeto exige confirmação por email — não redireciona.
+        if (!data.session) {
+          toast({
+            title: "Confirme seu email",
+            description: "Enviamos um link de confirmação para " + email + ". Abra sua caixa de entrada (e o spam) para ativar a conta.",
+          });
+          setIsLogin(true);
+          setPassword("");
+        } else {
+          toast({ title: "Conta criada com sucesso!", description: "Você já pode acessar o conteúdo exclusivo." });
+          navigate("/site");
+        }
       }
     } catch (error: any) {
+      const raw = (error?.message || "").toString();
+      const code = (error?.code || error?.error_code || "").toString();
       let errorMessage = "Ocorreu um erro. Tente novamente.";
-      if (error.message.includes("Invalid login credentials")) errorMessage = "Email ou senha incorretos.";
-      else if (error.message.includes("User already registered")) errorMessage = "Este email já está cadastrado.";
-      else if (error.message.includes("Password should be at least")) errorMessage = "A senha deve ter pelo menos 6 caracteres.";
+      if (code === "invalid_credentials" || raw.includes("Invalid login credentials")) {
+        errorMessage = "Email ou senha incorretos.";
+      } else if (code === "email_not_confirmed" || raw.includes("Email not confirmed")) {
+        errorMessage = "Confirme seu email antes de entrar. Verifique sua caixa de entrada e o spam.";
+      } else if (code === "user_already_exists" || raw.includes("User already registered") || raw.includes("already registered")) {
+        errorMessage = "Este email já está cadastrado. Faça login ou recupere sua senha.";
+      } else if (code === "weak_password" || raw.toLowerCase().includes("weak") || raw.toLowerCase().includes("pwned")) {
+        errorMessage = "Essa senha é muito comum ou já foi vazada. Use uma senha mais forte (mistura de letras, números e símbolos, com pelo menos 8 caracteres).";
+      } else if (raw.includes("Password should be at least")) {
+        errorMessage = "A senha deve ter pelo menos 6 caracteres.";
+      } else if (code === "over_email_send_rate_limit" || raw.includes("rate limit")) {
+        errorMessage = "Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.";
+      } else if (code === "signup_disabled") {
+        errorMessage = "Novos cadastros estão temporariamente desativados.";
+      } else if (raw.includes("Invalid email") || raw.includes("valid email")) {
+        errorMessage = "Email inválido. Verifique e tente novamente.";
+      } else if (raw) {
+        errorMessage = raw;
+      }
       toast({ title: "Erro", description: errorMessage, variant: "destructive" });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      toast({ title: "Informe seu email", description: "Digite o email da sua conta antes de solicitar a recuperação.", variant: "destructive" });
+      return;
+    }
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+      if (error) throw error;
+      toast({ title: "Email enviado", description: "Se este email estiver cadastrado, você receberá um link para redefinir a senha." });
+    } catch (error: any) {
+      toast({ title: "Erro", description: error?.message || "Não foi possível enviar o email.", variant: "destructive" });
     }
   };
 
@@ -143,6 +187,11 @@ const Auth = () => {
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
+                {!isLogin && (
+                  <p className="text-[11px] text-muted-foreground/80 mt-1">
+                    Use uma senha forte (8+ caracteres, misture letras, números e símbolos). Senhas vazadas são bloqueadas.
+                  </p>
+                )}
               </div>
 
               <Button type="submit"
@@ -152,7 +201,16 @@ const Auth = () => {
               </Button>
             </form>
 
-            <div className="mt-4 text-center">
+            {isLogin && (
+              <div className="mt-3 text-center">
+                <button type="button" onClick={handleResetPassword}
+                  className="text-primary hover:underline text-xs transition-colors">
+                  Esqueci minha senha
+                </button>
+              </div>
+            )}
+
+            <div className="mt-3 text-center">
               <p className="text-muted-foreground text-xs">
                 {isLogin ? "Não tem conta?" : "Já tem conta?"}
                 <button type="button" onClick={() => setIsLogin(!isLogin)}
