@@ -187,6 +187,11 @@ const Auth = () => {
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
+                {!isLogin && (
+                  <p className="text-[11px] text-muted-foreground/80 mt-1">
+                    Use uma senha forte (8+ caracteres, misture letras, números e símbolos). Senhas vazadas são bloqueadas.
+                  </p>
+                )}
               </div>
 
               <Button type="submit"
@@ -196,7 +201,16 @@ const Auth = () => {
               </Button>
             </form>
 
-            <div className="mt-4 text-center">
+            {isLogin && (
+              <div className="mt-3 text-center">
+                <button type="button" onClick={handleResetPassword}
+                  className="text-primary hover:underline text-xs transition-colors">
+                  Esqueci minha senha
+                </button>
+              </div>
+            )}
+
+            <div className="mt-3 text-center">
               <p className="text-muted-foreground text-xs">
                 {isLogin ? "Não tem conta?" : "Já tem conta?"}
                 <button type="button" onClick={() => setIsLogin(!isLogin)}
